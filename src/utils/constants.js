@@ -1,0 +1,1 @@
+export const CROPS = ['Tomato', 'Potato', 'Onion']
