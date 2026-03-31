@@ -1,0 +1,120 @@
+/* ============================================
+   AgriIntel – Design Tokens / CSS Variables
+   ============================================ */
+
+:root {
+  /* ---- Brand Palette ---- */
+  --color-forest-50:  #f0f7f2;
+  --color-forest-100: #d8ede1;
+  --color-forest-200: #b3dbc5;
+  --color-forest-300: #80c0a0;
+  --color-forest-400: #4da07a;
+  --color-forest-500: #2d8058;
+  --color-forest-600: #1e6644;
+  --color-forest-700: #164f34;
+  --color-forest-800: #113d28;
+  --color-forest-900: #0c2e1e;
+
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+
+  --color-earth-400: #b08a5a;
+  --color-earth-500: #8f6a3a;
+  --color-earth-600: #72532c;
+
+  --color-cream:      #fdf8f0;
+  --color-sage:       #7fa887;
+  --color-danger:     #ef4444;
+  --color-success:    #22c55e;
+  --color-warning:    #f59e0b;
+  --color-info:       #3b82f6;
+
+  /* ---- Semantic Colors ---- */
+  --bg-primary:    var(--color-cream);
+  --bg-secondary:  var(--color-forest-50);
+  --bg-surface:    #ffffff;
+  --bg-nav:        var(--color-forest-800);
+
+  --text-primary:   #1a2e1f;
+  --text-secondary: #4a6454;
+  --text-muted:     #7fa887;
+  --text-inverse:   #fdf8f0;
+
+  --border-light:  var(--color-forest-100);
+  --border-medium: var(--color-forest-200);
+
+  /* ---- Typography ---- */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans:    'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  --text-xs:   0.75rem;   /* 12px */
+  --text-sm:   0.875rem;  /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg:   1.125rem;  /* 18px */
+  --text-xl:   1.25rem;   /* 20px */
+  --text-2xl:  1.5rem;    /* 24px */
+  --text-3xl:  1.875rem;  /* 30px */
+  --text-4xl:  2.25rem;   /* 36px */
+
+  /* ---- Spacing ---- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* ---- Borders & Radius ---- */
+  --radius-sm:  0.375rem;
+  --radius-md:  0.75rem;
+  --radius-lg:  1rem;
+  --radius-xl:  1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:   0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06);
+  --shadow-xl:   0 16px 48px rgba(0,0,0,0.14), 0 8px 16px rgba(0,0,0,0.08);
+  --shadow-glow: 0 0 24px rgba(45,128,88,0.3);
+
+  /* ---- Transitions ---- */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow:   0.4s ease;
+
+  /* ---- Z-Index ---- */
+  --z-base:    0;
+  --z-above:   10;
+  --z-dropdown: 100;
+  --z-sticky:  200;
+  --z-modal:   500;
+  --z-toast:   1000;
+
+  /* ---- Layout ---- */
+  --max-width: 1280px;
+  --nav-height: 64px;
+  --sidebar-width: 260px;
+}
+
+/* ---- Dark Mode (future-ready) ---- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary:    #0c2e1e;
+    --bg-secondary:  #113d28;
+    --bg-surface:    #164f34;
+    --text-primary:  #f0f7f2;
+    --text-secondary: #b3dbc5;
+    --text-muted:    #4da07a;
+    --border-light:  #1e6644;
+    --border-medium: #2d8058;
+  }
+}
