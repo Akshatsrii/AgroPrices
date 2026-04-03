@@ -1,183 +1,277 @@
-import React, { useState } from "react";
-import { DUMMY_INSIGHTS, DUMMY_ALERTS } from "../data/dummyData";
+import React, { useState, useEffect } from "react";
+import { DUMMY_INSIGHTS } from "../data/dummyData";
 import InsightCard from "../components/ai/InsightCard";
 import AlertBox from "../components/ai/AlertBox";
 import { CROPS_LIST } from "../data/cropsList";
 
 const CATEGORIES = ["All", "Market Trend", "Weather Alert", "Policy Update", "Export News"];
+const PAGE_SIZE = 5;
 
 export default function Insights() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeCrop,     setActiveCrop]     = useState("All");
   const [search,         setSearch]         = useState("");
+  const [showAll,        setShowAll]         = useState(false);
+  const [mounted,        setMounted]         = useState(false);
+
+  useEffect(() => { setTimeout(() => setMounted(true), 150); }, []);
 
   const topCrops = CROPS_LIST.slice(0, 8);
 
   const filtered = DUMMY_INSIGHTS.filter((ins) => {
-    const matchCat  = activeCategory === "All" || ins.category === activeCategory;
-    const matchCrop = activeCrop === "All" || ins.crops?.includes(activeCrop.toLowerCase());
-    const matchSearch =
-      !search ||
-      ins.title.toLowerCase().includes(search.toLowerCase()) ||
-      ins.summary.toLowerCase().includes(search.toLowerCase());
+    const matchCat    = activeCategory === "All" || ins.category === activeCategory;
+    const matchCrop   = activeCrop === "All" || ins.crops?.includes(activeCrop.toLowerCase());
+    const matchSearch = !search
+      || ins.title.toLowerCase().includes(search.toLowerCase())
+      || ins.summary.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchCrop && matchSearch;
   });
 
+  const visible = showAll ? filtered : filtered.slice(0, PAGE_SIZE);
+
   return (
-    <div className="page-container space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="section-title">Market Insights</h1>
-        <p className="text-sm text-forest-500 mt-1">
-          AI-curated news, policy updates, and weather advisories relevant to Indian crop markets.
-        </p>
-      </div>
+    <>
+      {/* ── font import ─────────────────────────────────────────────────── */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Main content */}
-        <div className="xl:col-span-2 space-y-5">
-          {/* Filters */}
-          <div className="card space-y-3">
-            {/* Search */}
-            <div className="relative">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-forest-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search insights…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="input-field pl-9"
-              />
-            </div>
+        .ins-page { font-family: 'DM Sans', sans-serif; }
 
-            {/* Category tabs */}
-            <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all border ${
-                    activeCategory === cat
-                      ? "bg-forest-600 text-cream border-forest-600"
-                      : "bg-white text-forest-600 border-forest-200 hover:bg-forest-50"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+        /* pill buttons */
+        .pill-cat  { padding: 5px 14px; border-radius: 50px; font-size: 12px; font-weight: 500;
+                     cursor: pointer; border: 1.5px solid #a8d5b5; color: #1f4d2c;
+                     background: transparent; transition: all .18s; }
+        .pill-cat.active, .pill-cat:hover
+                   { background: #1f4d2c; color: #fff; border-color: #1f4d2c; }
 
-            {/* Crop filter */}
-            <div className="flex flex-wrap gap-2 pt-1 border-t border-forest-50">
-              <button
-                onClick={() => setActiveCrop("All")}
-                className={`px-2.5 py-1 rounded-full text-xs transition-all ${
-                  activeCrop === "All"
-                    ? "bg-amber-400 text-forest-900 font-semibold"
-                    : "text-forest-500 hover:bg-forest-50"
-                }`}
-              >
-                All Crops
-              </button>
-              {topCrops.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setActiveCrop(c.name)}
-                  className={`px-2.5 py-1 rounded-full text-xs flex items-center gap-1 transition-all ${
-                    activeCrop === c.name
-                      ? "bg-amber-400 text-forest-900 font-semibold"
-                      : "text-forest-500 hover:bg-forest-50"
-                  }`}
-                >
-                  {c.emoji} {c.name}
-                </button>
-              ))}
-            </div>
-          </div>
+        .pill-crop { padding: 5px 12px; border-radius: 50px; font-size: 12px;
+                     cursor: pointer; border: 1.5px solid transparent; color: #4a6352;
+                     background: transparent; transition: all .18s; }
+        .pill-crop.active, .pill-crop:hover
+                   { background: #f8c840; color: #0a1f13; border-color: #f8c840; font-weight: 600; }
 
-          {/* Results count */}
-          <p className="text-sm text-forest-500 font-medium">
-            {filtered.length} insight{filtered.length !== 1 ? "s" : ""}
-            {activeCategory !== "All" && ` in "${activeCategory}"`}
+        /* search */
+        .ins-search { width: 100%; padding: 10px 14px 10px 38px; font-family: 'DM Sans', sans-serif;
+                      font-size: 13.5px; border: 1.5px solid rgba(30,60,30,.1);
+                      border-radius: 12px; background: #faf8f3; color: #1a2e1a;
+                      outline: none; transition: border-color .2s; }
+        .ins-search:focus { border-color: #2e6b3e; }
+        .ins-search::placeholder { color: #7a9485; }
+
+        /* outline button */
+        .btn-ins-outline { background: transparent; border: 1.5px solid #2e6b3e;
+                           color: #1f4d2c; font-family: 'DM Sans', sans-serif;
+                           font-size: 13px; font-weight: 500;
+                           padding: 8px 22px; border-radius: 50px; cursor: pointer;
+                           transition: all .18s; }
+        .btn-ins-outline:hover { background: #1f4d2c; color: #fff; }
+
+        /* stagger-in animation */
+        @keyframes ins-fadeup {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0);   }
+        }
+        .ins-animate { animation: ins-fadeup .35s ease both; }
+
+        /* animated bar */
+        .snap-bar { height: 3px; border-radius: 2px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+
+        /* live pulse */
+        @keyframes ins-pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+        .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+                    background: #22c55e; margin-right: 5px; animation: ins-pulse 2s infinite; }
+      `}</style>
+
+      <div className="ins-page" style={{ padding: "28px 20px 64px", maxWidth: 1200, margin: "0 auto" }}>
+
+        {/* ── Header ───────────────────────────────────────────────────── */}
+        <div style={{ marginBottom: 24 }}>
+          <h1 style={{ fontFamily: "'Lora', serif", fontSize: 28, fontWeight: 600,
+                       color: "#143320", letterSpacing: "-0.4px", margin: 0 }}>
+            Market Insights
+          </h1>
+          <p style={{ fontSize: 13, color: "#4a6352", marginTop: 5, lineHeight: 1.5 }}>
+            AI-curated news, policy updates, and weather advisories relevant to Indian crop markets.
           </p>
-
-          {/* Insight cards */}
-          {filtered.length > 0 ? (
-            <div className="space-y-3">
-              {filtered.map((ins) => (
-                <InsightCard key={ins.id} insight={ins} />
-              ))}
-            </div>
-          ) : (
-            <div className="card flex flex-col items-center py-14 text-center">
-              <span className="text-4xl mb-3">📭</span>
-              <p className="font-semibold text-forest-800 mb-1">No insights found</p>
-              <p className="text-sm text-forest-500">Try adjusting your filters.</p>
-              <button
-                onClick={() => { setActiveCategory("All"); setActiveCrop("All"); setSearch(""); }}
-                className="btn-outline text-sm mt-4"
-              >
-                Clear Filters
-              </button>
-            </div>
-          )}
-
-          {/* Load more (static) */}
-          {filtered.length > 0 && (
-            <div className="text-center">
-              <button className="btn-outline text-sm">
-                Load More Insights
-              </button>
-            </div>
-          )}
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-5">
-          {/* Alerts */}
-          <AlertBox />
+        {/* ── Two-column layout ─────────────────────────────────────────── */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 22,
+                      "@media(max-width:900px)": { gridTemplateColumns: "1fr" } }}>
 
-          {/* Quick stats */}
-          <div className="card">
-            <h3 className="font-semibold text-forest-900 mb-4">📊 Market Snapshot</h3>
-            <div className="space-y-3">
+          {/* ─── Main column ─────────────────────────────────────────────── */}
+          <div>
+            {/* Filters card */}
+            <div style={{ background: "#fff", border: "1px solid rgba(30,60,30,.09)",
+                          borderRadius: 16, padding: "18px 20px", marginBottom: 14 }}>
+              {/* Search */}
+              <div style={{ position: "relative", marginBottom: 14 }}>
+                <svg style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)",
+                              color: "#7a9485", pointerEvents: "none" }}
+                     width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search insights…"
+                  value={search}
+                  onChange={(e) => { setSearch(e.target.value); setShowAll(false); }}
+                  className="ins-search"
+                />
+              </div>
+
+              {/* Category pills */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginBottom: 12 }}>
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    className={`pill-cat${activeCategory === cat ? " active" : ""}`}
+                    onClick={() => { setActiveCategory(cat); setShowAll(false); }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div style={{ borderTop: "1px solid #f0f7f0", marginBottom: 12 }} />
+
+              {/* Crop pills */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                <button
+                  className={`pill-crop${activeCrop === "All" ? " active" : ""}`}
+                  onClick={() => { setActiveCrop("All"); setShowAll(false); }}
+                >
+                  All Crops
+                </button>
+                {topCrops.map((c) => (
+                  <button
+                    key={c.id}
+                    className={`pill-crop${activeCrop === c.name ? " active" : ""}`}
+                    onClick={() => { setActiveCrop(c.name); setShowAll(false); }}
+                  >
+                    {c.emoji} {c.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Result count */}
+            <p style={{ fontSize: 12.5, color: "#4a6352", fontWeight: 500, marginBottom: 12 }}>
+              {filtered.length} insight{filtered.length !== 1 ? "s" : ""}
+              {activeCategory !== "All" && ` in "${activeCategory}"`}
+              {activeCrop !== "All" && ` for ${activeCrop}`}
+            </p>
+
+            {/* Insight cards */}
+            {filtered.length > 0 ? (
+              <>
+                <div>
+                  {visible.map((ins, i) => (
+                    <div
+                      key={ins.id}
+                      className="ins-animate"
+                      style={{ animationDelay: `${i * 60}ms` }}
+                    >
+                      <InsightCard insight={ins} />
+                    </div>
+                  ))}
+                </div>
+
+                {filtered.length > PAGE_SIZE && (
+                  <div style={{ textAlign: "center", marginTop: 18 }}>
+                    <button className="btn-ins-outline" onClick={() => setShowAll((v) => !v)}>
+                      {showAll
+                        ? "Show Less"
+                        : `Load ${filtered.length - PAGE_SIZE} More Insight${filtered.length - PAGE_SIZE !== 1 ? "s" : ""}`}
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div style={{ background: "#fff", border: "1px solid rgba(30,60,30,.09)",
+                            borderRadius: 16, padding: "52px 20px", textAlign: "center" }}>
+                <div style={{ fontSize: 36, marginBottom: 12 }}>📭</div>
+                <p style={{ fontFamily: "'Lora', serif", fontSize: 16, color: "#143320",
+                            fontWeight: 600, marginBottom: 6 }}>No insights found</p>
+                <p style={{ fontSize: 13, color: "#4a6352", marginBottom: 18 }}>
+                  Try adjusting your category, crop, or search filters.
+                </p>
+                <button
+                  className="btn-ins-outline"
+                  onClick={() => { setActiveCategory("All"); setActiveCrop("All"); setSearch(""); }}
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* ─── Sidebar ─────────────────────────────────────────────────── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            {/* Live Advisories */}
+            <AlertBox />
+
+            {/* Market Snapshot */}
+            <div style={{ background: "#fff", border: "1px solid rgba(30,60,30,.09)",
+                          borderRadius: 16, padding: 18 }}>
+              <h3 style={{ fontFamily: "'Lora', serif", fontSize: 15, fontWeight: 600,
+                           color: "#143320", marginBottom: 16 }}>
+                📊 Market Snapshot
+              </h3>
               {[
-                { label: "Crops with +5% gain",  value: "8",  color: "text-forest-600" },
-                { label: "Crops below MSP",       value: "3",  color: "text-red-500"   },
-                { label: "Weather-affected crops", value: "5",  color: "text-amber-600" },
-                { label: "Policy updates today",  value: "2",  color: "text-blue-600"  },
-              ].map(({ label, value, color }) => (
-                <div key={label} className="flex justify-between items-center py-2 border-b border-forest-50 last:border-0">
-                  <span className="text-sm text-forest-600">{label}</span>
-                  <span className={`font-display font-bold text-lg ${color}`}>{value}</span>
+                { label: "Crops with +5% gain",   value: "8", color: "#16a34a", bar: 0.72 },
+                { label: "Crops below MSP",        value: "3", color: "#dc2626", bar: 0.25 },
+                { label: "Weather-affected crops", value: "5", color: "#d97706", bar: 0.45 },
+                { label: "Policy updates today",   value: "2", color: "#2563eb", bar: 0.18 },
+              ].map(({ label, value, color, bar }) => (
+                <div key={label} style={{ display: "flex", justifyContent: "space-between",
+                                          alignItems: "center", padding: "10px 0",
+                                          borderBottom: "1px solid #f0f7f0" }}
+                     className={label === "Policy updates today" ? "" : ""}>
+                  <div style={{ flex: 1, paddingRight: 12 }}>
+                    <div style={{ fontSize: 12.5, color: "#4a6352", marginBottom: 5 }}>{label}</div>
+                    <div style={{ height: 3, background: "#d4edda", borderRadius: 2, overflow: "hidden" }}>
+                      <div className="snap-bar"
+                           style={{ width: mounted ? `${bar * 100}%` : "0%", background: color }} />
+                    </div>
+                  </div>
+                  <span style={{ fontFamily: "'Lora', serif", fontSize: 22,
+                                 fontWeight: 600, color, flexShrink: 0 }}>
+                    {value}
+                  </span>
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Data sources */}
-          <div className="card">
-            <h3 className="font-semibold text-forest-900 mb-3">🔗 Data Sources</h3>
-            <div className="space-y-2">
+            {/* Data Sources */}
+            <div style={{ background: "#fff", border: "1px solid rgba(30,60,30,.09)",
+                          borderRadius: 16, padding: 18 }}>
+              <h3 style={{ fontFamily: "'Lora', serif", fontSize: 15, fontWeight: 600,
+                           color: "#143320", marginBottom: 14 }}>
+                🔗 Data Sources
+              </h3>
               {[
-                { name: "AGMARKNET",        type: "Price Data",     status: "live"   },
-                { name: "eNAM",             type: "Digital Mandi",  status: "live"   },
-                { name: "IMD",              type: "Weather",        status: "live"   },
-                { name: "CACP",             type: "MSP Policy",     status: "daily"  },
-                { name: "APEDA",            type: "Export Data",    status: "daily"  },
+                { name: "AGMARKNET", type: "Price Data",    status: "live"  },
+                { name: "eNAM",      type: "Digital Mandi", status: "live"  },
+                { name: "IMD",       type: "Weather",       status: "live"  },
+                { name: "CACP",      type: "MSP Policy",    status: "daily" },
+                { name: "APEDA",     type: "Export Data",   status: "daily" },
               ].map(({ name, type, status }) => (
-                <div key={name} className="flex items-center justify-between py-1.5 text-sm">
+                <div key={name} style={{ display: "flex", alignItems: "center",
+                                         justifyContent: "space-between", padding: "8px 0",
+                                         borderBottom: "1px solid #f0f7f0" }}>
                   <div>
-                    <span className="font-medium text-forest-800">{name}</span>
-                    <span className="text-forest-400 ml-2 text-xs">{type}</span>
+                    <div style={{ fontSize: 12.5, fontWeight: 500, color: "#1a2e1a" }}>{name}</div>
+                    <div style={{ fontSize: 11, color: "#7a9485", marginTop: 1 }}>{type}</div>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    status === "live"
-                      ? "bg-forest-100 text-forest-700"
-                      : "bg-amber-100 text-amber-700"
-                  }`}>
+                  <span style={{
+                    fontSize: 10.5, fontWeight: 600, padding: "3px 10px", borderRadius: 50,
+                    background: status === "live" ? "#dcfce7" : "#fef9c3",
+                    color:      status === "live" ? "#166534" : "#854d0e",
+                    display: "flex", alignItems: "center",
+                  }}>
+                    {status === "live" && <span className="live-dot" />}
                     {status}
                   </span>
                 </div>
@@ -186,6 +280,6 @@ export default function Insights() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

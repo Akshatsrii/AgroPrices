@@ -182,7 +182,8 @@ function SearchBar() {
           onChange={e => setQ(e.target.value)}
         />
         {q && <button onClick={() => setQ("")} className="text-gray-400 hover:text-gray-600 text-sm">✕</button>}
-        <Link to="/pages/dashboard" className="bg-green-700 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-green-600 transition">
+        {/* ✅ Fixed: was "/pages/dashboard" */}
+        <Link to="/dashboard" className="bg-green-700 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-green-600 transition">
           Search
         </Link>
       </div>
@@ -361,13 +362,16 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-3 mb-10">
+            {/* ✅ Correct */}
             <Link to="/dashboard" className="bg-yellow-400 text-green-900 font-bold px-7 py-3 rounded-xl hover:bg-yellow-300 transition shadow-lg">
               📊 Open Dashboard
             </Link>
-            <Link to="/prices" className="bg-green-700 border border-green-500 text-white px-7 py-3 rounded-xl hover:bg-green-600 transition">
+            {/* ✅ Fixed: was "/prices" (no such route) */}
+            <Link to="/dashboard" className="bg-green-700 border border-green-500 text-white px-7 py-3 rounded-xl hover:bg-green-600 transition">
               🌾 Browse Crops
             </Link>
-            <Link to="/alerts" className="bg-transparent border border-green-400 text-green-200 px-7 py-3 rounded-xl hover:bg-green-800 transition">
+            {/* ✅ Fixed: was "/alerts" (no such route) */}
+            <Link to="/insights" className="bg-transparent border border-green-400 text-green-200 px-7 py-3 rounded-xl hover:bg-green-800 transition">
               🔔 Set Alerts
             </Link>
           </div>
@@ -388,6 +392,7 @@ export default function Home() {
             🔥 Top Movers
             <span className="text-xs font-normal bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-1">Live</span>
           </h2>
+          {/* ✅ Correct */}
           <Link to="/dashboard" className="text-green-700 text-sm font-semibold hover:underline">View All →</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -408,7 +413,8 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 pb-10">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-2xl font-bold text-gray-800">📉 MSP vs Market Prices</h2>
-          <Link to="/msp" className="text-green-700 text-sm font-semibold hover:underline">Full Report →</Link>
+          {/* ✅ Fixed: was "/msp" (no such route) */}
+          <Link to="/insights" className="text-green-700 text-sm font-semibold hover:underline">Full Report →</Link>
         </div>
         <MSPTable />
       </section>
@@ -431,7 +437,8 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <Link to="/weather" className="mt-4 block text-center text-sm text-green-700 font-semibold hover:underline">
+          {/* ✅ Fixed: was "/weather" (no such route) */}
+          <Link to="/insights" className="mt-4 block text-center text-sm text-green-700 font-semibold hover:underline">
             View detailed weather-price map →
           </Link>
         </div>
@@ -510,9 +517,10 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap gap-3">
             {SEASONAL_CROPS[activeSeason].crops.map(crop => (
+              // ✅ Fixed: was "/crop/${crop.toLowerCase()}" (dynamic routes don't exist)
               <Link
                 key={crop}
-                to={`/crop/${crop.toLowerCase()}`}
+                to="/prediction"
                 className={`px-4 py-2 rounded-xl text-sm font-semibold ${SEASONAL_CROPS[activeSeason].color} hover:opacity-80 transition`}
               >
                 🌾 {crop}
@@ -526,7 +534,8 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-800">📰 Agri News & Market Updates</h2>
-          <Link to="/news" className="text-green-700 text-sm font-semibold hover:underline">All News →</Link>
+          {/* ✅ Fixed: was "/news" (no such route) */}
+          <Link to="/insights" className="text-green-700 text-sm font-semibold hover:underline">All News →</Link>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           {NEWS_ITEMS.map(n => (
@@ -595,10 +604,12 @@ export default function Home() {
           <h2 className="text-3xl font-extrabold text-green-900 mb-3">Ready to Sell Smarter?</h2>
           <p className="text-green-800 mb-7 text-sm">Join 2 lakh+ farmers already using KisanMandi AI to maximise their crop income.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/register" className="bg-green-900 text-white font-bold px-8 py-3 rounded-xl hover:bg-green-800 transition shadow-lg">
+            {/* ✅ Fixed: was "/register" (no such route) */}
+            <Link to="/dashboard" className="bg-green-900 text-white font-bold px-8 py-3 rounded-xl hover:bg-green-800 transition shadow-lg">
               Get Started Free
             </Link>
-            <Link to="/demo" className="bg-white text-green-900 font-bold px-8 py-3 rounded-xl hover:bg-green-50 transition border border-green-200">
+            {/* ✅ Fixed: was "/demo" (no such route) */}
+            <Link to="/prediction" className="bg-white text-green-900 font-bold px-8 py-3 rounded-xl hover:bg-green-50 transition border border-green-200">
               Watch Demo
             </Link>
           </div>

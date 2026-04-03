@@ -1,13 +1,24 @@
-import PriceCard from './PriceCard'
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectFilteredPrices } from "../../store/slices/priceSlice";
 
-function PriceList({ data }) {
+const PriceList = () => {
+  const prices = useSelector(selectFilteredPrices) || [];
+
+  if (!prices.length) {
+    return <div>No data available</div>;
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {data.map((item, index) => (
-        <PriceCard key={index} mandi={item.mandi} price={item.price} />
+    <div>
+      {prices.map((item) => (
+        <div key={item.id}>
+          <h4>{item.name}</h4>
+          <p>₹{item.currentPrice}</p>
+        </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default PriceList
+export default PriceList;

@@ -1,56 +1,74 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// ✅ async thunk for all prices
+const initialState = {
+  allPrices: [],
+  filteredPrices: [],
+  priceHistory: {},
+  topMovers: [],
+  watchlist: [],
+  loading: false,
+};
+
 export const fetchAllPrices = createAsyncThunk(
-  "price/fetchAll",
+  "price/fetchAllPrices",
   async () => {
     return [
-      { id: 1, crop: "Tomato", price: 20 },
-      { id: 2, crop: "Potato", price: 15 },
-      { id: 3, crop: "Onion", price: 25 },
-    ]
+      { id: "wheat", name: "Wheat", currentPrice: 2200, unit: "quintal", changePct: 2 },
+      { id: "rice", name: "Rice", currentPrice: 1800, unit: "quintal", changePct: -1 },
+    ];
   }
-)
+);
 
-// ✅ async thunk for top movers
 export const fetchTopMovers = createAsyncThunk(
   "price/fetchTopMovers",
-  async (limit) => {
+  async () => {
     return [
-      { id: 1, crop: "Tomato", price: 20 },
-      { id: 2, crop: "Onion", price: 25 },
-      { id: 3, crop: "Potato", price: 15 },
-      { id: 4, crop: "Wheat", price: 30 },
-    ].slice(0, limit)
+      { id: "wheat", name: "Wheat", currentPrice: 2200, changePct: 2 },
+    ];
   }
-)
+);
+
+export const fetchPriceHistory = createAsyncThunk(
+  "price/fetchPriceHistory",
+  async ({ cropId }) => {
+    return {
+      cropId,
+      data: [2000, 2100, 2200, 2150, 2300],
+    };
+  }
+);
 
 const priceSlice = createSlice({
   name: "price",
-  initialState: {
-    prices: [],
-    movers: [],
-    loading: false,
-  },
+  initialState,
   reducers: {},
-
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllPrices.pending, (state) => {
-        state.loading = true
+        state.loading = true;
       })
       .addCase(fetchAllPrices.fulfilled, (state, action) => {
-        state.loading = false
-        state.prices = action.payload
+        state.loading = false;
+        state.allPrices = action.payload;
+        state.filteredPrices = action.payload;
       })
       .addCase(fetchTopMovers.fulfilled, (state, action) => {
-        state.movers = action.payload
+        state.topMovers = action.payload;
       })
+      .addCase(fetchPriceHistory.fulfilled, (state, action) => {
+        const { cropId, data } = action.payload;
+        state.priceHistory[cropId] = data;
+      });
   },
-})
+});
 
-// ✅ selectors (VERY IMPORTANT)
-export const selectAllPrices = (state) => state.price.prices
-export const selectTopMovers = (state) => state.price.movers
+export const selectAllPrices = (state) => state.price.allPrices;
+export const selectFilteredPrices = (state) => state.price.filteredPrices;
+export const selectTopMovers = (state) => state.price.topMovers;
+export const selectWatchlist = (state) => state.price.watchlist;
+export const selectPricesLoading = (state) => state.price.loading;
 
-export default priceSlice.reducer
+export const selectPriceHistory = (cropId) => (state) =>
+  state.price.priceHistory[cropId] || [];
+
+export default priceSlice.reducer;
