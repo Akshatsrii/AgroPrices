@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchMandiPrices } from "../../services/api";
 
 const initialState = {
   allPrices: [],
@@ -9,25 +10,39 @@ const initialState = {
   loading: false,
 };
 
+// 🔥 REAL API INTEGRATION
 export const fetchAllPrices = createAsyncThunk(
   "price/fetchAllPrices",
   async () => {
-    return [
-      { id: "wheat", name: "Wheat", currentPrice: 2200, unit: "quintal", changePct: 2 },
-      { id: "rice", name: "Rice", currentPrice: 1800, unit: "quintal", changePct: -1 },
-    ];
+    const records = await fetchMandiPrices();
+
+    if (!records || records.length === 0) return [];
+
+    return records.map((item, index) => ({
+      id: item.commodity + index,
+      name: item.commodity,
+      currentPrice: Number(item.modal_price) || 0,
+      market: item.market,
+      state: item.state,
+      unit: "quintal",
+      changePct: 0, // will calculate below
+    }));
   }
 );
 
+// 🔥 TOP MOVERS (BASED ON PRICE SORT)
 export const fetchTopMovers = createAsyncThunk(
   "price/fetchTopMovers",
-  async () => {
-    return [
-      { id: "wheat", name: "Wheat", currentPrice: 2200, changePct: 2 },
-    ];
+  async (_, { getState }) => {
+    const prices = getState().price.allPrices || [];
+
+    return [...prices]
+      .sort((a, b) => b.currentPrice - a.currentPrice)
+      .slice(0, 5);
   }
 );
 
+// 🔥 SIMPLE HISTORY (DUMMY FOR NOW)
 export const fetchPriceHistory = createAsyncThunk(
   "price/fetchPriceHistory",
   async ({ cropId }) => {
@@ -49,26 +64,51 @@ const priceSlice = createSlice({
       })
       .addCase(fetchAllPrices.fulfilled, (state, action) => {
         state.loading = false;
-        state.allPrices = action.payload;
-        state.filteredPrices = action.payload;
+
+        const prices = action.payload || [];
+
+        // 🔥 calculate change %
+        const updated = prices.map((item, index) => {
+          const prev = prices[index - 1]?.currentPrice || item.currentPrice;
+          const change =
+            prev !== 0 ? ((item.currentPrice - prev) / prev) * 100 : 0;
+
+          return {
+            ...item,
+            changePct: Number(change.toFixed(2)),
+          };
+        });
+
+        state.allPrices = updated;
+        state.filteredPrices = updated;
       })
       .addCase(fetchTopMovers.fulfilled, (state, action) => {
-        state.topMovers = action.payload;
+        state.topMovers = action.payload || [];
       })
       .addCase(fetchPriceHistory.fulfilled, (state, action) => {
         const { cropId, data } = action.payload;
-        state.priceHistory[cropId] = data;
+        state.priceHistory[cropId] = data || [];
       });
   },
 });
 
-export const selectAllPrices = (state) => state.price.allPrices;
-export const selectFilteredPrices = (state) => state.price.filteredPrices;
-export const selectTopMovers = (state) => state.price.topMovers;
-export const selectWatchlist = (state) => state.price.watchlist;
-export const selectPricesLoading = (state) => state.price.loading;
+// 🔹 SELECTORS (SAFE)
+export const selectAllPrices = (state) =>
+  state?.price?.allPrices || [];
+
+export const selectFilteredPrices = (state) =>
+  state?.price?.filteredPrices || [];
+
+export const selectTopMovers = (state) =>
+  state?.price?.topMovers || [];
+
+export const selectWatchlist = (state) =>
+  state?.price?.watchlist || [];
+
+export const selectPricesLoading = (state) =>
+  state?.price?.loading || false;
 
 export const selectPriceHistory = (cropId) => (state) =>
-  state.price.priceHistory[cropId] || [];
+  state?.price?.priceHistory?.[cropId] || [];
 
 export default priceSlice.reducer;
