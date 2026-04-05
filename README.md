@@ -319,7 +319,6 @@ npm run dev
 
 | Feature | Status |
 |---------|--------|
-| 📊 Live Mandi Price Dashboard | ✅ Ready |
 | 🔍 Crop & Location Filter | ✅ Ready |
 | 🤖 AI Price Prediction View | ✅ Ready |
 | 📈 Price Trend Charts | ✅ Ready |
