@@ -17,7 +17,7 @@ const ALERT_CONFIG = {
     color:  "#2563eb",
     bg:     "#dbeafe",
   },
-};
+}; 
 
 function AlertItem({ alert, index }) {
   const config = ALERT_CONFIG[alert.type] ?? ALERT_CONFIG.info;
@@ -145,3 +145,7 @@ export default function AlertBox() {
     </>
   );
 }
+
+
+
+
