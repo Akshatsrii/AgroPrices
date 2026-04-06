@@ -41,7 +41,7 @@ function useDashboardStats() {
 
   useEffect(() => {
     load();
-    const interval = setInterval(load, 5 * 60 * 1000); // Auto-refresh every 5 min
+    const interval = setInterval(load, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, [load]);
 
@@ -63,10 +63,8 @@ function MiniCalendar({ today }) {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const prevMonth = () =>
-    setViewDate(new Date(year, month - 1, 1));
-  const nextMonth = () =>
-    setViewDate(new Date(year, month + 1, 1));
+  const prevMonth = () => setViewDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setViewDate(new Date(year, month + 1, 1));
 
   const cells = [];
   for (let i = 0; i < firstDay; i++) cells.push(null);
@@ -124,7 +122,7 @@ function StatCard({ icon, label, value, accent }) {
 function CropCard({ item }) {
   const price = Number(item.modal_price);
   const badgeColor =
-    price > 3000 ? "#ff6b6b" : price > 1500 ? "#ffd166" : "#8bc34a";
+    price > 3000 ? "#e67e22" : price > 1500 ? "#f0a500" : "#3a9c4e";
 
   return (
     <div style={styles.cropCard}>
@@ -165,7 +163,6 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const PER_PAGE = 18;
 
-  // Derived stats
   const totalCrops = data.length;
   const avgPrice = data.length
     ? Math.round(data.reduce((s, d) => s + Number(d.modal_price || 0), 0) / data.length)
@@ -173,7 +170,6 @@ const Home = () => {
   const uniqueMarkets = new Set(data.map((d) => d.market)).size;
   const uniqueStates = [...new Set(data.map((d) => d.state))].filter(Boolean);
 
-  // Filtered + sorted
   let filtered = data.filter(
     (item) =>
       (item.commodity?.toLowerCase().includes(search.toLowerCase()) ||
@@ -228,7 +224,6 @@ const Home = () => {
         <aside style={styles.sidebar}>
           <MiniCalendar today={now} />
 
-          {/* State Filter */}
           <div style={styles.sideSection}>
             <div style={styles.sideSectionTitle}>🗺️ Filter by State</div>
             {["All", ...uniqueStates].map((s) => (
@@ -248,15 +243,13 @@ const Home = () => {
 
         {/* ── Main Content ── */}
         <main style={styles.main}>
-          {/* Stats */}
           <div style={styles.statsRow}>
-            <StatCard icon="🌾" label="Total Records" value={totalCrops} accent="#8bc34a" />
-            <StatCard icon="💰" label="Avg Modal Price" value={`₹${avgPrice}`} accent="#ffd166" />
-            <StatCard icon="🏪" label="Markets" value={uniqueMarkets} accent="#64b5f6" />
-            <StatCard icon="🗺️" label="States" value={uniqueStates.length} accent="#ff8a65" />
+            <StatCard icon="🌾" label="Total Records" value={totalCrops} accent="#3a9c4e" />
+            <StatCard icon="💰" label="Avg Modal Price" value={`₹${avgPrice}`} accent="#f0a500" />
+            <StatCard icon="🏪" label="Markets" value={uniqueMarkets} accent="#2e86c1" />
+            <StatCard icon="🗺️" label="States" value={uniqueStates.length} accent="#e67e22" />
           </div>
 
-          {/* Search + Sort */}
           <div style={styles.controls}>
             <input
               type="text"
@@ -277,7 +270,6 @@ const Home = () => {
             </select>
           </div>
 
-          {/* Status */}
           {loading && (
             <div style={styles.statusBox}>
               <div style={styles.spinner} />
@@ -286,7 +278,6 @@ const Home = () => {
           )}
           {error && <div style={styles.errorBox}>⚠️ {error}</div>}
 
-          {/* Results count */}
           {!loading && (
             <div style={styles.resultsInfo}>
               Showing {paginated.length} of {filtered.length} results
@@ -295,14 +286,12 @@ const Home = () => {
             </div>
           )}
 
-          {/* Cards Grid */}
           <div style={styles.grid}>
             {paginated.map((item, i) => (
               <CropCard key={i} item={item} />
             ))}
           </div>
 
-          {/* Empty State */}
           {!loading && filtered.length === 0 && (
             <div style={styles.emptyState}>
               <div style={{ fontSize: 48 }}>🌱</div>
@@ -310,7 +299,6 @@ const Home = () => {
             </div>
           )}
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div style={styles.pagination}>
               <button
@@ -344,12 +332,12 @@ const Home = () => {
   );
 };
 
-// ── STYLES ───────────────────────────────────────────────────
+// ── STYLES — Light Green Theme ────────────────────────────────
 const styles = {
   root: {
     minHeight: "100vh",
-    background: "#0a1f11",
-    color: "#c8e6a0",
+    background: "#f0f9f1",           // very light mint page bg
+    color: "#1b4332",                 // deep forest green text
     fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
   },
   header: {
@@ -359,29 +347,42 @@ const styles = {
     flexWrap: "wrap",
     gap: 12,
     padding: "20px 28px",
-    background: "#071710",
-    borderBottom: "1px solid #1e4a2d",
+    background: "#ffffff",            // pure white header
+    borderBottom: "1px solid #b7e4c7",
     position: "sticky",
     top: 0,
     zIndex: 100,
+    boxShadow: "0 2px 8px rgba(52,168,83,0.08)",
   },
   logo: {
     fontFamily: "'Playfair Display', serif",
     fontSize: 26,
-    color: "#c8e6a0",
+    color: "#1b4332",
     letterSpacing: 1,
   },
-  tagline: { fontSize: 11, color: "#6b9c6b", marginTop: 2, letterSpacing: 2, textTransform: "uppercase" },
+  tagline: {
+    fontSize: 11,
+    color: "#52b788",
+    marginTop: 2,
+    letterSpacing: 2,
+    textTransform: "uppercase",
+  },
   clockBox: { textAlign: "right" },
-  clockTime: { fontSize: 28, fontWeight: 700, color: "#8bc34a", fontVariantNumeric: "tabular-nums", letterSpacing: 2 },
-  clockDate: { fontSize: 12, color: "#6b9c6b", marginTop: 2 },
-  refreshNote: { fontSize: 10, color: "#3d6b3d", marginTop: 4 },
+  clockTime: {
+    fontSize: 28,
+    fontWeight: 700,
+    color: "#2d6a4f",
+    fontVariantNumeric: "tabular-nums",
+    letterSpacing: 2,
+  },
+  clockDate: { fontSize: 12, color: "#74c69d", marginTop: 2 },
+  refreshNote: { fontSize: 10, color: "#95d5b2", marginTop: 4 },
   refreshBtn: {
     marginTop: 6,
     padding: "5px 14px",
-    background: "#1e4a2d",
-    color: "#8bc34a",
-    border: "1px solid #2d6b3e",
+    background: "#d8f3dc",           // light mint button bg
+    color: "#1b4332",
+    border: "1px solid #95d5b2",
     borderRadius: 6,
     cursor: "pointer",
     fontSize: 12,
@@ -391,121 +392,225 @@ const styles = {
   sidebar: {
     width: 230,
     minWidth: 230,
-    background: "#071710",
-    borderRight: "1px solid #1e4a2d",
+    background: "#ffffff",           // white sidebar
+    borderRight: "1px solid #b7e4c7",
     padding: "20px 14px",
     overflowY: "auto",
   },
-  calendar: { background: "#0d2818", borderRadius: 10, padding: 14, marginBottom: 20, border: "1px solid #1e4a2d" },
-  calHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 },
-  calTitle: { fontSize: 12, fontWeight: 700, color: "#c8e6a0" },
-  calBtn: { background: "none", border: "none", color: "#8bc34a", fontSize: 16, cursor: "pointer", padding: "0 4px" },
+  calendar: {
+    background: "#f0f9f1",           // mint bg for calendar widget
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 20,
+    border: "1px solid #b7e4c7",
+  },
+  calHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  calTitle: { fontSize: 12, fontWeight: 700, color: "#1b4332" },
+  calBtn: {
+    background: "none",
+    border: "none",
+    color: "#2d6a4f",
+    fontSize: 16,
+    cursor: "pointer",
+    padding: "0 4px",
+  },
   calGrid: { display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 2 },
-  calDayName: { fontSize: 9, color: "#6b9c6b", textAlign: "center", padding: "2px 0", fontWeight: 700 },
-  calCell: { fontSize: 10, color: "#8ab08a", textAlign: "center", padding: "4px 0", borderRadius: 4 },
-  calToday: { background: "#8bc34a", color: "#071710", fontWeight: 700, borderRadius: 4 },
+  calDayName: {
+    fontSize: 9,
+    color: "#52b788",
+    textAlign: "center",
+    padding: "2px 0",
+    fontWeight: 700,
+  },
+  calCell: {
+    fontSize: 10,
+    color: "#2d6a4f",
+    textAlign: "center",
+    padding: "4px 0",
+    borderRadius: 4,
+  },
+  calToday: {
+    background: "#2d6a4f",           // deep green today highlight
+    color: "#ffffff",
+    fontWeight: 700,
+    borderRadius: 4,
+  },
   sideSection: { marginBottom: 16 },
-  sideSectionTitle: { fontSize: 10, color: "#6b9c6b", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8, fontWeight: 700 },
+  sideSectionTitle: {
+    fontSize: 10,
+    color: "#52b788",
+    textTransform: "uppercase",
+    letterSpacing: 1.5,
+    marginBottom: 8,
+    fontWeight: 700,
+  },
   stateItem: {
     padding: "6px 10px",
     borderRadius: 6,
     fontSize: 11,
-    color: "#8ab08a",
+    color: "#2d6a4f",
     cursor: "pointer",
     marginBottom: 2,
     transition: "all 0.15s",
   },
-  stateItemActive: { background: "#1e4a2d", color: "#8bc34a", fontWeight: 700 },
+  stateItemActive: {
+    background: "#d8f3dc",           // light mint active state
+    color: "#1b4332",
+    fontWeight: 700,
+  },
   main: { flex: 1, padding: "20px 24px", overflowY: "auto" },
-  statsRow: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 12, marginBottom: 18 },
+  statsRow: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+    gap: 12,
+    marginBottom: 18,
+  },
   statCard: {
-    background: "#0d2818",
-    border: "1px solid #1e4a2d",
+    background: "#ffffff",           // white stat cards
+    border: "1px solid #b7e4c7",
     borderRadius: 10,
     padding: "14px 16px",
     display: "flex",
     gap: 12,
     alignItems: "center",
+    boxShadow: "0 1px 4px rgba(52,168,83,0.06)",
   },
-  statLabel: { fontSize: 10, color: "#6b9c6b", textTransform: "uppercase", letterSpacing: 1 },
+  statLabel: {
+    fontSize: 10,
+    color: "#74c69d",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+  },
   statValue: { fontSize: 22, fontWeight: 700, marginTop: 2 },
   controls: { display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" },
   searchInput: {
     flex: 1,
     minWidth: 220,
     padding: "10px 16px",
-    background: "#0d2818",
-    border: "1px solid #2d6b3e",
+    background: "#ffffff",
+    border: "1px solid #b7e4c7",
     borderRadius: 8,
-    color: "#c8e6a0",
+    color: "#1b4332",
     fontSize: 13,
     outline: "none",
   },
   sortSelect: {
     padding: "10px 12px",
-    background: "#0d2818",
-    border: "1px solid #2d6b3e",
+    background: "#ffffff",
+    border: "1px solid #b7e4c7",
     borderRadius: 8,
-    color: "#8bc34a",
+    color: "#2d6a4f",
     fontSize: 13,
     cursor: "pointer",
     outline: "none",
   },
-  resultsInfo: { fontSize: 11, color: "#5a7a5a", marginBottom: 14 },
-  statusBox: { display: "flex", alignItems: "center", gap: 10, padding: 20, color: "#8bc34a" },
+  resultsInfo: { fontSize: 11, color: "#74c69d", marginBottom: 14 },
+  statusBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    padding: 20,
+    color: "#2d6a4f",
+  },
   spinner: {
     width: 18,
     height: 18,
-    border: "2px solid #1e4a2d",
-    borderTop: "2px solid #8bc34a",
+    border: "2px solid #b7e4c7",
+    borderTop: "2px solid #2d6a4f",
     borderRadius: "50%",
     animation: "spin 0.8s linear infinite",
   },
   errorBox: {
-    background: "#2d1010",
-    border: "1px solid #6b2020",
+    background: "#fff4e5",           // warm amber tint for errors
+    border: "1px solid #f0a500",
     borderRadius: 8,
     padding: "12px 16px",
-    color: "#ff8a80",
+    color: "#7d4e00",
     marginBottom: 14,
     fontSize: 13,
   },
-  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 14 },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))",
+    gap: 14,
+  },
   cropCard: {
-    background: "#0d2818",
-    border: "1px solid #1e4a2d",
+    background: "#ffffff",           // white crop cards
+    border: "1px solid #b7e4c7",
     borderRadius: 10,
     overflow: "hidden",
     transition: "transform 0.15s, box-shadow 0.15s",
     cursor: "default",
+    boxShadow: "0 1px 4px rgba(52,168,83,0.07)",
   },
   cropStripe: { height: 4, width: "100%" },
   cropInner: { padding: 14 },
-  cropHeader: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 },
-  cropName: { fontWeight: 700, fontSize: 14, color: "#c8e6a0", fontFamily: "'Playfair Display', serif" },
-  priceBadge: { fontSize: 13, fontWeight: 700, padding: "2px 10px", borderRadius: 20 },
-  cropMeta: { display: "flex", flexDirection: "column", gap: 3, fontSize: 11, color: "#6b9c6b", marginBottom: 10 },
-  cropFooter: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-  cropDate: { fontSize: 10, color: "#3d6b3d" },
-  priceRange: { fontSize: 10, color: "#5a7a5a" },
-  emptyState: { textAlign: "center", padding: "60px 20px", color: "#3d6b3d" },
-  pagination: { display: "flex", gap: 6, justifyContent: "center", marginTop: 24, flexWrap: "wrap" },
+  cropHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: 8,
+  },
+  cropName: {
+    fontWeight: 700,
+    fontSize: 14,
+    color: "#1b4332",
+    fontFamily: "'Playfair Display', serif",
+  },
+  priceBadge: {
+    fontSize: 13,
+    fontWeight: 700,
+    padding: "2px 10px",
+    borderRadius: 20,
+  },
+  cropMeta: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 3,
+    fontSize: 11,
+    color: "#52b788",
+    marginBottom: 10,
+  },
+  cropFooter: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  cropDate: { fontSize: 10, color: "#95d5b2" },
+  priceRange: { fontSize: 10, color: "#74c69d" },
+  emptyState: { textAlign: "center", padding: "60px 20px", color: "#95d5b2" },
+  pagination: {
+    display: "flex",
+    gap: 6,
+    justifyContent: "center",
+    marginTop: 24,
+    flexWrap: "wrap",
+  },
   pageBtn: {
     padding: "6px 14px",
-    background: "#0d2818",
-    border: "1px solid #2d6b3e",
+    background: "#ffffff",
+    border: "1px solid #b7e4c7",
     borderRadius: 6,
-    color: "#8bc34a",
+    color: "#2d6a4f",
     fontSize: 12,
     cursor: "pointer",
   },
-  pageBtnActive: { background: "#8bc34a", color: "#071710", fontWeight: 700 },
+  pageBtnActive: {
+    background: "#2d6a4f",           // deep green active page
+    color: "#ffffff",
+    fontWeight: 700,
+  },
 };
 
 // CSS keyframes injection
 const styleEl = document.createElement("style");
 styleEl.textContent = `@keyframes spin { to { transform: rotate(360deg); } }
-.crop-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }`;
+.crop-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(52,168,83,0.15); }`;
 document.head.appendChild(styleEl);
 
 export default Home;
