@@ -2,116 +2,176 @@
 //   AgriIntel – General Helper Utilities
 // ============================================================
 
-// Clamp a number between min and max
-export const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+// ─────────────────────────────────────────────
+// 🔹 Numbers
+// ─────────────────────────────────────────────
 
-// Calculate percentage change
+export const clamp = (val, min, max) =>
+  Math.min(Math.max(val ?? 0, min), max)
+
+export const inRange = (val, min, max) =>
+  val >= min && val <= max
+
+// ─────────────────────────────────────────────
+// 🔹 Calculations
+// ─────────────────────────────────────────────
+
 export const calcPctChange = (current, previous) => {
-  if (!previous || previous === 0) return 0;
-  return ((current - previous) / previous) * 100;
-};
+  if (!previous) return 0
+  return ((current - previous) / previous) * 100
+}
 
-// Calculate profit/loss
-export const calcProfit = ({ qty, buyPrice, sellPrice, costPerUnit = 0 }) => {
-  const revenue = qty * sellPrice;
-  const cost    = qty * (buyPrice + costPerUnit);
-  return { revenue, cost, profit: revenue - cost, margin: ((revenue - cost) / revenue) * 100 };
-};
+export const calcProfit = ({
+  qty = 0,
+  buyPrice = 0,
+  sellPrice = 0,
+  costPerUnit = 0,
+}) => {
+  const revenue = qty * sellPrice
+  const cost = qty * (buyPrice + costPerUnit)
+  const profit = revenue - cost
 
-// Determine price signal based on change pct
-export const getPriceSignal = (changePct) => {
-  if (changePct > 5)   return "BUY";
-  if (changePct < -5)  return "SELL";
-  return "HOLD";
-};
+  return {
+    revenue,
+    cost,
+    profit,
+    margin: revenue ? (profit / revenue) * 100 : 0,
+  }
+}
 
-// Get color class based on trend
-export const getTrendColor = (value) => {
-  if (value > 0) return "text-forest-600";
-  if (value < 0) return "text-red-500";
-  return "text-gray-500";
-};
+// ─────────────────────────────────────────────
+// 🔹 Signals / Trends
+// ─────────────────────────────────────────────
 
-export const getTrendBg = (value) => {
-  if (value > 0) return "bg-forest-50 text-forest-700";
-  if (value < 0) return "bg-red-50 text-red-700";
-  return "bg-gray-50 text-gray-700";
-};
+export const getPriceSignal = (changePct = 0) => {
+  if (changePct > 5) return "BUY"
+  if (changePct < -5) return "SELL"
+  return "HOLD"
+}
 
-// Debounce utility (non-hook version)
-export const debounce = (fn, delay) => {
-  let timer;
+export const getTrendColor = (value = 0) =>
+  value > 0
+    ? "text-forest-600"
+    : value < 0
+    ? "text-red-500"
+    : "text-gray-500"
+
+export const getTrendBg = (value = 0) =>
+  value > 0
+    ? "bg-forest-50 text-forest-700"
+    : value < 0
+    ? "bg-red-50 text-red-700"
+    : "bg-gray-50 text-gray-700"
+
+// ─────────────────────────────────────────────
+// 🔹 Performance
+// ─────────────────────────────────────────────
+
+export const debounce = (fn, delay = 300) => {
+  let timer
   return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-};
+    clearTimeout(timer)
+    timer = setTimeout(() => fn(...args), delay)
+  }
+}
 
-// Deep clone
-export const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
+// ─────────────────────────────────────────────
+// 🔹 Data Helpers
+// ─────────────────────────────────────────────
 
-// Group array by key
-export const groupBy = (arr, key) =>
+export const deepClone = (obj) => {
+  if (typeof structuredClone === "function") {
+    return structuredClone(obj)
+  }
+  return JSON.parse(JSON.stringify(obj))
+}
+
+export const groupBy = (arr = [], key) =>
   arr.reduce((acc, item) => {
-    const group = item[key];
-    if (!acc[group]) acc[group] = [];
-    acc[group].push(item);
-    return acc;
-  }, {});
+    const group = item?.[key] ?? "unknown"
+    if (!acc[group]) acc[group] = []
+    acc[group].push(item)
+    return acc
+  }, {})
 
-// Sort array of objects
-export const sortBy = (arr, key, dir = "asc") =>
+export const sortBy = (arr = [], key, dir = "asc") =>
   [...arr].sort((a, b) => {
-    if (a[key] < b[key]) return dir === "asc" ? -1 : 1;
-    if (a[key] > b[key]) return dir === "asc" ? 1 : -1;
-    return 0;
-  });
+    const A = a?.[key]
+    const B = b?.[key]
 
-// Truncate text
-export const truncate = (str, maxLength = 100) => {
-  if (!str || str.length <= maxLength) return str;
-  return str.slice(0, maxLength).trimEnd() + "…";
-};
+    if (A < B) return dir === "asc" ? -1 : 1
+    if (A > B) return dir === "asc" ? 1 : -1
+    return 0
+  })
 
-// Generate random ID
+// ─────────────────────────────────────────────
+// 🔹 Strings
+// ─────────────────────────────────────────────
+
+export const truncate = (str = "", maxLength = 100) =>
+  str.length <= maxLength
+    ? str
+    : str.slice(0, maxLength).trimEnd() + "…"
+
+export const capitalize = (str = "") =>
+  str.charAt(0).toUpperCase() + str.slice(1)
+
+// ─────────────────────────────────────────────
+// 🔹 IDs
+// ─────────────────────────────────────────────
+
 export const genId = (prefix = "id") =>
-  `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
+  `${prefix}_${crypto.randomUUID?.() || Math.random().toString(36).slice(2)}`
 
-// Capitalize first letter
-export const capitalize = (str) =>
-  str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+// ─────────────────────────────────────────────
+// 🔹 URL
+// ─────────────────────────────────────────────
 
-// Parse query string
-export const parseQueryString = (search) => {
-  const params = new URLSearchParams(search);
-  const result = {};
-  params.forEach((value, key) => { result[key] = value; });
-  return result;
-};
+export const parseQueryString = (search = "") => {
+  const params = new URLSearchParams(search)
+  return Object.fromEntries(params.entries())
+}
 
-// Local Storage helpers
+// ─────────────────────────────────────────────
+// 🔹 Local Storage
+// ─────────────────────────────────────────────
+
 export const ls = {
   get: (key, fallback = null) => {
     try {
-      const raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
-    } catch { return fallback; }
+      const raw = localStorage.getItem(key)
+      return raw ? JSON.parse(raw) : fallback
+    } catch {
+      return fallback
+    }
   },
+
   set: (key, value) => {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+    } catch {}
   },
+
   remove: (key) => {
-    try { localStorage.removeItem(key); } catch {}
+    try {
+      localStorage.removeItem(key)
+    } catch {}
   },
-};
+}
 
-// Check if value is between range
-export const inRange = (val, min, max) => val >= min && val <= max;
+// ─────────────────────────────────────────────
+// 🔹 MSP Comparison
+// ─────────────────────────────────────────────
 
-// Calculate MSP comparison
 export const mspComparison = (currentPrice, msp) => {
-  if (!msp) return null;
-  const diff    = currentPrice - msp;
-  const diffPct = ((diff) / msp) * 100;
-  return { diff, diffPct, aboveMsp: diff >= 0 };
-};
+  if (!msp) return null
+
+  const diff = currentPrice - msp
+  const diffPct = (diff / msp) * 100
+
+  return {
+    diff,
+    diffPct,
+    aboveMsp: diff >= 0,
+  }
+}
