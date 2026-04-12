@@ -1,73 +1,74 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from './api'
 
-const initialState = {
-  predictions: [],
-  accuracy: {
-    overall: 80,
-    byHorizon: { "7d": 78, "30d": 82 },
-    byCrop: [],
-  },
-  loading: false,
-  error: null,
-};
+// ─── Core Prediction ──────────────────────────────────────────────────────────
 
-export const fetchAllPredictions = createAsyncThunk(
-  "prediction/fetchAll",
-  async () => {
-    return [
-      {
-        cropId: "tomato",
-        cropName: "Tomato",
-        currentPrice: 22,
-        predicted7d: 25,
-        confidence: 75,
-        signal: "BUY",
-        reason: "High demand in local markets",
-      },
-      {
-        cropId: "potato",
-        cropName: "Potato",
-        currentPrice: 18,
-        predicted7d: 17,
-        confidence: 65,
-        signal: "SELL",
-        reason: "Oversupply expected",
-      },
-    ];
-  }
-);
+export const getPrediction = (crop) => {
+  return api.post('/predict', { crop })
+}
 
-const predictionSlice = createSlice({
-  name: "prediction",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchAllPredictions.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchAllPredictions.fulfilled, (state, action) => {
-        state.loading = false;
-        state.predictions = action.payload || [];
-      })
-      .addCase(fetchAllPredictions.rejected, (state) => {
-        state.loading = false;
-        state.error = "Failed to fetch predictions";
-      });
-  },
-});
+// ─── Advanced Predictions ─────────────────────────────────────────────────────
 
-export const selectAllPredictions = (state) =>
-  state?.prediction?.predictions || [];
+export const getPredictionDetailed = (crop, context = {}) => {
+  const {
+    market,
+    state,
+    season,
+    forecastDate = new Date().toISOString(),
+    horizon = '30d',
+    includeConfidence = true,
+  } = context
 
-export const selectModelAccuracy = (state) =>
-  state?.prediction?.accuracy || {};
+  return api.post('/predict/detailed', {
+    crop, market, state, season, forecastDate, horizon, includeConfidence,
+  })
+}
 
-export const selectPredictionsLoading = (state) =>
-  state?.prediction?.loading || false;
+// ─── Bulk Predictions ─────────────────────────────────────────────────────────
 
-export const selectPredictionError = (state) =>
-  state?.prediction?.error;
+export const getBulkPredictions = (crops = [], horizon = '30d') => {
+  return api.post('/predict/bulk', { crops, horizon })
+}
 
-export default predictionSlice.reducer;
+export const getPredictionAcrossMarkets = (crop, markets = []) => {
+  return api.post('/predict/markets', { crop, markets })
+}
+
+// ─── Time-Series Forecast ─────────────────────────────────────────────────────
+
+export const getPriceForecastTimeSeries = (crop, days = 30, market = null) => {
+  return api.post('/predict/timeseries', { crop, days, ...(market && { market }) })
+}
+
+export const getWeeklyForecast = (crop, weeks = 4) => {
+  return api.post('/predict/weekly', { crop, weeks })
+}
+
+// ─── Seasonal & Risk ──────────────────────────────────────────────────────────
+
+export const getSeasonalPrediction = (crop, season, year = new Date().getFullYear()) => {
+  return api.post('/predict/seasonal', { crop, season, year })
+}
+
+export const getPriceRiskScore = (crop, horizon = '30d') => {
+  return api.post('/predict/risk', { crop, horizon })
+}
+
+// ─── Model Metadata ───────────────────────────────────────────────────────────
+
+export const getPredictionConfidenceIntervals = (crop, horizon = '30d') => {
+  return api.post('/predict/confidence', { crop, horizon })
+}
+
+export const getPredictionModelInfo = (crop = null) => {
+  return api.get(`/predict/model-info${crop ? `?crop=${crop}` : ''}`)
+}
+
+export const submitPredictionFeedback = (predictionId, actualPrice, crop) => {
+  return api.post('/predict/feedback', { predictionId, actualPrice, crop })
+}
+
+// ─── Comparison ───────────────────────────────────────────────────────────────
+
+export const comparePredictedVsActual = (crop, dateFrom, dateTo) => {
+  return api.post('/predict/compare', { crop, dateFrom, dateTo })
+}
