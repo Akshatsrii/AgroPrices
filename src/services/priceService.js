@@ -143,3 +143,15 @@ export const deletePriceAlert = (alertId) => {
  * @param {string} dateFrom
  * @param {string} dateTo
  */
+export const exportPricesCSV = async (crop, dateFrom, dateTo) => {
+  const params = new URLSearchParams({ crop, dateFrom, dateTo, format: 'csv' })
+  const response = await api.get(`/prices/export?${params.toString()}`, {
+    responseType: 'blob',
+  })
+  const url = URL.createObjectURL(response.data)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `${crop}_prices_${dateFrom}_to_${dateTo}.csv`
+  link.click()
+  URL.revokeObjectURL(url)
+}
