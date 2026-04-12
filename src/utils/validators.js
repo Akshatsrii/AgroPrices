@@ -2,81 +2,120 @@
 //   AgriIntel – Form & Input Validators
 // ============================================================
 
-// Non-empty string
-export const isRequired = (val) => {
-  if (val === null || val === undefined) return "This field is required.";
-  if (typeof val === "string" && val.trim() === "") return "This field is required.";
-  return null;
-};
+// ─────────────────────────────────────────────
+// 🔹 Core Helpers
+// ─────────────────────────────────────────────
 
-// Positive number
-export const isPositiveNumber = (val) => {
-  if (val === "" || val == null) return "Please enter a value.";
-  if (isNaN(Number(val)))        return "Please enter a valid number.";
-  if (Number(val) <= 0)          return "Value must be greater than zero.";
-  return null;
-};
+const isEmpty = (val) =>
+  val === null || val === undefined || (typeof val === "string" && val.trim() === "")
 
-// Number in range
-export const inRange = (val, min, max) => {
-  const n = Number(val);
-  if (isNaN(n)) return "Please enter a valid number.";
-  if (n < min)  return `Value must be at least ${min}.`;
-  if (n > max)  return `Value must be at most ${max}.`;
-  return null;
-};
+const toNumber = (val) => {
+  const n = Number(val)
+  return isNaN(n) ? null : n
+}
 
-// Validate quantity input (land, yield, cost)
+// ─────────────────────────────────────────────
+// 🔹 Basic Validators
+// ─────────────────────────────────────────────
+
+export const isRequired = (val, label = "This field") =>
+  isEmpty(val) ? `${label} is required.` : null
+
+export const isPositiveNumber = (val, label = "Value") => {
+  const n = toNumber(val)
+  if (isEmpty(val)) return `${label} is required.`
+  if (n === null) return `${label} must be a valid number.`
+  if (n <= 0) return `${label} must be greater than zero.`
+  return null
+}
+
+export const inRange = (val, min, max, label = "Value") => {
+  const n = toNumber(val)
+  if (n === null) return `${label} must be a valid number.`
+  if (n < min) return `${label} must be at least ${min}.`
+  if (n > max) return `${label} must be at most ${max}.`
+  return null
+}
+
+// ─────────────────────────────────────────────
+// 🔹 Domain Validators
+// ─────────────────────────────────────────────
+
 export const validateQuantity = (val, label = "Quantity") => {
-  if (!val && val !== 0) return `${label} is required.`;
-  if (isNaN(Number(val))) return `${label} must be a number.`;
-  if (Number(val) < 0)    return `${label} cannot be negative.`;
-  return null;
-};
+  const n = toNumber(val)
+  if (isEmpty(val)) return `${label} is required.`
+  if (n === null) return `${label} must be a number.`
+  if (n < 0) return `${label} cannot be negative.`
+  return null
+}
 
-// Validate price
 export const validatePrice = (val, label = "Price") => {
-  if (!val && val !== 0) return `${label} is required.`;
-  if (isNaN(Number(val)))    return `${label} must be a number.`;
-  if (Number(val) <= 0)      return `${label} must be greater than 0.`;
-  if (Number(val) > 100_000) return `${label} seems too high. Please verify.`;
-  return null;
-};
+  const n = toNumber(val)
+  if (isEmpty(val)) return `${label} is required.`
+  if (n === null) return `${label} must be a number.`
+  if (n <= 0) return `${label} must be greater than 0.`
+  if (n > 100_000) return `${label} seems too high. Please verify.`
+  return null
+}
 
-// Validate email
+// ─────────────────────────────────────────────
+// 🔹 Contact Validators
+// ─────────────────────────────────────────────
+
 export const validateEmail = (email) => {
-  if (!email) return "Email is required.";
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!re.test(email)) return "Please enter a valid email address.";
-  return null;
-};
+  if (isEmpty(email)) return "Email is required."
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(email) ? null : "Please enter a valid email address."
+}
 
-// Validate phone (Indian 10-digit)
 export const validatePhone = (phone) => {
-  if (!phone) return "Phone number is required.";
-  const cleaned = phone.replace(/\s/g, "");
-  if (!/^(\+91)?[6-9]\d{9}$/.test(cleaned)) return "Please enter a valid 10-digit Indian mobile number.";
-  return null;
-};
+  if (isEmpty(phone)) return "Phone number is required."
+  const cleaned = phone.replace(/\s/g, "")
+  return /^(\+91)?[6-9]\d{9}$/.test(cleaned)
+    ? null
+    : "Please enter a valid 10-digit Indian mobile number."
+}
 
-// Validate profit calculator form
-export const validateProfitForm = (form) => {
-  const errors = {};
-  errors.landArea     = validateQuantity(form.landArea,     "Land area");
-  errors.yieldPerAcre = validateQuantity(form.yieldPerAcre, "Yield per acre");
-  errors.costPerAcre  = validateQuantity(form.costPerAcre,  "Cost per acre");
-  errors.sellingPrice = validatePrice(form.sellingPrice,    "Selling price");
+// ─────────────────────────────────────────────
+// 🔹 Form Validator
+// ─────────────────────────────────────────────
 
-  // Remove null entries
-  Object.keys(errors).forEach((k) => { if (!errors[k]) delete errors[k]; });
-  return { errors, isValid: Object.keys(errors).length === 0 };
-};
+export const validateProfitForm = (form = {}) => {
+  const errors = {
+    landArea: validateQuantity(form.landArea, "Land area"),
+    yieldPerAcre: validateQuantity(form.yieldPerAcre, "Yield per acre"),
+    costPerAcre: validateQuantity(form.costPerAcre, "Cost per acre"),
+    sellingPrice: validatePrice(form.sellingPrice, "Selling price"),
+  }
 
-// Run multiple validators on a single field
+  // remove null values
+  Object.keys(errors).forEach((k) => {
+    if (!errors[k]) delete errors[k]
+  })
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0,
+  }
+}
+
+// ─────────────────────────────────────────────
+// 🔹 Validator Runner (VERY POWERFUL)
+// ─────────────────────────────────────────────
+
 export const runValidators = (val, validators = []) => {
   for (const fn of validators) {
-    const error = fn(val);
-    if (error) return error;
+    const error = fn(val)
+    if (error) return error
   }
-  return null;
-};
+  return null
+}
+
+// ─────────────────────────────────────────────
+// 🔹 Advanced: Compose Validators
+// ─────────────────────────────────────────────
+
+export const composeValidators =
+  (...validators) =>
+  (val) =>
+    runValidators(val, validators)
