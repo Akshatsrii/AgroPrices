@@ -44,6 +44,9 @@ That's ₹7/kg lost — every single day — just due to lack of information.
 
 <div align="center">
 
+
+## 🚜 Live Link -- https://agro-prices.vercel.app/
+
 ## 🗺️ Frontend Architecture & User Flow
 
 ```
