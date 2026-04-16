@@ -1,9 +1,16 @@
 import mongoose from "mongoose";
 
-const predictionSchema = new mongoose.Schema({
-  userId: mongoose.Schema.Types.ObjectId,
-  crop: String,
-  price: Number,
-}, { timestamps: true });
+const predictionSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    crop: String,
+    predictedPrice: Number,
+    days: Number,
+  },
+  { timestamps: true }
+);
 
 export default mongoose.model("Prediction", predictionSchema);
