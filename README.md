@@ -263,9 +263,6 @@ agroprice-ai/
         ├── routes/
         │   └── AppRoutes.jsx       # React Router config
         │
-        ├── styles/
-        │   ├── globals.css
-        │   └── theme.css
         │
         ├── App.jsx
         ├── main.jsx
