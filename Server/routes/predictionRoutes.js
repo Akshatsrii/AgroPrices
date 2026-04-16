@@ -4,11 +4,9 @@ import {
   getPredictions,
 } from "../controllers/predictionController.js";
 
-import protect from "../middleware/authMiddleware.js";
-
 const router = express.Router();
 
-router.post("/", protect, createPrediction);
-router.get("/", protect, getPredictions);
+router.post("/predict", createPrediction);
+router.get("/predict", getPredictions);
 
-export default router;
+export default router;;
