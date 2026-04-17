@@ -1,25 +1,40 @@
 from flask import Flask, request, jsonify
-import numpy as np
-from sklearn.linear_model import LinearRegression
+import pandas as pd
+import joblib
+import os
 
 app = Flask(__name__)
 
-# Dummy training data (later real use karna)
-X = np.array([[1], [2], [3], [4], [5]])
-y = np.array([2000, 2100, 2200, 2300, 2400])
+# Load the trained model
+MODEL_PATH = "crop_price_model.pkl"
 
-model = LinearRegression()
-model.fit(X, y)
+if os.path.exists(MODEL_PATH):
+    model = joblib.load(MODEL_PATH)
+    print("Model loaded successfully.")
+else:
+    model = None
+    print("Warning: Model not found. Run train.py first.")
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json
-    days = data.get("days", 6)
+    if model is None:
+        return jsonify({"error": "Model not trained yet."}), 500
 
-    prediction = model.predict([[days]])
-    return jsonify({
-        "predicted_price": float(prediction[0])
-    })
+    data = request.json
+    crop = data.get("crop", "wheat") # default to wheat if not provided
+    days = data.get("days", 1)       # default to 1 day
+
+    try:
+        # Create a DataFrame for the single prediction so the transformer works
+        input_data = pd.DataFrame([{ "crop": crop, "days": int(days) }])
+        
+        prediction = model.predict(input_data)
+        
+        return jsonify({
+            "predicted_price": float(prediction[0])
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
     app.run(port=5000)

@@ -6,6 +6,7 @@ export const createPrediction = async (req, res) => {
     const { crop, days } = req.body;
 
     const mlRes = await axios.post("http://localhost:5000/predict", {
+      crop,
       days,
     });
 
