@@ -24,9 +24,6 @@
 <br/>
 
 ---
-## 🚜 Live Link --
-https://agro-prices.vercel.app/
----
 ## 🚜 The Problem We Solve
 
 </div>
