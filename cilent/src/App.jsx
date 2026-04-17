@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom"
 import AppRoutes from "./routes/AppRoutes"
 import Navbar from "./components/common/Navbar"
 import Footer from "./components/common/Footer"
+import NvidiaChatbot from "./components/common/NvidiaChatbot"
 
 // 🔹 Scroll to top on route change
 function ScrollToTop() {
@@ -17,7 +18,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen bg-cream text-gray-800">
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#0B0E14', color: '#E2E8F0', fontFamily: "'Outfit', 'Segoe UI', sans-serif" }}>
       <ScrollToTop />
 
       {/* 🔹 Navbar */}
@@ -30,6 +31,9 @@ function App() {
 
       {/* 🔹 Footer */}
       <Footer />
+      
+      {/* 🔹 NVIDIA Floating Chatbot */}
+      <NvidiaChatbot />
     </div>
   )
 }

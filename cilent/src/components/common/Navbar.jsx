@@ -14,8 +14,14 @@ function Navbar() {
   return (
     <div
       style={{
-        padding: "18px 32px",
-        background: "linear-gradient(135deg, #e6f4ea, #d0f0d8)",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        padding: "16px 32px",
+        background: "rgba(11, 14, 20, 0.8)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
       }}
     >
       <nav
@@ -23,14 +29,9 @@ function Navbar() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "64px",
-          padding: "0 28px",
-          background: "rgba(255,255,255,0.75)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-          border: "1px solid rgba(0,0,0,0.05)",
-          borderRadius: "18px",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
+          height: "48px",
+          maxWidth: "1440px",
+          margin: "0 auto",
         }}
       >
         {/* Logo */}
@@ -44,90 +45,62 @@ function Navbar() {
           }}
         >
           <motion.div
-            whileHover={{ rotate: 8, scale: 1.1 }}
+            whileHover={{ rotate: 5, scale: 1.05 }}
             style={{
-              width: 38,
-              height: 38,
-              background: "linear-gradient(135deg, #16a34a, #4ade80)",
-              borderRadius: 12,
+              width: 36,
+              height: 36,
+              background: "linear-gradient(135deg, #06d6a0 0%, #118ab2 100%)",
+              borderRadius: "10px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 4px 12px rgba(22,163,74,0.4)",
+              boxShadow: "0 4px 20px rgba(6,214,160,0.3)",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: 18,
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M10 3C10 3 5 7 5 12a5 5 0 0010 0c0-5-5-9-5-9z"
-                fill="white"
-              />
-              <line
-                x1="10"
-                y1="12"
-                x2="10"
-                y2="18"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            A
           </motion.div>
 
           <span
             style={{
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 22,
-              fontWeight: 600,
-              color: "#14532d",
+              fontWeight: 700,
+              color: "#ffffff",
             }}
           >
-            Agro<span style={{ color: "#22c55e" }}>Price</span>
+            Agro<span style={{ color: "#06d6a0" }}>Price</span>
           </span>
         </Link>
 
         {/* Nav Links */}
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", gap: "10px", background: "rgba(255,255,255,0.03)", padding: "4px", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.05)" }}>
           {links.map(({ to, label }) => {
             const isActive = pathname === to
 
             return (
-              <motion.div key={to} whileHover={{ y: -2 }}>
+              <motion.div key={to} whileHover={{ y: -1 }}>
                 <Link
                   to={to}
                   style={{
                     position: "relative",
-                    padding: "8px 16px",
-                    borderRadius: "12px",
+                    padding: "8px 18px",
+                    borderRadius: "10px",
                     fontSize: "14px",
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    fontFamily: "'Outfit', sans-serif",
                     textDecoration: "none",
-                    color: isActive ? "#fff" : "#374151",
+                    color: isActive ? "#0B0E14" : "#94a3b8",
                     background: isActive
-                      ? "linear-gradient(135deg, #16a34a, #4ade80)"
+                      ? "#06d6a0"
                       : "transparent",
-                    boxShadow: isActive
-                      ? "0 6px 14px rgba(22,163,74,0.35)"
-                      : "none",
-                    transition: "all 0.25s ease",
+                    transition: "all 0.3s ease",
+                    display: "block"
                   }}
                 >
                   {label}
-
-                  {/* Active underline animation */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTab"
-                      style={{
-                        position: "absolute",
-                        bottom: "-6px",
-                        left: "20%",
-                        width: "60%",
-                        height: "3px",
-                        borderRadius: "10px",
-                        background: "#16a34a",
-                      }}
-                    />
-                  )}
                 </Link>
               </motion.div>
             )
@@ -136,21 +109,24 @@ function Navbar() {
 
         {/* CTA */}
         <motion.button
-          whileHover={{ scale: 1.08 }}
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{
-            padding: "9px 20px",
-            background: "linear-gradient(135deg, #14532d, #16a34a)",
-            color: "#fff",
-            border: "none",
-            borderRadius: "12px",
+            padding: "10px 22px",
+            background: "rgba(6, 214, 160, 0.1)",
+            color: "#06d6a0",
+            border: "1px solid rgba(6, 214, 160, 0.3)",
+            borderRadius: "10px",
             fontSize: "14px",
             fontWeight: 600,
             cursor: "pointer",
-            boxShadow: "0 6px 18px rgba(20,83,45,0.35)",
+            fontFamily: "'Outfit', sans-serif",
+            transition: "all 0.3s ease",
           }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(6, 214, 160, 0.2)" }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(6, 214, 160, 0.1)" }}
         >
-          Get Started
+          Access Terminal
         </motion.button>
       </nav>
     </div>

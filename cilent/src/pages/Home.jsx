@@ -4,7 +4,7 @@ import { fetchDashboardStats } from "../services/api.js";
 // ── Google Fonts ────────────────────────────────────────────
 const fontLink = document.createElement("link");
 fontLink.href =
-  "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap";
+  "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap";
 fontLink.rel = "stylesheet";
 document.head.appendChild(fontLink);
 
@@ -48,71 +48,14 @@ function useDashboardStats() {
   return { data, loading, error, lastRefresh, refetch: load };
 }
 
-// ── Mini Calendar ─────────────────────────────────────────────
-function MiniCalendar({ today }) {
-  const [viewDate, setViewDate] = useState(new Date(today));
-
-  const year = viewDate.getFullYear();
-  const month = viewDate.getMonth();
-  const monthNames = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December",
-  ];
-  const dayNames = ["Su","Mo","Tu","We","Th","Fr","Sa"];
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const prevMonth = () => setViewDate(new Date(year, month - 1, 1));
-  const nextMonth = () => setViewDate(new Date(year, month + 1, 1));
-
-  const cells = [];
-  for (let i = 0; i < firstDay; i++) cells.push(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
-
-  const isToday = (d) =>
-    d === today.getDate() &&
-    month === today.getMonth() &&
-    year === today.getFullYear();
-
-  return (
-    <div style={styles.calendar}>
-      <div style={styles.calHeader}>
-        <button onClick={prevMonth} style={styles.calBtn}>‹</button>
-        <span style={styles.calTitle}>
-          {monthNames[month]} {year}
-        </span>
-        <button onClick={nextMonth} style={styles.calBtn}>›</button>
-      </div>
-      <div style={styles.calGrid}>
-        {dayNames.map((d) => (
-          <div key={d} style={styles.calDayName}>{d}</div>
-        ))}
-        {cells.map((d, i) => (
-          <div
-            key={i}
-            style={{
-              ...styles.calCell,
-              ...(d && isToday(d) ? styles.calToday : {}),
-              ...(d === null ? { visibility: "hidden" } : {}),
-            }}
-          >
-            {d}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 // ── Stat Card ─────────────────────────────────────────────────
 function StatCard({ icon, label, value, accent }) {
   return (
-    <div style={{ ...styles.statCard, borderTop: `3px solid ${accent}` }}>
-      <div style={{ fontSize: 22 }}>{icon}</div>
+    <div style={{ ...styles.statCard }}>
+      <div style={{ ...styles.statIconWrapper, background: `${accent}20`, color: accent }}>{icon}</div>
       <div>
         <div style={styles.statLabel}>{label}</div>
-        <div style={{ ...styles.statValue, color: accent }}>{value}</div>
+        <div style={{ ...styles.statValue }}>{value}</div>
       </div>
     </div>
   );
@@ -122,22 +65,21 @@ function StatCard({ icon, label, value, accent }) {
 function CropCard({ item }) {
   const price = Number(item.modal_price);
   const badgeColor =
-    price > 3000 ? "#e67e22" : price > 1500 ? "#f0a500" : "#3a9c4e";
+    price > 3000 ? "#ff9f1c" : price > 1500 ? "#2ec4b6" : "#caffbf";
 
   return (
-    <div style={styles.cropCard}>
-      <div style={{ ...styles.cropStripe, background: badgeColor }} />
+    <div className="crop-card" style={styles.cropCard}>
       <div style={styles.cropInner}>
         <div style={styles.cropHeader}>
           <span style={styles.cropName}>🌿 {item.commodity}</span>
-          <span style={{ ...styles.priceBadge, background: badgeColor + "22", color: badgeColor }}>
+          <span style={{ ...styles.priceBadge, background: `${badgeColor}15`, color: badgeColor, border: `1px solid ${badgeColor}40` }}>
             ₹{item.modal_price}
           </span>
         </div>
         <div style={styles.cropMeta}>
-          <span>🏪 {item.market}</span>
-          <span>📍 {item.district}</span>
-          <span>🗺️ {item.state}</span>
+          <span><span style={styles.iconOp}>🏪</span> {item.market}</span>
+          <span><span style={styles.iconOp}>📍</span> {item.district}</span>
+          <span><span style={styles.iconOp}>🗺️</span> {item.state}</span>
         </div>
         <div style={styles.cropFooter}>
           <span style={styles.cropDate}>📅 {item.arrival_date}</span>
@@ -198,23 +140,22 @@ const Home = () => {
 
   return (
     <div style={styles.root}>
+      {/* ── Dynamic Ambient Backgrounds ── */}
+      <div style={styles.blob1}></div>
+      <div style={styles.blob2}></div>
+      
       {/* ── Header ── */}
       <div style={styles.header}>
-        <div>
-          <h1 style={styles.logo}>🌾 AgroPrice AI</h1>
-          <p style={styles.tagline}>Live Commodity Market Intelligence</p>
+        <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+          <div style={styles.logoBadge}>A</div>
+          <div>
+            <h1 style={styles.logo}>AgroPrice AI</h1>
+            <p style={styles.tagline}>Live Commodity Market Intelligence</p>
+          </div>
         </div>
         <div style={styles.clockBox}>
-          <div style={styles.clockTime}>{timeStr}</div>
           <div style={styles.clockDate}>{dateStr}</div>
-          {lastRefresh && (
-            <div style={styles.refreshNote}>
-              Last sync: {lastRefresh.toLocaleTimeString("en-IN", { hour12: true })}
-            </div>
-          )}
-          <button onClick={refetch} style={styles.refreshBtn} disabled={loading}>
-            {loading ? "⏳ Syncing..." : "🔄 Refresh"}
-          </button>
+          <div style={styles.clockTime}>{timeStr}</div>
         </div>
       </div>
 
@@ -222,42 +163,54 @@ const Home = () => {
       <div style={styles.body}>
         {/* ── Sidebar ── */}
         <aside style={styles.sidebar}>
-          <MiniCalendar today={now} />
-
-          <div style={styles.sideSection}>
-            <div style={styles.sideSectionTitle}>🗺️ Filter by State</div>
-            {["All", ...uniqueStates].map((s) => (
-              <div
-                key={s}
-                onClick={() => { setFilterState(s); setPage(1); }}
-                style={{
-                  ...styles.stateItem,
-                  ...(filterState === s ? styles.stateItemActive : {}),
-                }}
-              >
-                {s}
+          <div className="glass-panel" style={styles.sidePanel}>
+            <div style={styles.sideSectionTitle}>Territories</div>
+            <div style={styles.statesWrapper}>
+              {["All", ...uniqueStates].map((s) => (
+                <div
+                  key={s}
+                  onClick={() => { setFilterState(s); setPage(1); }}
+                  style={{
+                    ...styles.stateItem,
+                    ...(filterState === s ? styles.stateItemActive : {}),
+                  }}
+                >
+                  {s}
+                </div>
+              ))}
+            </div>
+            
+            <button onClick={refetch} style={styles.refreshBtn} disabled={loading}>
+              <span className="icon">🔄</span> {loading ? "Syncing..." : "Live Market Sync"}
+            </button>
+            {lastRefresh && (
+              <div style={styles.refreshNote}>
+                Last sync: {lastRefresh.toLocaleTimeString("en-IN", { hour12: true })}
               </div>
-            ))}
+            )}
           </div>
         </aside>
 
         {/* ── Main Content ── */}
         <main style={styles.main}>
           <div style={styles.statsRow}>
-            <StatCard icon="🌾" label="Total Records" value={totalCrops} accent="#3a9c4e" />
-            <StatCard icon="💰" label="Avg Modal Price" value={`₹${avgPrice}`} accent="#f0a500" />
-            <StatCard icon="🏪" label="Markets" value={uniqueMarkets} accent="#2e86c1" />
-            <StatCard icon="🗺️" label="States" value={uniqueStates.length} accent="#e67e22" />
+            <StatCard icon="🌾" label="Total Records" value={totalCrops} accent="#06d6a0" />
+            <StatCard icon="💰" label="Avg Modal Price" value={`₹${avgPrice}`} accent="#ffd166" />
+            <StatCard icon="🏪" label="Markets" value={uniqueMarkets} accent="#118ab2" />
+            <StatCard icon="🗺️" label="States" value={uniqueStates.length} accent="#ef476f" />
           </div>
 
-          <div style={styles.controls}>
-            <input
-              type="text"
-              placeholder="🔍 Search commodity, market, district, state..."
-              value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              style={styles.searchInput}
-            />
+          <div style={styles.controlsGrid}>
+            <div style={styles.searchWrapper}>
+              <span style={styles.searchIcon}>🔍</span>
+              <input
+                type="text"
+                placeholder="Search commodity, market, district, state..."
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                style={styles.searchInput}
+              />
+            </div>
             <select
               value={sortBy}
               onChange={(e) => { setSortBy(e.target.value); setPage(1); }}
@@ -280,7 +233,7 @@ const Home = () => {
 
           {!loading && (
             <div style={styles.resultsInfo}>
-              Showing {paginated.length} of {filtered.length} results
+              Showing <span style={{color: "#06d6a0"}}>{paginated.length}</span> of {filtered.length} results
               {filterState !== "All" && ` in ${filterState}`}
               {search && ` for "${search}"`}
             </div>
@@ -294,8 +247,8 @@ const Home = () => {
 
           {!loading && filtered.length === 0 && (
             <div style={styles.emptyState}>
-              <div style={{ fontSize: 48 }}>🌱</div>
-              <p>No crops found. Try adjusting your search or filters.</p>
+              <div style={{ fontSize: 64, opacity: 0.8, marginBottom: 16 }}>🌿</div>
+              <p style={{ fontSize: 18, fontWeight: 300, color: '#a0aab2' }}>No crops found. Adjust search parameters.</p>
             </div>
           )}
 
@@ -332,285 +285,351 @@ const Home = () => {
   );
 };
 
-// ── STYLES — Light Green Theme ────────────────────────────────
+// ── STYLES — Ultra Premium Dark Glassmorphism ────────────────────────────────
 const styles = {
   root: {
     minHeight: "100vh",
-    background: "#f0f9f1",           // very light mint page bg
-    color: "#1b4332",                 // deep forest green text
-    fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
+    backgroundColor: "#0B0E14",
+    color: "#E2E8F0",
+    fontFamily: "'Outfit', 'Segoe UI', sans-serif",
+    position: "relative",
+    overflowX: "hidden"
+  },
+  blob1: {
+    position: "absolute",
+    top: "-15%", left: "-5%",
+    width: "40vw", height: "40vw",
+    background: "radial-gradient(circle, rgba(6,214,160,0.15) 0%, rgba(0,0,0,0) 70%)",
+    zIndex: 0,
+    filter: "blur(60px)",
+    pointerEvents: "none"
+  },
+  blob2: {
+    position: "absolute",
+    bottom: "-10%", right: "-10%",
+    width: "50vw", height: "50vw",
+    background: "radial-gradient(circle, rgba(17,138,178,0.1) 0%, rgba(0,0,0,0) 70%)",
+    zIndex: 0,
+    filter: "blur(80px)",
+    pointerEvents: "none"
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    flexWrap: "wrap",
-    gap: 12,
-    padding: "20px 28px",
-    background: "#ffffff",            // pure white header
-    borderBottom: "1px solid #b7e4c7",
+    alignItems: "center",
+    padding: "20px 40px",
+    background: "rgba(11, 14, 20, 0.7)",
+    backdropFilter: "blur(20px)",
+    WebkitBackdropFilter: "blur(20px)",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
     position: "sticky",
     top: 0,
     zIndex: 100,
-    boxShadow: "0 2px 8px rgba(52,168,83,0.08)",
+  },
+  logoBadge: {
+    width: "48px", height: "48px",
+    background: "linear-gradient(135deg, #06d6a0 0%, #118ab2 100%)",
+    borderRadius: "12px",
+    display: "flex", justifyContent: "center", alignItems: "center",
+    fontSize: "24px", fontWeight: 800, color: "#fff",
+    boxShadow: "0 4px 20px rgba(6,214,160,0.3)"
   },
   logo: {
-    fontFamily: "'Playfair Display', serif",
-    fontSize: 26,
-    color: "#1b4332",
-    letterSpacing: 1,
+    fontFamily: "'Space Grotesk', sans-serif",
+    fontSize: "24px",
+    fontWeight: 700,
+    color: "#ffffff",
+    letterSpacing: "0.5px",
+    margin: 0,
+    background: "linear-gradient(90deg, #fff 0%, #a0aab2 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent"
   },
   tagline: {
-    fontSize: 11,
-    color: "#52b788",
-    marginTop: 2,
-    letterSpacing: 2,
+    fontSize: "12px",
+    color: "#06d6a0",
+    margin: "2px 0 0 0",
+    letterSpacing: "2px",
     textTransform: "uppercase",
+    fontWeight: 600
   },
   clockBox: { textAlign: "right" },
   clockTime: {
-    fontSize: 28,
+    fontFamily: "'Space Grotesk', sans-serif",
+    fontSize: "24px",
     fontWeight: 700,
-    color: "#2d6a4f",
-    fontVariantNumeric: "tabular-nums",
-    letterSpacing: 2,
+    color: "#ffffff",
+    letterSpacing: "1px",
   },
-  clockDate: { fontSize: 12, color: "#74c69d", marginTop: 2 },
-  refreshNote: { fontSize: 10, color: "#95d5b2", marginTop: 4 },
+  clockDate: { 
+    fontSize: "12px", 
+    color: "#a0aab2", 
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+    marginBottom: "4px"
+  },
+  refreshNote: { fontSize: "11px", color: "#64748b", marginTop: "12px", textAlign: "center" },
   refreshBtn: {
-    marginTop: 6,
-    padding: "5px 14px",
-    background: "#d8f3dc",           // light mint button bg
-    color: "#1b4332",
-    border: "1px solid #95d5b2",
-    borderRadius: 6,
+    width: "100%",
+    marginTop: "20px",
+    padding: "12px 16px",
+    background: "rgba(6, 214, 160, 0.1)",
+    color: "#06d6a0",
+    border: "1px solid rgba(6, 214, 160, 0.3)",
+    borderRadius: "8px",
     cursor: "pointer",
-    fontSize: 12,
+    fontSize: "14px",
+    fontWeight: 600,
+    transition: "all 0.3s ease",
+    display: "flex", alignItems: "center", justifyContent: "center", gap: "8px"
+  },
+  body: { display: "flex", minHeight: "calc(100vh - 89px)", position: "relative", zIndex: 1 },
+  sidebar: {
+    width: "280px",
+    padding: "30px 20px",
+    borderRight: "1px solid rgba(255, 255, 255, 0.05)",
+  },
+  sidePanel: {
+    background: "rgba(255,255,255,0.02)",
+    border: "1px solid rgba(255,255,255,0.05)",
+    borderRadius: "16px",
+    padding: "24px 20px",
+    backdropFilter: "blur(12px)",
+  },
+  sideSectionTitle: {
+    fontFamily: "'Space Grotesk', sans-serif",
+    fontSize: "12px",
+    color: "#64748b",
+    textTransform: "uppercase",
+    letterSpacing: "2px",
+    marginBottom: "16px",
     fontWeight: 600,
   },
-  body: { display: "flex", gap: 0, minHeight: "calc(100vh - 80px)" },
-  sidebar: {
-    width: 230,
-    minWidth: 230,
-    background: "#ffffff",           // white sidebar
-    borderRight: "1px solid #b7e4c7",
-    padding: "20px 14px",
+  statesWrapper: {
+    maxHeight: "40vh",
     overflowY: "auto",
-  },
-  calendar: {
-    background: "#f0f9f1",           // mint bg for calendar widget
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 20,
-    border: "1px solid #b7e4c7",
-  },
-  calHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  calTitle: { fontSize: 12, fontWeight: 700, color: "#1b4332" },
-  calBtn: {
-    background: "none",
-    border: "none",
-    color: "#2d6a4f",
-    fontSize: 16,
-    cursor: "pointer",
-    padding: "0 4px",
-  },
-  calGrid: { display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 2 },
-  calDayName: {
-    fontSize: 9,
-    color: "#52b788",
-    textAlign: "center",
-    padding: "2px 0",
-    fontWeight: 700,
-  },
-  calCell: {
-    fontSize: 10,
-    color: "#2d6a4f",
-    textAlign: "center",
-    padding: "4px 0",
-    borderRadius: 4,
-  },
-  calToday: {
-    background: "#2d6a4f",           // deep green today highlight
-    color: "#ffffff",
-    fontWeight: 700,
-    borderRadius: 4,
-  },
-  sideSection: { marginBottom: 16 },
-  sideSectionTitle: {
-    fontSize: 10,
-    color: "#52b788",
-    textTransform: "uppercase",
-    letterSpacing: 1.5,
-    marginBottom: 8,
-    fontWeight: 700,
+    paddingRight: "8px",
+    display: "flex", flexDirection: "column", gap: "4px"
   },
   stateItem: {
-    padding: "6px 10px",
-    borderRadius: 6,
-    fontSize: 11,
-    color: "#2d6a4f",
+    padding: "10px 14px",
+    borderRadius: "8px",
+    fontSize: "13px",
+    color: "#94a3b8",
     cursor: "pointer",
-    marginBottom: 2,
-    transition: "all 0.15s",
+    transition: "all 0.2s ease",
   },
   stateItemActive: {
-    background: "#d8f3dc",           // light mint active state
-    color: "#1b4332",
-    fontWeight: 700,
+    background: "rgba(6, 214, 160, 0.15)",
+    color: "#06d6a0",
+    fontWeight: 600,
   },
-  main: { flex: 1, padding: "20px 24px", overflowY: "auto" },
+  main: { flex: 1, padding: "30px 40px", overflowY: "auto" },
   statsRow: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-    gap: 12,
-    marginBottom: 18,
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: "20px",
+    marginBottom: "32px",
   },
   statCard: {
-    background: "#ffffff",           // white stat cards
-    border: "1px solid #b7e4c7",
-    borderRadius: 10,
-    padding: "14px 16px",
+    background: "rgba(15, 23, 42, 0.6)",
+    border: "1px solid rgba(255, 255, 255, 0.06)",
+    borderRadius: "16px",
+    padding: "20px",
     display: "flex",
-    gap: 12,
+    gap: "16px",
     alignItems: "center",
-    boxShadow: "0 1px 4px rgba(52,168,83,0.06)",
+    backdropFilter: "blur(10px)",
+    transition: "transform 0.3s ease, background 0.3s ease",
+  },
+  statIconWrapper: {
+    width: "48px", height: "48px",
+    borderRadius: "12px",
+    display: "flex", justifyContent: "center", alignItems: "center",
+    fontSize: "20px"
   },
   statLabel: {
-    fontSize: 10,
-    color: "#74c69d",
+    fontSize: "12px",
+    color: "#94a3b8",
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: "1px",
+    marginBottom: "4px"
   },
-  statValue: { fontSize: 22, fontWeight: 700, marginTop: 2 },
-  controls: { display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" },
+  statValue: { 
+    fontFamily: "'Space Grotesk', sans-serif",
+    fontSize: "28px", 
+    fontWeight: 700, 
+    color: "#fff" 
+  },
+  controlsGrid: { display: "grid", gridTemplateColumns: "1fr 200px", gap: "16px", marginBottom: "24px" },
+  searchWrapper: {
+    position: "relative",
+    display: "flex", alignItems: "center"
+  },
+  searchIcon: { position: "absolute", left: "16px", opacity: 0.5 },
   searchInput: {
-    flex: 1,
-    minWidth: 220,
-    padding: "10px 16px",
-    background: "#ffffff",
-    border: "1px solid #b7e4c7",
-    borderRadius: 8,
-    color: "#1b4332",
-    fontSize: 13,
+    width: "100%",
+    padding: "14px 16px 14px 44px",
+    background: "rgba(15, 23, 42, 0.6)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "12px",
+    color: "#fff",
+    fontSize: "14px",
     outline: "none",
+    transition: "border 0.3s ease",
+    backdropFilter: "blur(10px)",
   },
   sortSelect: {
-    padding: "10px 12px",
-    background: "#ffffff",
-    border: "1px solid #b7e4c7",
-    borderRadius: 8,
-    color: "#2d6a4f",
-    fontSize: 13,
+    width: "100%",
+    padding: "14px 16px",
+    background: "rgba(15, 23, 42, 0.6)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "12px",
+    color: "#fff",
+    fontSize: "14px",
     cursor: "pointer",
     outline: "none",
+    backdropFilter: "blur(10px)",
   },
-  resultsInfo: { fontSize: 11, color: "#74c69d", marginBottom: 14 },
+  resultsInfo: { fontSize: "14px", color: "#64748b", marginBottom: "20px", fontWeight: "300" },
   statusBox: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
-    padding: 20,
-    color: "#2d6a4f",
+    gap: "16px",
+    padding: "40px",
+    color: "#06d6a0",
+    justifyContent: "center",
+    fontSize: "16px",
+    fontWeight: "300"
   },
   spinner: {
-    width: 18,
-    height: 18,
-    border: "2px solid #b7e4c7",
-    borderTop: "2px solid #2d6a4f",
+    width: "24px",
+    height: "24px",
+    border: "2px solid rgba(6, 214, 160, 0.2)",
+    borderTop: "2px solid #06d6a0",
     borderRadius: "50%",
-    animation: "spin 0.8s linear infinite",
+    animation: "spin 1s linear infinite",
   },
   errorBox: {
-    background: "#fff4e5",           // warm amber tint for errors
-    border: "1px solid #f0a500",
-    borderRadius: 8,
-    padding: "12px 16px",
-    color: "#7d4e00",
-    marginBottom: 14,
-    fontSize: 13,
+    background: "rgba(239, 71, 111, 0.1)",
+    border: "1px solid rgba(239, 71, 111, 0.3)",
+    borderRadius: "12px",
+    padding: "16px 20px",
+    color: "#ef476f",
+    marginBottom: "24px",
+    fontSize: "14px",
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))",
-    gap: 14,
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    gap: "24px",
   },
   cropCard: {
-    background: "#ffffff",           // white crop cards
-    border: "1px solid #b7e4c7",
-    borderRadius: 10,
+    background: "rgba(30, 41, 59, 0.4)",
+    border: "1px solid rgba(255, 255, 255, 0.05)",
+    borderRadius: "16px",
     overflow: "hidden",
-    transition: "transform 0.15s, box-shadow 0.15s",
-    cursor: "default",
-    boxShadow: "0 1px 4px rgba(52,168,83,0.07)",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    backdropFilter: "blur(12px)",
   },
-  cropStripe: { height: 4, width: "100%" },
-  cropInner: { padding: 14 },
+  cropInner: { padding: "20px" },
   cropHeader: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 8,
+    alignItems: "center",
+    marginBottom: "16px",
   },
   cropName: {
-    fontWeight: 700,
-    fontSize: 14,
-    color: "#1b4332",
-    fontFamily: "'Playfair Display', serif",
+    fontWeight: 600,
+    fontSize: "16px",
+    color: "#fff",
   },
   priceBadge: {
-    fontSize: 13,
+    fontSize: "14px",
     fontWeight: 700,
-    padding: "2px 10px",
-    borderRadius: 20,
+    padding: "6px 12px",
+    borderRadius: "8px",
+    fontFamily: "'Space Grotesk', sans-serif"
   },
   cropMeta: {
     display: "flex",
     flexDirection: "column",
-    gap: 3,
-    fontSize: 11,
-    color: "#52b788",
-    marginBottom: 10,
+    gap: "8px",
+    fontSize: "13px",
+    color: "#94a3b8",
+    marginBottom: "20px",
   },
+  iconOp: { opacity: 0.7 },
   cropFooter: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingTop: "16px",
+    borderTop: "1px solid rgba(255,255,255,0.05)"
   },
-  cropDate: { fontSize: 10, color: "#95d5b2" },
-  priceRange: { fontSize: 10, color: "#74c69d" },
-  emptyState: { textAlign: "center", padding: "60px 20px", color: "#95d5b2" },
+  cropDate: { fontSize: "12px", color: "#64748b" },
+  priceRange: { fontSize: "12px", color: "#cbd5e1" },
+  emptyState: { 
+    textAlign: "center", 
+    padding: "100px 20px", 
+    background: "rgba(15,23,42,0.3)", 
+    borderRadius: "16px",
+    border: "1px dashed rgba(255,255,255,0.1)"
+  },
   pagination: {
     display: "flex",
-    gap: 6,
+    gap: "8px",
     justifyContent: "center",
-    marginTop: 24,
+    marginTop: "40px",
     flexWrap: "wrap",
   },
   pageBtn: {
-    padding: "6px 14px",
-    background: "#ffffff",
-    border: "1px solid #b7e4c7",
-    borderRadius: 6,
-    color: "#2d6a4f",
-    fontSize: 12,
+    padding: "10px 16px",
+    background: "rgba(15, 23, 42, 0.8)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "8px",
+    color: "#94a3b8",
+    fontSize: "14px",
     cursor: "pointer",
+    transition: "all 0.2s ease"
   },
   pageBtnActive: {
-    background: "#2d6a4f",           // deep green active page
-    color: "#ffffff",
+    background: "#06d6a0",
+    color: "#0B0E14",
+    border: "1px solid #06d6a0",
     fontWeight: 700,
   },
 };
 
 // CSS keyframes injection
 const styleEl = document.createElement("style");
-styleEl.textContent = `@keyframes spin { to { transform: rotate(360deg); } }
-.crop-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(52,168,83,0.15); }`;
+styleEl.textContent = `
+@keyframes spin { to { transform: rotate(360deg); } }
+.crop-card:hover { 
+  transform: translateY(-4px); 
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5); 
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(30, 41, 59, 0.7);
+}
+.statCard:hover {
+  background: rgba(15, 23, 42, 0.9) !important;
+  transform: translateY(-2px);
+}
+.searchInput:focus, .sortSelect:focus {
+  border-color: rgba(6, 214, 160, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.1);
+}
+.refreshBtn:hover {
+  background: rgba(6, 214, 160, 0.2) !important;
+}
+.statesWrapper::-webkit-scrollbar {
+  width: 4px;
+}
+.statesWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+`;
 document.head.appendChild(styleEl);
 
 export default Home;

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { getPrediction } from "../../services/predictionService"
+import { fetchPrediction } from "../../services/predictionService"
 
 const initialState = {
   predictions: [],
@@ -17,12 +17,14 @@ export const fetchAllPredictions = createAsyncThunk(
 
       const results = await Promise.all(
         crops.map(async (crop) => {
-          const res = await getPrediction(crop)
+          // Pass both crop and days to backend controller
+          const res = await fetchPrediction({ crop, days: 7 })
 
           return {
             cropId: crop,
+            // Accessing predictedPrice correctly from controller response
             predictedPrice:
-              res?.data?.price || Math.floor(Math.random() * 5000),
+              res?.predictedPrice || res?.data?.predictedPrice || Math.floor(Math.random() * 5000),
             signal: ["BUY", "SELL", "HOLD"][
               Math.floor(Math.random() * 3)
             ],

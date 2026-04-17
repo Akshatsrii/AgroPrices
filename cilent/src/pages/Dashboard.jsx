@@ -8,30 +8,30 @@ import {
 
 /* ─── THEME ─────────────────────────────────────────────────── */
 const T = {
-  brand:      "#2d6a4f",
-  brandMid:   "#40916c",
-  brandLight: "#74c69d",
-  brandPale:  "#d8f3dc",
-  brandXPale: "#f0faf2",
-  amber:      "#e76f00",
-  amberLight: "#fb8500",
-  amberPale:  "#fff7ed",
-  red:        "#c0392b",
-  redLight:   "#e74c3c",
-  redPale:    "#fdf1f0",
-  blue:       "#1d6fb8",
-  bluePale:   "#eff6ff",
-  purple:     "#7b2d8b",
-  purplePale: "#f9f0fb",
-  gold:       "#f4a261",
-  dark:       "#1b2e22",
-  darkMid:    "#243b2d",
-  text:       "#1a2e1f",
-  textMid:    "#3a5a44",
-  textLight:  "#6b8f76",
-  border:     "#c8e6d0",
-  bg:         "#f7fcf8",
-  white:      "#ffffff",
+  brand:      "#06d6a0",
+  brandMid:   "#05b486",
+  brandLight: "#34e8b9",
+  brandPale:  "rgba(6, 214, 160, 0.15)",
+  brandXPale: "rgba(6, 214, 160, 0.05)",
+  amber:      "#ffd166",
+  amberLight: "#ffdd8b",
+  amberPale:  "rgba(255, 209, 102, 0.15)",
+  red:        "#ef476f",
+  redLight:   "#f26b8b",
+  redPale:    "rgba(239, 71, 111, 0.15)",
+  blue:       "#118ab2",
+  bluePale:   "rgba(17, 138, 178, 0.15)",
+  purple:     "#073b4c",
+  purplePale: "rgba(7, 59, 76, 0.15)",
+  gold:       "#ff9f1c",
+  dark:       "#FFFFFF", // inverted to white for text highlights
+  darkMid:    "#E2E8F0",
+  text:       "#E2E8F0",
+  textMid:    "#94a3b8",
+  textLight:  "#64748b",
+  border:     "rgba(255, 255, 255, 0.05)",
+  bg:         "#0B0E14",
+  white:      "rgba(15, 23, 42, 0.6)", // panel bg
 };
 
 /* ─── DUMMY DATA ─────────────────────────────────────────────── */
@@ -166,7 +166,7 @@ function StatCard({ item, idx }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
           <p style={{ margin: 0, fontSize: 12, color: T.textLight, fontWeight: 600, letterSpacing: 0.6, textTransform: "uppercase" }}>{item.label}</p>
-          <p style={{ margin: "8px 0 4px", fontSize: 28, fontWeight: 800, color: T.dark, fontFamily: "'DM Mono', monospace" }}>{item.value}</p>
+          <p style={{ margin: "8px 0 4px", fontSize: 28, fontWeight: 800, color: T.dark, fontFamily: "'Space Grotesk', monospace" }}>{item.value}</p>
           <span style={{ fontSize: 12, color: item.change.includes("+") ? T.brand : T.amber, fontWeight: 700 }}>{item.change} this week</span>
         </div>
         <div style={{
@@ -263,13 +263,16 @@ export default function Dashboard() {
   /* ─── STYLES ──────────────────────────────────────────────── */
   const S = {
     root: {
-      fontFamily: "'Nunito', 'Segoe UI', sans-serif",
+      fontFamily: "'Outfit', 'Segoe UI', sans-serif",
       background: T.bg, minHeight: "100vh", color: T.text,
+      position: "relative",
     },
     header: {
-      background: `linear-gradient(135deg, ${T.dark} 0%, ${T.darkMid} 60%, ${T.brand} 100%)`,
+      background: "rgba(11, 14, 20, 0.7)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      borderBottom: `1px solid ${T.border}`,
       padding: "0 28px", position: "sticky", top: 0, zIndex: 100,
-      boxShadow: "0 4px 24px rgba(27,46,34,0.25)",
     },
     headerInner: {
       display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -278,34 +281,36 @@ export default function Dashboard() {
     logo: { display: "flex", alignItems: "center", gap: 10 },
     logoIcon: { fontSize: 26 },
     logoText: {
-      fontSize: 20, fontWeight: 900, color: T.white, letterSpacing: -0.5,
+      fontSize: 20, fontWeight: 900, color: "#fff", letterSpacing: -0.5,
+      fontFamily: "'Space Grotesk', sans-serif"
     },
-    logoSub: { fontSize: 11, color: T.brandLight, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" },
+    logoSub: { fontSize: 11, color: T.brand, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" },
     headerRight: { display: "flex", alignItems: "center", gap: 12 },
     ticker: {
-      background: "rgba(255,255,255,0.07)", borderRadius: 30,
+      background: "rgba(255,255,255,0.03)", borderRadius: 30,
+      border: `1px solid ${T.border}`,
       padding: "4px 16px", overflow: "hidden", maxWidth: 420,
       display: "flex", alignItems: "center", cursor: "pointer",
     },
-    main: { padding: "24px 28px", maxWidth: 1440, margin: "0 auto" },
+    main: { padding: "24px 28px", maxWidth: 1440, margin: "0 auto", position: "relative", zIndex: 1 },
     grid4: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 24 },
     grid3: { display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20, marginBottom: 24 },
     grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 },
     card: {
-      background: T.white, borderRadius: 18, border: `1.5px solid ${T.border}`,
-      boxShadow: "0 2px 16px rgba(45,106,79,0.07)", overflow: "hidden",
+      background: "rgba(15, 23, 42, 0.6)", borderRadius: 18, border: `1px solid ${T.border}`,
+      backdropFilter: "blur(12px)", overflow: "hidden",
     },
     cardHead: {
       padding: "18px 22px 14px", borderBottom: `1px solid ${T.border}`,
       display: "flex", alignItems: "center", justifyContent: "space-between",
     },
-    cardTitle: { margin: 0, fontSize: 15, fontWeight: 800, color: T.dark, letterSpacing: -0.3 },
+    cardTitle: { margin: 0, fontSize: 15, fontWeight: 800, color: "#fff", letterSpacing: -0.3 },
     cardBody: { padding: "18px 22px" },
     btn: (active, color = T.brand) => ({
       padding: "7px 16px", borderRadius: 10, border: "none", cursor: "pointer",
       fontWeight: 700, fontSize: 13,
-      background: active ? color : `${color}18`,
-      color: active ? T.white : color,
+      background: active ? color : `rgba(255,255,255,0.05)`,
+      color: active ? "#0B0E14" : "#fff",
       transition: "all 0.15s",
     }),
     btnSm: {
@@ -313,9 +318,9 @@ export default function Dashboard() {
       fontWeight: 700, fontSize: 12, background: T.brandPale, color: T.brand,
     },
     input: {
-      width: "100%", border: `1.5px solid ${T.border}`, borderRadius: 10,
+      width: "100%", border: `1px solid ${T.border}`, borderRadius: 10,
       padding: "10px 14px", fontSize: 14, fontFamily: "inherit",
-      color: T.text, background: T.white, boxSizing: "border-box",
+      color: "#fff", background: "rgba(0,0,0,0.2)", boxSizing: "border-box",
       outline: "none",
     },
     label: { fontSize: 12, fontWeight: 700, color: T.textLight, marginBottom: 4, display: "block", textTransform: "uppercase", letterSpacing: 0.5 },
@@ -323,13 +328,20 @@ export default function Dashboard() {
       padding: "8px 18px", borderRadius: 10, border: "none", cursor: "pointer",
       fontWeight: 700, fontSize: 13, transition: "all 0.15s",
       background: active ? T.brand : "transparent",
-      color: active ? T.white : T.textMid,
+      color: active ? "#0B0E14" : T.textMid,
     }),
   };
 
   /* ─── RENDER ──────────────────────────────────────────────── */
   return (
     <div style={S.root}>
+      {/* ── Dynamic Ambient Backgrounds ── */}
+      <div style={{
+        position: "absolute", top: "-15%", left: "-5%", width: "40vw", height: "40vw",
+        background: "radial-gradient(circle, rgba(6,214,160,0.15) 0%, rgba(0,0,0,0) 70%)",
+        zIndex: 0, filter: "blur(60px)", pointerEvents: "none"
+      }}></div>
+      
       {/* HEADER */}
       <header style={S.header}>
         <div style={S.headerInner}>
@@ -343,7 +355,7 @@ export default function Dashboard() {
 
           {/* TICKER */}
           <div style={S.ticker} onClick={() => setTickerPaused(p => !p)}>
-            <span style={{ fontSize: 10, color: T.brandLight, marginRight: 10, flexShrink: 0, letterSpacing: 0.8 }}>
+            <span style={{ fontSize: 10, color: T.brand, marginRight: 10, flexShrink: 0, letterSpacing: 0.8 }}>
               {tickerPaused ? "⏸ PAUSED" : "● LIVE"}
             </span>
             <div style={{ overflow: "hidden", flex: 1 }}>
@@ -356,9 +368,9 @@ export default function Dashboard() {
                 }}
               >
                 {[...CROPS_DATA, ...CROPS_DATA].map((c, i) => (
-                  <span key={i} style={{ fontSize: 12, color: T.white }}>
+                  <span key={i} style={{ fontSize: 12, color: "#fff" }}>
                     {c.emoji} <b>{c.name}</b>{" "}
-                    <span style={{ color: c.change > 0 ? T.brandLight : T.redLight, fontWeight: 700 }}>
+                    <span style={{ color: c.change > 0 ? T.brand : T.red, fontWeight: 700 }}>
                       ₹{fmt(c.currentPrice)} {pct(c.change)}
                     </span>
                   </span>
@@ -379,9 +391,9 @@ export default function Dashboard() {
               <span style={{ display: "inline-block", animation: refreshing ? "spin 0.8s linear infinite" : "none" }}>⟳</span>
               {refreshing ? "Updating…" : "Refresh"}
             </button>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 11, color: T.brandLight }}>Last updated</div>
-              <div style={{ fontSize: 12, color: T.white, fontWeight: 700 }}>
+            <div style={{ textAlign: "right", marginLeft: 8 }}>
+              <div style={{ fontSize: 11, color: T.textLight }}>Last updated</div>
+              <div style={{ fontSize: 12, color: "#fff", fontWeight: 700 }}>
                 {lastUpdate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}
               </div>
             </div>
@@ -390,7 +402,7 @@ export default function Dashboard() {
       </header>
 
       {/* TABS */}
-      <div style={{ background: T.white, borderBottom: `1px solid ${T.border}`, padding: "0 28px" }}>
+      <div style={{ background: "rgba(11, 14, 20, 0.4)", backdropFilter: "blur(20px)", borderBottom: `1px solid ${T.border}`, padding: "0 28px", position: "relative", zIndex: 10 }}>
         <div style={{ display: "flex", gap: 4, paddingTop: 8 }}>
           {["overview","markets","analysis","calculator"].map(t => (
             <button key={t} onClick={() => setActiveTab(t)} style={S.tab(activeTab === t)}>
@@ -425,7 +437,7 @@ export default function Dashboard() {
               <div style={{ display: "flex", alignItems: "flex-end", gap: 20, flexWrap: "wrap" }}>
                 <div>
                   <div style={{ fontSize: 12, color: T.brandLight, fontWeight: 600, marginBottom: 2 }}>CURRENT PRICE</div>
-                  <div style={{ fontSize: 44, fontWeight: 900, color: T.white, fontFamily: "'DM Mono', monospace", lineHeight: 1 }}>
+                  <div style={{ fontSize: 44, fontWeight: 900, color: T.white, fontFamily: "'Space Grotesk', monospace", lineHeight: 1 }}>
                     ₹{fmt(animPrice)}
                   </div>
                 </div>
@@ -769,7 +781,7 @@ export default function Dashboard() {
               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", fontWeight: 700 }}>
                 {profit >= 0 ? "📈 TOTAL PROFIT" : "📉 TOTAL LOSS"}
               </div>
-              <div style={{ fontSize: 32, fontWeight: 900, color: T.white, fontFamily: "'DM Mono', monospace" }}>
+              <div style={{ fontSize: 32, fontWeight: 900, color: T.white, fontFamily: "'Space Grotesk', monospace" }}>
                 ₹{fmt(Math.abs(Math.round(profit)))}
               </div>
               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.75)" }}>

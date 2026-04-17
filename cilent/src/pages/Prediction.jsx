@@ -17,33 +17,33 @@ import {
 
 /* ─── THEME ─────────────────────────────────────────────────── */
 const T = {
-  brand:      "#2d6a4f",
-  brandMid:   "#40916c",
-  brandLight: "#74c69d",
-  brandPale:  "#d8f3dc",
-  brandXPale: "#f0faf2",
-  amber:      "#e76f00",
-  amberLight: "#fb8500",
-  amberPale:  "#fff7ed",
-  red:        "#c0392b",
-  redLight:   "#e74c3c",
-  redPale:    "#fdf1f0",
-  blue:       "#1d6fb8",
+  brand:      "#06d6a0",
+  brandMid:   "#05b486",
+  brandLight: "#34e8b9",
+  brandPale:  "rgba(6, 214, 160, 0.15)",
+  brandXPale: "rgba(6, 214, 160, 0.05)",
+  amber:      "#ffd166",
+  amberLight: "#ffdd8b",
+  amberPale:  "rgba(255, 209, 102, 0.15)",
+  red:        "#ef476f",
+  redLight:   "#f26b8b",
+  redPale:    "rgba(239, 71, 111, 0.15)",
+  blue:       "#118ab2",
   blueLight:  "#3b82f6",
-  bluePale:   "#eff6ff",
-  purple:     "#6d28d9",
+  bluePale:   "rgba(17, 138, 178, 0.15)",
+  purple:     "#073b4c",
   purpleLight:"#8b5cf6",
-  purplePale: "#f5f3ff",
-  gold:       "#d97706",
-  goldPale:   "#fffbeb",
-  dark:       "#1b2e22",
-  darkMid:    "#243b2d",
-  text:       "#1a2e1f",
-  textMid:    "#3a5a44",
-  textLight:  "#6b8f76",
-  border:     "#c8e6d0",
-  bg:         "#f7fcf8",
-  white:      "#ffffff",
+  purplePale: "rgba(7, 59, 76, 0.15)",
+  gold:       "#ff9f1c",
+  goldPale:   "rgba(255, 159, 28, 0.15)",
+  dark:       "#FFFFFF",
+  darkMid:    "#E2E8F0",
+  text:       "#E2E8F0",
+  textMid:    "#94a3b8",
+  textLight:  "#64748b",
+  border:     "rgba(255, 255, 255, 0.05)",
+  bg:         "#0B0E14",
+  white:      "rgba(15, 23, 42, 0.6)",
 };
 
 /* ─── DUMMY DATA ─────────────────────────────────────────────── */
@@ -328,57 +328,65 @@ export default function Prediction() {
 
   /* ─── STYLES ──────────────────────────────────────────────── */
   const card = {
-    background: T.white, borderRadius: 18,
-    border: `1.5px solid ${T.border}`,
-    boxShadow: "0 2px 16px rgba(45,106,79,0.07)",
+    background: "rgba(15, 23, 42, 0.6)", borderRadius: 18,
+    border: `1px solid ${T.border}`,
+    backdropFilter: "blur(12px)",
     overflow: "hidden",
   };
   const cardHead = {
     padding: "18px 22px 14px", borderBottom: `1px solid ${T.border}`,
     display: "flex", alignItems: "center", justifyContent: "space-between",
   };
-  const cardTitle = { margin: 0, fontSize: 15, fontWeight: 800, color: T.dark };
+  const cardTitle = { margin: 0, fontSize: 15, fontWeight: 800, color: "#fff" };
   const btn = (active, col = T.brand) => ({
     padding: "6px 14px", borderRadius: 9, border: "none", cursor: "pointer",
     fontWeight: 700, fontSize: 12, transition: "all 0.15s",
-    background: active ? col : `${col}18`, color: active ? T.white : col,
+    background: active ? col : `rgba(255,255,255,0.05)`, color: active ? "#0B0E14" : "#fff",
   });
   const label = { fontSize: 11, fontWeight: 700, color: T.textLight, textTransform: "uppercase", letterSpacing: 0.5 };
 
   return (
-    <div style={{ fontFamily: "'Nunito','Segoe UI',sans-serif", background: T.bg, minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Outfit','Segoe UI',sans-serif", background: T.bg, minHeight: "100vh", position: "relative", color: T.text }}>
+      
+      {/* ── Dynamic Ambient Backgrounds ── */}
+      <div style={{
+        position: "absolute", top: "-15%", left: "-5%", width: "40vw", height: "40vw",
+        background: "radial-gradient(circle, rgba(6,214,160,0.15) 0%, rgba(0,0,0,0) 70%)",
+        zIndex: 0, filter: "blur(60px)", pointerEvents: "none"
+      }}></div>
 
       {/* ── HEADER ── */}
       <header style={{
-        background: `linear-gradient(135deg, ${T.dark} 0%, ${T.darkMid} 55%, ${T.brand} 100%)`,
-        padding: "0 28px", boxShadow: "0 4px 24px rgba(27,46,34,0.28)",
-        position: "sticky", top: 0, zIndex: 100,
+        background: "rgba(11, 14, 20, 0.7)",
+        backdropFilter: "blur(20px)",
+        borderBottom: `1px solid ${T.border}`,
+        padding: "0 28px", position: "sticky", top: 0, zIndex: 100,
       }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", height:64 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
             <span style={{ fontSize:28 }}>🤖</span>
             <div>
-              <div style={{ fontSize:20, fontWeight:900, color:T.white, letterSpacing:-0.5 }}>AI Price Predictor</div>
-              <div style={{ fontSize:11, color:T.brandLight, fontWeight:600, letterSpacing:1, textTransform:"uppercase" }}>
+              <div style={{ fontSize:20, fontWeight:900, color:"#fff", letterSpacing:-0.5, fontFamily: "'Space Grotesk', sans-serif" }}>AI Price Predictor</div>
+              <div style={{ fontSize:11, color:T.brand, fontWeight:600, letterSpacing:1, textTransform:"uppercase" }}>
                 KrishiMart · ML-Powered Forecasting
               </div>
             </div>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:14 }}>
             <div style={{
-              background:"rgba(116,198,157,0.18)", borderRadius:10,
+              background:"rgba(6, 214, 160, 0.1)", borderRadius:10, border: `1px solid rgba(6,214,160,0.3)`,
               padding:"8px 16px", display:"flex", alignItems:"center", gap:8,
             }}>
-              <div style={{ width:8, height:8, borderRadius:"50%", background:"#7ee8a2",
+              <div style={{ width:8, height:8, borderRadius:"50%", background:T.brand,
                 animation:"pulse 1.5s ease-in-out infinite" }} />
-              <span style={{ fontSize:12, color:T.white, fontWeight:700 }}>Model Live</span>
+              <span style={{ fontSize:12, color:"#fff", fontWeight:700 }}>Model Live</span>
               <span style={{ fontSize:12, color:T.brandLight }}>
                 Accuracy: <b>{accuracy?.overall ?? 87}%</b>
               </span>
             </div>
             <div style={{ textAlign:"right" }}>
-              <div style={{ fontSize:11, color:T.brandLight }}>Last run</div>
-              <div style={{ fontSize:12, color:T.white, fontWeight:700 }}>
+              <div style={{ fontSize:11, color:T.textLight }}>Last run</div>
+              <div style={{ fontSize:12, color:"#fff", fontWeight:700 }}>
                 {new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
               </div>
             </div>
@@ -386,7 +394,7 @@ export default function Prediction() {
         </div>
       </header>
 
-      <main style={{ padding:"24px 28px", maxWidth:1440, margin:"0 auto" }}>
+      <main style={{ padding:"24px 28px", maxWidth:1440, margin:"0 auto", position: "relative", zIndex: 1 }}>
 
         {/* ── STAT CARDS ── */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:16, marginBottom:24 }}>
@@ -408,9 +416,9 @@ export default function Prediction() {
                   key={c.id}
                   onClick={() => setSelectedId(c.id)}
                   style={{
-                    border: active ? `2px solid ${sig.color}` : `1.5px solid ${T.border}`,
+                    border: active ? `2px solid ${sig.color}` : `1px solid ${T.border}`,
                     borderRadius:14, padding:"10px 16px", cursor:"pointer", transition:"all 0.15s",
-                    background: active ? `${sig.color}12` : T.white,
+                    background: active ? `${sig.color}12` : "rgba(255,255,255,0.03)",
                     boxShadow: active ? `0 4px 16px ${sig.color}30` : "none",
                     transform: active ? "translateY(-2px)" : "none",
                   }}
@@ -418,7 +426,7 @@ export default function Prediction() {
                   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                     <span style={{ fontSize:18 }}>{c.emoji}</span>
                     <div style={{ textAlign:"left" }}>
-                      <div style={{ fontSize:13, fontWeight:800, color:T.dark }}>{c.name}</div>
+                      <div style={{ fontSize:13, fontWeight:800, color:"#fff" }}>{c.name}</div>
                       <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:2 }}>
                         <span style={{ fontSize:10, fontWeight:800, color:sig.color,
                           background:sig.bg, padding:"1px 6px", borderRadius:8 }}>
@@ -439,8 +447,8 @@ export default function Prediction() {
         {/* ── HERO PREDICTION PANEL ── */}
         <div style={{
           ...card, marginBottom:24,
-          background:`linear-gradient(135deg, ${T.dark} 0%, ${T.darkMid} 50%, #1f4033 100%)`,
-          border:"none",
+          background:`linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%)`,
+          border:`1px solid rgba(255,255,255,0.1)`,
         }}>
           <div style={{ padding:"28px 32px", display:"grid", gridTemplateColumns:"1fr auto 1fr", gap:32, alignItems:"center" }}>
 
@@ -449,30 +457,31 @@ export default function Prediction() {
               <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:16 }}>
                 <div style={{
                   width:64, height:64, borderRadius:20, fontSize:32,
-                  background:"rgba(255,255,255,0.1)", display:"flex",
+                  background:"rgba(255,255,255,0.05)", display:"flex",
                   alignItems:"center", justifyContent:"center",
-                  boxShadow:"0 4px 16px rgba(0,0,0,0.3)",
+                  boxShadow:"0 4px 16px rgba(0,0,0,0.5)",
                 }}>{crop.emoji}</div>
                 <div>
-                  <h2 style={{ margin:0, fontSize:26, fontWeight:900, color:T.white }}>{crop.name}</h2>
-                  <span style={{ fontSize:13, color:T.brandLight }}>{crop.category} · AI Forecast Active</span>
+                  <h2 style={{ margin:0, fontSize:26, fontWeight:900, color:"#fff" }}>{crop.name}</h2>
+                  <span style={{ fontSize:13, color:T.brand }}>{crop.category} · AI Forecast Active</span>
                 </div>
               </div>
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
                 {[
                   { l:"Current Price", v:`₹${fmt(animPrice)}`, big:true },
                   { l:"Prev Close",    v:`₹${fmt(crop.prevPrice)}` },
-                  { l:"24h Change",    v:pct(crop.change), color: crop.change>0 ? T.brandLight : T.redLight },
+                  { l:"24h Change",    v:pct(crop.change), color: crop.change>0 ? T.brand : T.red },
                   { l:"Predicted (7d)",v:`₹${fmt(Math.round(crop.currentPrice*(1+(crop.change>0?0.04:-0.02))))}` },
                 ].map((m,i) => (
                   <div key={i} style={{
-                    background:"rgba(255,255,255,0.07)", borderRadius:12, padding:"12px 16px",
+                    background:"rgba(255,255,255,0.03)", borderRadius:12, padding:"12px 16px",
+                    border: "1px solid rgba(255,255,255,0.05)"
                   }}>
                     <div style={{ fontSize:11, color:"rgba(255,255,255,0.5)", fontWeight:700, marginBottom:4 }}>{m.l}</div>
                     <div style={{
                       fontSize: m.big ? 26 : 18, fontWeight:900,
-                      color: m.color || T.white,
-                      fontFamily:"'DM Mono',monospace",
+                      color: m.color || "#fff",
+                      fontFamily:"'Space Grotesk',monospace",
                     }}>{m.v}</div>
                   </div>
                 ))}
