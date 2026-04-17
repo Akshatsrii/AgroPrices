@@ -324,7 +324,7 @@ npm run dev
 | 📍 GPS-Based Mandi Suggestion | 🔄 In Progress |
 | 🚨 Smart Weather Alerts | 🔄 In Progress |
 | 🗣️ Hindi / Regional Language | 📅 Planned |
-| 🔊 Voice Assistant | 📅 Planned |
+
 
 <br/>
 
