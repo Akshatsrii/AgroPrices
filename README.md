@@ -321,7 +321,6 @@ npm run dev
 | 🤖 AI Price Prediction View | ✅ Ready |
 | 📈 Price Trend Charts | ✅ Ready |
 | 💰 Profit Calculator | ✅ Ready |
-| 🚨 Smart Weather Alerts | 🔄 In Progress |
 | 🗣️ Hindi / Regional Language | 📅 Planned |
 
 
