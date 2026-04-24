@@ -266,7 +266,8 @@ agroprice-ai/
         └── index.css
 ```
 
-<br/>
+<br/> 
+And Further the ml service and server also connected .......
 
 ---
 
