@@ -291,8 +291,6 @@ npm install tailwindcss @tailwindcss/vite
 # 4. Start development server
 npm run dev
 
-# 5. Open in browser
-# → http://localhost:5173
 ```
 
 <br/>
