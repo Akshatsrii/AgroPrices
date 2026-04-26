@@ -166,12 +166,11 @@ That's ₹7/kg lost — every single day — just due to lack of information.
                          │  nav → /insights
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    INSIGHTS PAGE "/insights"                 │
-│                                                              │
-│  📊 Price History Chart    ← TrendGraph.jsx                  │
+│                    INSIGHTS PAGE "/insights"                │
+│                                                             │
+│  📊 Price History Chart    ← TrendGraph.jsx                │
 │  🚨 Weather Alert: Rain expected — prices may drop          │
-│  💰 Profit Calculator: Enter qty → see earnings             │
-│  ← InsightCard.jsx + AlertBox.jsx                            │
+│  💰 Profit Calculator: Enter qty → see earnings             │                            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
