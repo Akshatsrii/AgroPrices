@@ -266,7 +266,7 @@ agroprice-ai/
 ```
 
 <br/> 
-And Further the ml service and server also connected .......
+And Further the ml service and server also connectedand service will start soon .......
 
 ---
 
