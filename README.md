@@ -267,6 +267,7 @@ agroprice-ai/
 
 <br/> 
 And Further the ml service and server also connectedand service will start soon .......
+Server has pushed but some errors are coming.
 
 ---
 
