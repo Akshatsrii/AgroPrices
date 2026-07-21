@@ -1,152 +1,63 @@
 import React from 'react';
-import './Projects.css';
 
 export function Projects() {
   const projects = [
     {
-      id: 1,
-      badge: "Prediction Model",
-      image: "https://images.unsplash.com/photo-1592982537447-6f23f5c71c4f?auto=format&fit=crop&w=800&q=80",
-      title: "Pan-India Price Prediction Engine",
-      location: "Maharashtra",
-      stat1: "98% Accuracy",
-      year: "2023"
+      title: "Ramganj Mandi Integration",
+      desc: "Successfully integrated real-time API feeds from one of the largest coriander markets in Asia, reducing price latency to under 2 seconds.",
+      category: "Data Infrastructure",
+      impact: "Benefiting 12,000+ local farmers"
     },
     {
-      id: 2,
-      badge: "Logistics",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8ed7c83a56?auto=format&fit=crop&w=800&q=80",
-      title: "National Transport Optimizer",
-      location: "New Delhi",
-      stat1: "25% Cost Saved",
-      year: "2023"
+      title: "Soybean Yield Predictor",
+      desc: "Developed a custom machine learning model for the Malwa region that correlates historical weather patterns with local soybean prices.",
+      category: "AI & Machine Learning",
+      impact: "89% prediction accuracy"
     },
     {
-      id: 3,
-      badge: "Market Data",
-      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80",
-      title: "APMC Real-time Dashboard",
-      location: "Telangana",
-      stat1: "500+ Mandis",
-      year: "2022"
-    },
-    {
-      id: 4,
-      badge: "Analytics",
-      image: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80",
-      title: "Crop Yield Forecasting",
-      location: "Karnataka",
-      stat1: "15 Crops",
-      year: "2022"
-    },
-    {
-      id: 5,
-      badge: "Prediction Model",
-      image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80",
-      title: "Gujarat Coastal Supply Chain",
-      location: "Gujarat",
-      stat1: "95% Accuracy",
-      year: "2021"
-    },
-    {
-      id: 6,
-      badge: "Logistics",
-      image: "https://images.unsplash.com/photo-1590682680695-43b964a3ae17?auto=format&fit=crop&w=800&q=80",
-      title: "Chennai Peripheral Hub Routing",
-      location: "Tamil Nadu",
-      stat1: "1.2M Tons",
-      year: "2021"
-    },
-    {
-      id: 7,
-      badge: "Market Data",
-      image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=800&q=80",
-      title: "Rajasthan Desert Network",
-      location: "Rajasthan",
-      stat1: "180 Mandis",
-      year: "2020"
-    },
-    {
-      id: 8,
-      badge: "Analytics",
-      image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80",
-      title: "Kolkata Demand Forecaster",
-      location: "West Bengal",
-      stat1: "Daily Updates",
-      year: "2020"
+      title: "Vernacular Voice Bot",
+      desc: "Launched a voice-first WhatsApp bot allowing farmers to ask 'Aaj ka bhav kya hai?' in Hindi and Marathi and receive instant AI recommendations.",
+      category: "Accessibility",
+      impact: "Used by 45,000+ non-smartphone users"
     }
   ];
 
   return (
-    <div className="projects-page-wrapper">
-      {/* Projects Grid Section */}
-      <section className="projects-grid-section">
-        <div className="container">
-          <div className="projects-grid-4">
-            {projects.map(project => (
-              <div key={project.id} className="project-card-full">
-                <div className="project-img-wrapper">
-                  <span className="project-pill">{project.badge}</span>
-                  <img src={project.image} alt={project.title} />
-                </div>
-                <div className="project-content-full">
-                  <h3 className="project-card-title">{project.title}</h3>
-                  <div className="project-location">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    <span>{project.location}</span>
-                  </div>
-                  <div className="project-stats-row">
-                    <div className="project-stat-item text-orange">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                      <span className="text-muted text-sm font-medium ml-1">{project.stat1}</span>
-                    </div>
-                    <div className="project-stat-item text-orange ml-4">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                      <span className="text-muted text-sm font-medium ml-1">{project.year}</span>
-                    </div>
-                  </div>
+    <div className="flex flex-col w-full bg-white">
+      {/* Header */}
+      <section className="pt-20 pb-16 px-6 md:px-12 bg-green-bg border-b border-border">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="inline-flex items-center gap-2 bg-white text-green-dark text-[13px] font-semibold py-2 px-[18px] rounded-full mb-6 shadow-sm border border-border">
+            Our Portfolio
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-navy mb-6">Success Stories & Projects</h1>
+          <p className="text-xl text-text-muted max-w-[700px]">
+            Explore how AgroPrice AI is transforming the agricultural landscape through data, AI, and accessibility.
+          </p>
+        </div>
+      </section>
+
+      {/* Grid */}
+      <section className="py-24 px-6 md:px-12">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <div key={index} className="bg-white rounded-2xl border border-border overflow-hidden flex flex-col hover:shadow-xl transition-shadow group">
+              <div className="h-48 bg-navy relative overflow-hidden">
+                <div className="absolute inset-0 bg-green opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div className="absolute bottom-4 left-4 bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded">
+                  {project.category}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Dark Stats Banner */}
-      <section className="dark-stats-banner">
-        <div className="container stats-banner-container">
-          <div className="banner-stat">
-            <h2 className="banner-stat-number text-orange">150<span className="text-orange">+</span></h2>
-            <p className="banner-stat-text">Models Deployed</p>
-          </div>
-          <div className="banner-stat">
-            <h2 className="banner-stat-number text-orange">2,500<span className="text-orange">+</span></h2>
-            <p className="banner-stat-text">Mandis Tracked</p>
-          </div>
-          <div className="banner-stat">
-            <h2 className="banner-stat-number text-orange">15</h2>
-            <p className="banner-stat-text">States Covered</p>
-          </div>
-          <div className="banner-stat">
-            <h2 className="banner-stat-number text-orange">₹500 Cr<span className="text-orange">+</span></h2>
-            <p className="banner-stat-text">Value Delivered</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Our Clients Section */}
-      <section className="clients-section">
-        <div className="container text-center">
-          <h2 className="clients-title">Our Clients</h2>
-          
-          <div className="clients-grid">
-            <div className="client-box">APMC</div>
-            <div className="client-box">Agmarknet</div>
-            <div className="client-box">ITC e-Choupal</div>
-            <div className="client-box">NAFED</div>
-            <div className="client-box">State Govts</div>
-            <div className="client-box">Private</div>
-          </div>
+              <div className="p-8 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-navy mb-4">{project.title}</h3>
+                <p className="text-text-muted leading-relaxed mb-6 flex-1">{project.desc}</p>
+                <div className="pt-6 border-t border-border flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-green-bg flex items-center justify-center text-green-dark">📈</div>
+                  <span className="text-sm font-semibold text-navy">{project.impact}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
