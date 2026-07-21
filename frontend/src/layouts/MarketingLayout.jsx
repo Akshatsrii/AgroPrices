@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { Footer } from '../components/Footer';
+import { Chatbot } from '../components/Chatbot';
 
 export function MarketingLayout() {
   const location = useLocation();
@@ -55,6 +56,7 @@ export function MarketingLayout() {
 
       {/* Footer */}
       <Footer />
+      <Chatbot />
     </div>
   );
 }
