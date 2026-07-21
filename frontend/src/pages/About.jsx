@@ -1,147 +1,79 @@
 import React from 'react';
-import './About.css';
 
 export function About() {
   return (
-    <div className="about-page-wrapper">
+    <div className="flex flex-col w-full bg-white">
       {/* Hero Section */}
-      <section className="about-hero">
-        <div className="container about-container">
-          
-          <div className="about-content">
-            <div className="about-badge">
-              About AgroPrice AI
+      <section className="relative pt-20 pb-24 px-6 md:px-12 bg-navy text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10"></div>
+        <div className="max-w-[1000px] mx-auto relative z-10 text-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6">About AgroPrice AI</h1>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-[800px] mx-auto leading-relaxed">
+            We are not just a crop price portal. We are an AI-powered agricultural decision intelligence platform built for the Indian farmer.
+          </p>
+        </div>
+      </section>
+
+      {/* Philosophy Section */}
+      <section className="py-24 px-6 md:px-12">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-green-bg text-green-dark text-[13px] font-semibold py-2 px-[18px] rounded-full mb-6">
+              Our Philosophy
             </div>
-            
-            <h1 className="about-title">
-              Building Agriculture's <br/>
-              Intelligence <br/>
-              <span className="text-orange">Since 2018</span>
-            </h1>
-            
-            <p className="about-desc">
-              AgroPrice AI is one of India's leading agricultural decision engines, with a proven track record of delivering world-class market insights, price predictions, and transport optimization that connect farmers and drive economic growth.
+            <h2 className="text-3xl md:text-5xl font-extrabold text-navy mb-6 leading-tight">Data is useless without decisions.</h2>
+            <p className="text-lg text-text-muted mb-6 leading-relaxed">
+              Most platforms simply show "Today's Mandi Price = ₹18/kg". That doesn't help a farmer who wants ₹25/kg. It leaves them confused.
             </p>
-            
-            <p className="about-desc">
-              Established in 2018, we have grown from a small analytical tool to a national powerhouse tracking over 2,500 mandis. Our commitment to accuracy, reliability, and timely data has earned us the trust of government bodies and private enterprises alike.
+            <p className="text-lg text-text-muted leading-relaxed">
+              Our philosophy is simple: <strong className="text-navy">Never show raw data when you can provide a direct recommendation.</strong> AgroPrice AI calculates transport costs, predicts future trends, and compares village trader offers against nearby mandis to give a single, actionable instruction.
             </p>
           </div>
-
-          <div className="about-image-wrapper">
-            <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=80" alt="Agriculture Field" className="about-img" />
-          </div>
-          
-        </div>
-      </section>
-
-      {/* Vision & Mission */}
-      <section className="vision-mission-section">
-        <div className="container vision-mission-container">
-          <div className="vm-card vision-card">
-            <div className="vm-icon-wrapper-dark">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </div>
-            <h2 className="vm-title">Our Vision</h2>
-            <p className="vm-desc">To be India's most trusted agricultural intelligence platform, empowering farmers with data-driven insights and revolutionizing the food supply chain for generations to come.</p>
-          </div>
-          
-          <div className="vm-card mission-card">
-            <div className="vm-icon-wrapper-light">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-            </div>
-            <h2 className="vm-title text-primary">Our Mission</h2>
-            <p className="vm-desc text-muted">To deliver real-time, accurate market pricing and transport optimization through innovative AI. We aim to maximize profitability for farmers while contributing to a sustainable agricultural ecosystem.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values */}
-      <section className="core-values-section">
-        <div className="container text-center">
-          <h2 className="section-title">Our Core Values</h2>
-          <p className="section-subtitle mx-auto" style={{maxWidth: '600px'}}>The principles that guide everything we do at AgroPrice AI.</p>
-          
-          <div className="values-grid">
-            <div className="value-card text-left">
-              <div className="value-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-              <h4 className="font-bold mb-2">Accuracy Excellence</h4>
-              <p className="text-sm text-muted">We never compromise on data precision. Every predictive model meets the highest standards of reliability.</p>
-            </div>
-            <div className="value-card text-left">
-              <div className="value-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-              <h4 className="font-bold mb-2">Farmer First</h4>
-              <p className="text-sm text-muted">The prosperity of our farmers is our top priority in every solution we develop and deploy.</p>
-            </div>
-            <div className="value-card text-left">
-              <div className="value-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line><line x1="4.93" y1="19.07" x2="19.07" y2="4.93"></line></svg></div>
-              <h4 className="font-bold mb-2">Innovation</h4>
-              <p className="text-sm text-muted">We embrace cutting-edge AI and machine learning to deliver faster, smarter agricultural insights.</p>
-            </div>
-            <div className="value-card text-left">
-              <div className="value-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-              <h4 className="font-bold mb-2">Sustainability</h4>
-              <p className="text-sm text-muted">We are committed to reducing waste and promoting environmentally responsible transport practices.</p>
+          <div className="bg-green-bg p-8 md:p-12 rounded-[24px] border border-border">
+            <h3 className="text-2xl font-bold text-navy mb-6">The Real Problem We Solve</h3>
+            <ul className="space-y-4">
+              <li className="flex gap-4">
+                <span className="text-red-500 font-bold">❌</span>
+                <span className="text-text-muted">Farmers don't know the exact transport cost to distant mandis.</span>
+              </li>
+              <li className="flex gap-4">
+                <span className="text-red-500 font-bold">❌</span>
+                <span className="text-text-muted">Farmers sell blindly to village traders due to lack of market intelligence.</span>
+              </li>
+              <li className="flex gap-4">
+                <span className="text-red-500 font-bold">❌</span>
+                <span className="text-text-muted">Farmers don't know if waiting 2 days will increase profits.</span>
+              </li>
+            </ul>
+            <div className="mt-8 pt-8 border-t border-green-light">
+              <h4 className="font-bold text-green-dark mb-4">Our AI Solution</h4>
+              <p className="text-navy font-semibold italic text-lg">"Wait 2 days and sell in Ramganj Mandi for ₹1,450 net extra profit."</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Journey */}
-      <section className="journey-section">
-        <div className="container text-center">
-          <h2 className="section-title">Our Journey</h2>
-          <p className="section-subtitle mx-auto" style={{maxWidth: '600px'}}>Key milestones that have shaped our growth and established us as a leader in agricultural intelligence.</p>
-          
-          <div className="timeline">
-            {/* Item 1 */}
-            <div className="timeline-item left">
-              <div className="timeline-content">
-                <span className="timeline-year">2018</span>
-                <h4 className="font-bold mt-2">Company Founded</h4>
-                <p className="text-sm text-muted mt-1">AgroPrice AI was established with a vision to transform agricultural decision-making.</p>
-              </div>
-            </div>
-            {/* Item 2 */}
-            <div className="timeline-item right">
-              <div className="timeline-content">
-                <span className="timeline-year">2020</span>
-                <h4 className="font-bold mt-2">First AI Prediction Engine</h4>
-                <p className="text-sm text-muted mt-1">Launched our first live price prediction model across 500 mandis.</p>
-              </div>
-            </div>
-            {/* Item 3 */}
-            <div className="timeline-item left">
-              <div className="timeline-content">
-                <span className="timeline-year">2022</span>
-                <h4 className="font-bold mt-2">Pan-India Expansion</h4>
-                <p className="text-sm text-muted mt-1">Expanded operations to 15 states with real-time transport optimization.</p>
-              </div>
-            </div>
-            {/* Item 4 */}
-            <div className="timeline-item right">
-              <div className="timeline-content">
-                <span className="timeline-year">2024</span>
-                <h4 className="font-bold mt-2">2,500+ Mandis Tracked</h4>
-                <p className="text-sm text-muted mt-1">Crossed the landmark of tracking 2,500+ agricultural markets.</p>
-              </div>
-            </div>
-            {/* Item 5 */}
-            <div className="timeline-item left">
-              <div className="timeline-content">
-                <span className="timeline-year">2025</span>
-                <h4 className="font-bold mt-2">Global Recognition</h4>
-                <p className="text-sm text-muted mt-1">Awarded for excellence in AI-driven agricultural solutions and data precision.</p>
-              </div>
-            </div>
-            {/* Item 6 */}
-            <div className="timeline-item right">
-              <div className="timeline-content">
-                <span className="timeline-year">2026</span>
-                <h4 className="font-bold mt-2">Green Logistics</h4>
-                <p className="text-sm text-muted mt-1">Launched sustainable transport routing to minimize carbon footprint across all operations.</p>
-              </div>
-            </div>
+      {/* Target Audience */}
+      <section className="py-24 px-6 md:px-12 bg-gray-50 border-y border-border">
+        <div className="max-w-[1280px] mx-auto text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-navy mb-4">Who Is This For?</h2>
+          <p className="text-lg text-text-muted">Built primarily for the backbone of India, but scalable for the entire ecosystem.</p>
+        </div>
+        <div className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white p-8 rounded-2xl border border-border shadow-sm text-center">
+            <div className="w-16 h-16 bg-green-bg rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">👨🏽‍🌾</div>
+            <h3 className="text-xl font-bold text-navy mb-2">Primary Users</h3>
+            <p className="text-text-muted">Small, medium, and large-scale farmers looking to maximize their harvest profits.</p>
+          </div>
+          <div className="bg-white p-8 rounded-2xl border border-border shadow-sm text-center">
+            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">🏬</div>
+            <h3 className="text-xl font-bold text-navy mb-2">Secondary Users</h3>
+            <p className="text-text-muted">Village traders, commission agents, and wholesale buyers managing supply chains.</p>
+          </div>
+          <div className="bg-white p-8 rounded-2xl border border-border shadow-sm text-center">
+            <div className="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">🏛️</div>
+            <h3 className="text-xl font-bold text-navy mb-2">Future Scope</h3>
+            <p className="text-text-muted">Government agencies, banks, insurance companies, and food processing units.</p>
           </div>
         </div>
       </section>
