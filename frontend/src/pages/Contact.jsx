@@ -1,85 +1,98 @@
 import React from 'react';
-import './Contact.css';
 
 export function Contact() {
   return (
-    <div className="contact-page-wrapper">
-      <section className="contact-hero">
-        <div className="container text-center">
-          <h1 className="contact-title">Get In <span className="text-orange">Touch</span></h1>
-          <p className="contact-subtitle mx-auto">
-            Have questions about our API, custom enterprise models, or pricing? Our dedicated team is here to help you revolutionize your agricultural workflow.
-          </p>
-        </div>
+    <div className="flex flex-col w-full bg-white">
+      {/* Header */}
+      <section className="pt-20 pb-16 px-6 md:px-12 bg-navy text-white text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Get in Touch</h1>
+        <p className="text-xl text-gray-300 max-w-[700px] mx-auto">
+          Have a question about our AI recommendations? Want to partner with us? We'd love to hear from you.
+        </p>
       </section>
 
-      <section className="contact-main-section">
-        <div className="container contact-container">
-          <div className="contact-info">
-            <h2 className="info-title">Contact Information</h2>
-            <p className="info-desc text-muted mb-6">Fill out the form and our team will get back to you within 24 hours.</p>
+      {/* Main Content */}
+      <section className="py-24 px-6 md:px-12">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+          
+          {/* Contact Info */}
+          <div>
+            <h2 className="text-3xl font-extrabold text-navy mb-8">Reach Out to Us</h2>
             
-            <div className="info-item">
-              <span className="info-icon">📍</span>
-              <div>
-                <h4 className="font-bold">Headquarters</h4>
-                <p className="text-muted text-sm mt-1">123 Tech Park, Sector 4<br/>Bengaluru, Karnataka 560001<br/>India</p>
+            <div className="space-y-8">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center text-green-dark shrink-0">📍</div>
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-1">Our Office</h4>
+                  <p className="text-text-muted leading-relaxed">
+                    123 Agri-Tech Park, Level 4<br />
+                    Pune, Maharashtra 411045<br />
+                    India
+                  </p>
+                </div>
               </div>
-            </div>
-            
-            <div className="info-item">
-              <span className="info-icon">📞</span>
-              <div>
-                <h4 className="font-bold">Phone</h4>
-                <p className="text-muted text-sm mt-1">+91 (800) 123-4567</p>
+
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center text-green-dark shrink-0">📞</div>
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-1">Phone</h4>
+                  <p className="text-text-muted leading-relaxed">
+                    +91 98765 43210<br />
+                    <span className="text-sm italic">Mon-Sat, 9AM to 6PM</span>
+                  </p>
+                </div>
               </div>
-            </div>
-            
-            <div className="info-item">
-              <span className="info-icon">✉️</span>
-              <div>
-                <h4 className="font-bold">Email</h4>
-                <p className="text-muted text-sm mt-1">enterprise@agroprice.ai</p>
+
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center text-green-dark shrink-0">✉️</div>
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-1">Email</h4>
+                  <p className="text-text-muted leading-relaxed">
+                    support@agroprice.ai<br />
+                    partnerships@agroprice.ai
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div className="contact-form-wrapper">
-            <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="firstName">First Name</label>
-                  <input type="text" id="firstName" placeholder="Jane" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="lastName">Last Name</label>
-                  <input type="text" id="lastName" placeholder="Doe" />
-                </div>
+
+          {/* Contact Form */}
+          <div className="bg-gray-50 rounded-2xl p-8 md:p-10 border border-border shadow-sm">
+            <h3 className="text-2xl font-bold text-navy mb-6">Send a Message</h3>
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <div>
+                <label className="block text-sm font-semibold text-navy mb-2">Full Name</label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg border border-border bg-white focus:outline-none focus:border-green focus:ring-1 focus:ring-green transition-all"
+                  placeholder="e.g. Ramesh Kumar"
+                />
               </div>
               
-              <div className="form-group">
-                <label htmlFor="email">Work Email</label>
-                <input type="email" id="email" placeholder="jane@company.com" />
+              <div>
+                <label className="block text-sm font-semibold text-navy mb-2">Mobile Number / Email</label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg border border-border bg-white focus:outline-none focus:border-green focus:ring-1 focus:ring-green transition-all"
+                  placeholder="Your contact detail"
+                />
               </div>
-              
-              <div className="form-group">
-                <label htmlFor="subject">Subject</label>
-                <select id="subject">
-                  <option>API Integration</option>
-                  <option>Custom Prediction Model</option>
-                  <option>Supply Chain Auditing</option>
-                  <option>General Inquiry</option>
-                </select>
+
+              <div>
+                <label className="block text-sm font-semibold text-navy mb-2">Message</label>
+                <textarea 
+                  rows="4"
+                  className="w-full px-4 py-3 rounded-lg border border-border bg-white focus:outline-none focus:border-green focus:ring-1 focus:ring-green transition-all resize-none"
+                  placeholder="How can we help you?"
+                ></textarea>
               </div>
-              
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
-                <textarea id="message" rows="4" placeholder="Tell us about your requirements..."></textarea>
-              </div>
-              
-              <button type="submit" className="btn btn-primary w-full">Send Message</button>
+
+              <button type="submit" className="w-full bg-navy text-white font-bold py-4 rounded-lg hover:bg-gray-800 transition-colors">
+                Send Message
+              </button>
             </form>
           </div>
+          
         </div>
       </section>
     </div>
