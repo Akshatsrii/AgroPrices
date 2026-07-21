@@ -1,0 +1,250 @@
+/* Auth.css */
+/* Mobile-first centered layout */
+.auth-layout-container {
+  min-height: 100vh;
+  background-color: #f3f4f6; /* light grey background on desktop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-mobile-container {
+  width: 100%;
+  max-width: 420px; /* standard mobile width */
+  min-height: 80vh;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .auth-layout-container {
+    padding: 0;
+    background-color: #ffffff;
+  }
+  .auth-mobile-container {
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Common Auth Screen Styles */
+.auth-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-logo-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Forms & Inputs */
+.auth-form-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.auth-input {
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: #111827;
+  background-color: #f9fafb;
+  transition: all 0.2s;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.auth-btn-primary {
+  background-color: #f59e0b;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.auth-btn-primary:hover {
+  background-color: #d97706;
+}
+
+.auth-btn-secondary {
+  background-color: transparent;
+  color: #6b7280;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+}
+
+.auth-btn-secondary:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+/* Language Cards */
+.lang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.lang-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-card.active {
+  border-color: #f59e0b;
+  background-color: #fef3c7;
+}
+
+.lang-native {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.lang-eng {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* OTP Inputs */
+.otp-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0;
+}
+
+.otp-box {
+  width: 3.5rem;
+  height: 4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: center;
+  background-color: #f9fafb;
+}
+
+.otp-box:focus {
+  outline: none;
+  border-color: #f59e0b;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+/* Splash specific */
+.splash-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #111827; /* dark mode for splash */
+  color: white;
+  height: 100%;
+}
+
+.splash-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-20px); }
+  60% { transform: translateY(-10px); }
+}
+
+.splash-title {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.splash-subtitle {
+  color: #9ca3af;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.bottom-link {
+  margin-top: auto;
+  text-align: center;
+  padding-top: 2rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.bottom-link a {
+  color: #f59e0b;
+  font-weight: 700;
+  text-decoration: none;
+}

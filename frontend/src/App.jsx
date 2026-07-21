@@ -1,93 +1,53 @@
-import React, { useState } from 'react'
-import { Home } from './pages/Home'
-import { About } from './pages/About'
-import { Projects } from './pages/Projects'
-import { Features } from './pages/Features'
-import { Services } from './pages/Services'
-import { Contact } from './pages/Contact'
-import { Footer } from './components/Footer'
-import './index.css'
-import './App.css'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { MarketingLayout } from './layouts/MarketingLayout';
+import { AuthLayout } from './layouts/AuthLayout';
+
+// Marketing Pages
+import { Home } from './pages/Home';
+import { About } from './pages/About';
+import { Projects } from './pages/Projects';
+import { Features } from './pages/Features';
+import { Services } from './pages/Services';
+import { Contact } from './pages/Contact';
+
+// Auth Pages (will be created next)
+import { Splash } from './pages/auth/Splash';
+import { Language } from './pages/auth/Language';
+import { Login } from './pages/auth/Login';
+import { OTP } from './pages/auth/OTP';
+import { Signup } from './pages/auth/Signup';
+import { ResetPin } from './pages/auth/ResetPin';
+
+import './index.css';
+import './App.css';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
-
   return (
-    <div className="app-layout">
-      {/* Reference Image Navbar */}
-      <nav className="top-nav">
-        <div className="container nav-container">
-          {/* Logo (Left) */}
-          <div className="nav-logo" onClick={() => setCurrentPage('home')}>
-            <div className="logo-icon-small">🌱</div>
-            <div className="logo-text">
-              <span className="logo-title">AgroPrice</span>
-              <span className="logo-subtitle">AI Decision Platform</span>
-            </div>
-          </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Marketing Routes */}
+        <Route element={<MarketingLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+        </Route>
 
-          {/* Links (Center) */}
-          <div className="nav-links">
-            <button 
-              className={`nav-link ${currentPage === 'home' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('home')}
-            >
-              Home
-            </button>
-            <button 
-              className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('about')}
-            >
-              About Us
-            </button>
-            <button 
-              className={`nav-link ${currentPage === 'features' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('features')}
-            >
-              Features
-            </button>
-            <button 
-              className={`nav-link ${currentPage === 'projects' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('projects')}
-            >
-              Projects
-            </button>
-            <button 
-              className={`nav-link ${currentPage === 'services' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('services')}
-            >
-              Services
-            </button>
-            <button 
-              className={`nav-link ${currentPage === 'contact' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('contact')}
-            >
-              Contact
-            </button>
-          </div>
-
-          {/* CTA (Right) */}
-          <div className="nav-cta" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <button className="nav-link" style={{ fontWeight: '600', color: 'var(--color-primary)' }}>Login / Sign In</button>
-            <button className="btn btn-primary" onClick={() => setCurrentPage('home')}>Get a Quote</button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Page Content */}
-      <main className="main-content">
-        {currentPage === 'home' && <Home />}
-        {currentPage === 'about' && <About />}
-        {currentPage === 'features' && <Features />}
-        {currentPage === 'projects' && <Projects />}
-        {currentPage === 'services' && <Services />}
-        {currentPage === 'contact' && <Contact />}
-      </main>
-
-      {/* Footer */}
-      <Footer />
-    </div>
-  )
+        {/* Authentication Routes (Module 1) */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="splash" element={<Splash />} />
+          <Route path="language" element={<Language />} />
+          <Route path="login" element={<Login />} />
+          <Route path="otp" element={<OTP />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="reset-pin" element={<ResetPin />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
