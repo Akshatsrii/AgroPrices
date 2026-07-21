@@ -14,7 +14,25 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider 
+      publishableKey={PUBLISHABLE_KEY} 
+      afterSignOutUrl="/"
+      appearance={{
+        variables: {
+          colorPrimary: '#16a34a',
+          colorText: '#0f172a',
+          colorBackground: '#ffffff',
+          colorInputBackground: '#f8fafc',
+          colorInputText: '#0f172a',
+          borderRadius: '0.75rem',
+        },
+        elements: {
+          card: 'shadow-xl border border-gray-100',
+          formButtonPrimary: 'bg-green hover:bg-green-dark text-white shadow-md',
+          footerActionLink: 'text-green hover:text-green-dark font-bold'
+        }
+      }}
+    >
       <App />
     </ClerkProvider>
   </StrictMode>,
