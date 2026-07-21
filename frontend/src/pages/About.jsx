@@ -79,7 +79,7 @@ export function About() {
               className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl"
             >
               <img 
-                src="https://images.unsplash.com/photo-1592982537447-6f2c6a0c5c32?q=80&w=1000&auto=format&fit=crop" 
+                src="/about-vision.jpg" 
                 alt="Farmer looking at distance" 
                 className="w-full h-full object-cover"
               />
