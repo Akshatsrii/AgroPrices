@@ -1,90 +1,78 @@
 import React from 'react';
-import './Features.css';
+import { Link } from 'react-router-dom';
 
 export function Features() {
   const features = [
     {
-      id: 1,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>,
-      title: "Real-time Mandi Feeds",
-      description: "Direct integration with APMC and Agmarknet for sub-second updates on crop prices across India."
+      title: "Live Mandi Prices",
+      desc: "Real-time fetched data from all major APMC markets across India.",
+      icon: "📊",
+      color: "bg-blue-50"
     },
     {
-      id: 2,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>,
-      title: "Predictive Analytics",
-      description: "Machine learning models forecasting price trends up to 6 months in advance with 95%+ accuracy."
+      title: "AI Price Prediction",
+      desc: "Machine learning models forecasting tomorrow's trends based on weather and historical data.",
+      icon: "🤖",
+      color: "bg-green-bg"
     },
     {
-      id: 3,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>,
-      title: "Logistics Optimization",
-      description: "Smart routing algorithms that reduce transport costs and minimize post-harvest spoilage."
+      title: "Profit Calculator",
+      desc: "Instantly compare multiple selling options to see your actual net profit.",
+      icon: "💰",
+      color: "bg-amber-50"
     },
     {
-      id: 4,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>,
-      title: "Vernacular Support",
-      description: "Accessible to all farmers with native support for 12+ regional Indian languages."
+      title: "Transport Cost Estimator",
+      desc: "Calculates the exact diesel and freight cost to transport your specific quantity.",
+      icon: "🚚",
+      color: "bg-purple-50"
     },
     {
-      id: 5,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>,
-      title: "Yield Estimation",
-      description: "Satellite imagery and soil data combined to give accurate pre-harvest yield estimations."
+      title: "AI Negotiation Assistant",
+      desc: "Provides counter-offers and market facts to negotiate better with village traders.",
+      icon: "🤝",
+      color: "bg-rose-50"
     },
     {
-      id: 6,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>,
-      title: "Custom Dashboards",
-      description: "Tailored analytics views for traders, government officials, and enterprise clients."
+      title: "Decision Score",
+      desc: "A single 0-100 score indicating how confident the AI is in a selling recommendation.",
+      icon: "⭐",
+      color: "bg-emerald-50"
     }
   ];
 
   return (
-    <div className="features-page-wrapper">
-      <section className="features-hero">
-        <div className="container text-center">
-          <span className="section-badge">Platform Capabilities</span>
-          <h1 className="features-hero-title">Powered by <span className="text-orange">Advanced AI</span></h1>
-          <p className="features-hero-subtitle mx-auto">
-            AgroPrice AI provides a comprehensive suite of tools designed to remove the guesswork from agricultural economics.
-          </p>
-        </div>
+    <div className="flex flex-col w-full bg-white">
+      {/* Header */}
+      <section className="pt-20 pb-16 px-6 md:px-12 bg-green-bg border-b border-border text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-navy mb-4">Core Features</h1>
+        <p className="text-xl text-text-muted max-w-[700px] mx-auto">
+          Everything you need to make the most profitable selling decision for your harvest.
+        </p>
       </section>
 
-      <section className="features-grid-section">
-        <div className="container">
-          <div className="features-grid">
-            {features.map(feature => (
-              <div key={feature.id} className="feature-card-modern">
-                <div className="feature-icon-wrapper">
-                  {feature.icon}
-                </div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-desc text-muted">{feature.description}</p>
+      {/* Grid */}
+      <section className="py-24 px-6 md:px-12">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="p-8 rounded-2xl border border-border hover:shadow-xl transition-shadow bg-white flex flex-col items-start group">
+              <div className={`w-14 h-14 ${feature.color} rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform`}>
+                {feature.icon}
               </div>
-            ))}
-          </div>
+              <h3 className="text-xl font-bold text-navy mb-3">{feature.title}</h3>
+              <p className="text-text-muted leading-relaxed flex-1">{feature.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="feature-highlight-section">
-        <div className="container highlight-container">
-          <div className="highlight-content">
-            <h2 className="highlight-title">Seamless Integration</h2>
-            <p className="highlight-desc">
-              Our platform is built API-first. Whether you're a government body looking to integrate live prices into an existing portal, or an enterprise managing a nationwide supply chain, our endpoints are secure, fast, and scalable.
-            </p>
-            <ul className="highlight-list">
-              <li><span className="text-orange font-bold mr-2">✔</span> RESTful & GraphQL APIs</li>
-              <li><span className="text-orange font-bold mr-2">✔</span> Webhook Subscriptions</li>
-              <li><span className="text-orange font-bold mr-2">✔</span> 99.99% Uptime SLA</li>
-            </ul>
-          </div>
-          <div className="highlight-image">
-            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80" alt="Data Dashboard" className="rounded-lg shadow-xl" />
-          </div>
+      {/* CTA */}
+      <section className="py-20 px-6 md:px-12 bg-navy text-white text-center">
+        <div className="max-w-[800px] mx-auto">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-6">Ready to see these features in action?</h2>
+          <Link to="/auth/signup" className="inline-block bg-green hover:bg-green-dark text-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg transition-colors no-underline">
+            Get Started for Free
+          </Link>
         </div>
       </section>
     </div>
