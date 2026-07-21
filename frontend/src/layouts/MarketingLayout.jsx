@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { Footer } from '../components/Footer';
@@ -8,74 +8,48 @@ export function MarketingLayout() {
   const currentPath = location.pathname;
 
   return (
-    <div className="app-layout">
-      {/* Reference Image Navbar */}
-      <nav className="top-nav">
-        <div className="container nav-container">
-          {/* Logo (Left) */}
-          <Link to="/" className="nav-logo" style={{ textDecoration: 'none' }}>
-            <div className="logo-icon-small">🌱</div>
-            <div className="logo-text">
-              <span className="logo-title">AgroPrice</span>
-              <span className="logo-subtitle">AI Decision Platform</span>
-            </div>
-          </Link>
-
-          {/* Links (Center) */}
-          <div className="nav-links">
-            <Link 
-              to="/"
-              className={`nav-link ${currentPath === '/' ? 'active' : ''}`}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/about"
-              className={`nav-link ${currentPath === '/about' ? 'active' : ''}`}
-            >
-              About Us
-            </Link>
-            <Link 
-              to="/features"
-              className={`nav-link ${currentPath === '/features' ? 'active' : ''}`}
-            >
-              Features
-            </Link>
-            <Link 
-              to="/projects"
-              className={`nav-link ${currentPath === '/projects' ? 'active' : ''}`}
-            >
-              Projects
-            </Link>
-            <Link 
-              to="/services"
-              className={`nav-link ${currentPath === '/services' ? 'active' : ''}`}
-            >
-              Services
-            </Link>
-            <Link 
-              to="/contact"
-              className={`nav-link ${currentPath === '/contact' ? 'active' : ''}`}
-            >
-              Contact
-            </Link>
+    <div className="min-h-screen flex flex-col bg-white text-navy">
+      {/* Header */}
+      <header className="flex items-center justify-between px-6 md:px-12 py-4 border-b border-border bg-white">
+        <Link to="/" className="flex items-center gap-3 no-underline">
+          <div className="w-11 h-11 rounded-xl bg-green-dark flex items-center justify-center shrink-0">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 21C12 21 5 16.5 5 10.5C5 6.5 8 4 12 4C16 4 19 6.5 19 10.5C19 16.5 12 21 12 21Z" stroke="white" strokeWidth="1.6" strokeLinejoin="round"/>
+              <path d="M12 13V8" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
+              <path d="M12 9C12 9 9.5 8 9 6" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+              <path d="M12 11C12 11 14.5 10 15 8" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+            </svg>
           </div>
-
-          {/* CTA (Right) */}
-          <div className="nav-cta" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <SignedOut>
-              <Link to="/auth/login" className="nav-link" style={{ fontWeight: '600', color: 'var(--color-primary)' }}>Login / Sign In</Link>
-            </SignedOut>
-            <SignedIn>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-            <Link to="/contact" className="btn btn-primary">Get a Quote</Link>
+          <div>
+            <h1 className="text-lg font-extrabold tracking-wide text-navy m-0">AgroPrice AI</h1>
+            <p className="text-xs text-text-muted m-0">Smart Decisions for Every Harvest</p>
           </div>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
+          <Link to="/" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/' ? 'text-green' : 'text-navy'}`}>Home</Link>
+          <Link to="/about" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/about' ? 'text-green' : 'text-navy'}`}>About Us</Link>
+          <Link to="/features" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/features' ? 'text-green' : 'text-navy'}`}>Features</Link>
+          <Link to="/services" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/services' ? 'text-green' : 'text-navy'}`}>Services</Link>
+          <Link to="/contact" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/contact' ? 'text-green' : 'text-navy'}`}>Contact</Link>
+        </nav>
+
+        {/* CTA & Auth */}
+        <div className="flex items-center gap-4">
+          <SignedOut>
+            <Link to="/auth/login" className="hidden md:inline-block text-[15px] font-semibold text-green hover:text-green-dark no-underline">Login</Link>
+            <Link to="/auth/login" className="bg-navy text-white border-none py-3 px-6 rounded-lg text-sm font-semibold cursor-pointer no-underline hover:bg-gray-800 transition-colors">Sign In</Link>
+          </SignedOut>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+            <Link to="/app" className="bg-navy text-white border-none py-3 px-6 rounded-lg text-sm font-semibold cursor-pointer no-underline hover:bg-gray-800 transition-colors">Dashboard</Link>
+          </SignedIn>
         </div>
-      </nav>
+      </header>
 
       {/* Page Content */}
-      <main className="main-content">
+      <main className="flex-1">
         <Outlet />
       </main>
 
