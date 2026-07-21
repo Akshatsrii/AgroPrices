@@ -71,7 +71,7 @@ export function Home() {
             <div className="relative mt-10 lg:mt-0">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                 <img 
-                  src="/hero-farmer.png" 
+                  src="/hero-farmer-premium.jpg" 
                   alt="Indian farmer using smartphone" 
                   className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-700" 
                 />
