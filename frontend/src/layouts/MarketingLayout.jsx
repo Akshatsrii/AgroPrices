@@ -13,13 +13,8 @@ export function MarketingLayout() {
       {/* Header */}
       <header className="flex items-center justify-between px-6 md:px-12 py-4 border-b border-border bg-white">
         <Link to="/" className="flex items-center gap-3 no-underline">
-          <div className="w-11 h-11 rounded-xl bg-green-dark flex items-center justify-center shrink-0">
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 21C12 21 5 16.5 5 10.5C5 6.5 8 4 12 4C16 4 19 6.5 19 10.5C19 16.5 12 21 12 21Z" stroke="white" strokeWidth="1.6" strokeLinejoin="round"/>
-              <path d="M12 13V8" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
-              <path d="M12 9C12 9 9.5 8 9 6" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-              <path d="M12 11C12 11 14.5 10 15 8" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-            </svg>
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+            <img src="/logo.jpg" alt="AgroPrice AI Logo" className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="text-lg font-extrabold tracking-wide text-navy m-0">AgroPrice AI</h1>
