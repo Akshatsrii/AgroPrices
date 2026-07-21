@@ -17,8 +17,7 @@ import { Language } from './pages/auth/Language';
 import { SignInPage } from './pages/auth/SignInPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 
-import './index.css';
-import './App.css';
+
 
 function App() {
   return (
