@@ -1,66 +1,70 @@
 import React from 'react';
-import './Services.css';
+import { Link } from 'react-router-dom';
 
 export function Services() {
   const services = [
     {
-      id: 1,
-      title: "Market Feeds Integration",
-      desc: "Connect your enterprise ERP or regional dashboard directly to our high-frequency live mandi feeds.",
-      icon: "📡"
+      title: "For Individual Farmers",
+      desc: "Free access to live mandi prices, transport calculation, and AI recommendations for your crops.",
+      icon: "🌾",
+      btnText: "Create Free Account"
     },
     {
-      id: 2,
-      title: "Custom AI Models",
-      desc: "Need to predict yield for a specific exotic crop? We train custom machine learning models tailored to your exact geographical requirements.",
-      icon: "🧠"
+      title: "For Village Traders",
+      desc: "Bulk market intelligence and analytics to help you offer the right price to farmers.",
+      icon: "🏬",
+      btnText: "Trader Access"
     },
     {
-      id: 3,
-      title: "Supply Chain Auditing",
-      desc: "Our team of analysts will review your current transport logistics and identify bottlenecks to reduce post-harvest waste.",
-      icon: "📊"
-    },
-    {
-      id: 4,
-      title: "Government Reporting",
-      desc: "Automated generation of compliance and agricultural forecasting reports for state and central government bodies.",
-      icon: "📑"
+      title: "For Agri Companies",
+      desc: "API access to our AI decision engine and predictive models for supply chain optimization.",
+      icon: "📈",
+      btnText: "Contact Sales"
     }
   ];
 
   return (
-    <div className="services-page-wrapper">
-      <section className="services-hero">
-        <div className="container text-center">
-          <h1 className="services-title">Specialized <span className="text-orange">Services</span></h1>
-          <p className="services-subtitle mx-auto">
-            Beyond our core platform, AgroPrice AI offers bespoke consulting, integration, and auditing services to ensure you get the absolute most out of your agricultural data.
-          </p>
-        </div>
+    <div className="flex flex-col w-full bg-white">
+      {/* Header */}
+      <section className="pt-20 pb-16 px-6 md:px-12 bg-navy text-white text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Our Services</h1>
+        <p className="text-xl text-gray-300 max-w-[700px] mx-auto">
+          Tailored intelligence solutions for every level of the agricultural supply chain.
+        </p>
       </section>
 
-      <section className="services-list-section">
-        <div className="container">
-          <div className="services-grid-list">
-            {services.map(service => (
-              <div key={service.id} className="service-list-card">
-                <div className="service-list-icon">{service.icon}</div>
-                <div className="service-list-content">
-                  <h3 className="service-list-title">{service.title}</h3>
-                  <p className="service-list-desc text-muted">{service.desc}</p>
-                </div>
+      {/* Services Grid */}
+      <section className="py-24 px-6 md:px-12 bg-gray-50">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+          {services.map((service, index) => (
+            <div key={index} className="bg-white rounded-[24px] p-8 md:p-10 border border-border shadow-sm flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+              <div className="w-20 h-20 bg-green-bg rounded-2xl flex items-center justify-center text-4xl mb-8">
+                {service.icon}
               </div>
-            ))}
-          </div>
+              <h3 className="text-2xl font-bold text-navy mb-4">{service.title}</h3>
+              <p className="text-text-muted leading-relaxed mb-8 flex-1">
+                {service.desc}
+              </p>
+              <Link to={index === 0 ? "/auth/signup" : "/contact"} className="w-full bg-white text-navy border-2 border-navy hover:bg-navy hover:text-white px-6 py-4 rounded-xl text-[15px] font-bold transition-colors no-underline">
+                {service.btnText}
+              </Link>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="services-cta">
-        <div className="container text-center">
-          <h2 className="cta-title">Need a Custom Solution?</h2>
-          <p className="cta-desc mx-auto">Our engineering team is ready to build tailored agricultural pipelines for your unique enterprise challenges.</p>
-          <button className="btn btn-primary mt-6">Contact Our Sales Team</button>
+      {/* Integration Banner */}
+      <section className="py-20 px-6 md:px-12 border-t border-border bg-white">
+        <div className="max-w-[1000px] mx-auto bg-green-dark rounded-3xl p-12 text-center text-white relative overflow-hidden shadow-xl">
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-green opacity-20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-green opacity-20 rounded-full blur-3xl"></div>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-6 relative z-10">Need a Custom Enterprise Solution?</h2>
+          <p className="text-lg text-green-light mb-8 max-w-[600px] mx-auto relative z-10">
+            We build custom models for large-scale buyers and government agencies integrating with e-NAM.
+          </p>
+          <Link to="/contact" className="inline-block bg-white text-green-dark px-8 py-4 rounded-xl text-lg font-bold shadow-lg transition-transform hover:scale-105 no-underline relative z-10">
+            Talk to our Experts
+          </Link>
         </div>
       </section>
     </div>
