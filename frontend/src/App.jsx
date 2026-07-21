@@ -15,6 +15,7 @@ import { Contact } from './pages/Contact';
 
 // Onboarding
 import { LocationPage } from './pages/onboarding/LocationPage';
+import { CropSelectionPage } from './pages/onboarding/CropSelectionPage';
 
 // Auth Pages
 import { Splash } from './pages/auth/Splash';
@@ -52,6 +53,14 @@ function App() {
             element={
               <SignedIn>
                 <LocationPage />
+              </SignedIn>
+            } 
+          />
+          <Route 
+            path="/onboarding/crop" 
+            element={
+              <SignedIn>
+                <CropSelectionPage />
               </SignedIn>
             } 
           />

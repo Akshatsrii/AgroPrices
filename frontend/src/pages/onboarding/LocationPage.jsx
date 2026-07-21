@@ -11,7 +11,7 @@ export function LocationPage() {
     if (coords) {
       // In a real app, save to user context/DB
       console.log("Saved Location:", coords);
-      navigate('/dashboard'); // Proceed to dashboard or next onboarding step
+      navigate('/onboarding/crop'); // Proceed to crop selection
     }
   };
 
