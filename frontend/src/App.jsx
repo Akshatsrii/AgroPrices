@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Home } from './pages/Home'
+import { About } from './pages/About'
+import { Projects } from './pages/Projects'
 import { Footer } from './components/Footer'
 import './index.css'
 import './App.css'
@@ -36,7 +38,12 @@ function App() {
               About Us
             </button>
             <button className="nav-link">Features</button>
-            <button className="nav-link">Projects</button>
+            <button 
+              className={`nav-link ${currentPage === 'projects' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('projects')}
+            >
+              Projects
+            </button>
             <button className="nav-link">Services</button>
             <button className="nav-link">Contact</button>
           </div>
@@ -52,6 +59,8 @@ function App() {
       {/* Page Content */}
       <main className="main-content">
         {currentPage === 'home' && <Home />}
+        {currentPage === 'about' && <About />}
+        {currentPage === 'projects' && <Projects />}
       </main>
 
       {/* Footer */}

@@ -11,42 +11,45 @@ export function Home() {
           <div className="hero-content">
             <div className="hero-badge">
               <span className="badge-dot"></span>
-              25+ Years of Excellence
+              <span className="badge-text-bg">25+ Years of Excellence</span>
             </div>
             
             <h1 className="hero-title">
-              Building Intelligence That <br/><span className="text-accent">Connects Farmers</span>
+              <span className="title-text-bg">Building</span><br/>
+              <span className="title-text-bg">Intelligence That</span><br/>
+              <span className="title-text-bg">Connects Farmers</span>
             </h1>
             
             <p className="hero-subtitle">
-              AgroPrice AI is a premier agricultural decision engine specializing in 
-              market insights, price predictions, and transport optimization. We deliver 
-              world-class solutions that stand the test of time.
+              <span className="subtitle-text-bg">AgroPrice AI is a premier agricultural decision engine</span><br/>
+              <span className="subtitle-text-bg">specializing in market insights, price predictions, and transport</span><br/>
+              <span className="subtitle-text-bg">optimization. We deliver world-class solutions that stand the test</span><br/>
+              <span className="subtitle-text-bg">of time.</span>
             </p>
             
             <div className="hero-quote-box">
-              <p className="quote-text font-bold italic">"Building Tomorrow's Agriculture, Today"</p>
-              <p className="quote-subtext text-sm text-muted">Connecting farmers, driving progress, building the future.</p>
+              <p className="quote-text font-bold">"Building Tomorrow's Agriculture, Today"</p>
+              <p className="quote-subtext text-sm text-muted mt-1">Connecting farmers, driving progress, building the future.</p>
             </div>
             
-            <div className="hero-actions">
-              <button className="btn btn-primary">View Our Solutions</button>
-              <button className="btn btn-outline-dark">Get In Touch</button>
+            <div className="hero-actions flex gap-4">
+              <button className="btn-square btn-gray">View Our Solutions</button>
+              <button className="btn-square btn-white">Get In Touch</button>
             </div>
             
             {/* Added checkmarks from the image reference */}
-            <div className="hero-trust-badges mt-6 flex gap-6">
-              <span className="flex items-center gap-2 text-sm text-muted font-medium"><span className="text-accent font-bold">✔</span> ISO Certified</span>
-              <span className="flex items-center gap-2 text-sm text-muted font-medium"><span className="text-accent font-bold">✔</span> Govt. Approved</span>
+            <div className="hero-trust-badges mt-4 flex gap-6">
+              <span className="flex items-center gap-2 text-sm text-muted font-medium"><span className="text-accent font-bold">✔</span>&nbsp;ISO Certified</span>
+              <span className="flex items-center gap-2 text-sm text-muted font-medium"><span className="text-accent font-bold">✔</span>&nbsp;Govt. Approved</span>
             </div>
           </div>
 
           <div className="hero-graphic-container">
             <div className="hero-image-wrapper">
-               <img src="https://images.unsplash.com/photo-1592982537447-6f23f5c71c4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Farmer looking at sunset" className="hero-img" />
+              <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=80" alt="Agriculture Field" className="hero-img" />
               {/* Floating Stat Card */}
               <div className="floating-stat-card">
-                <div className="stat-icon-wrapper">
+                <div className="stat-icon-wrapper-light">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                   </svg>
