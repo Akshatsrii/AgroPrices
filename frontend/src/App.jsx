@@ -20,8 +20,8 @@ import { CropSelectionPage } from './pages/onboarding/CropSelectionPage';
 // Auth Pages
 import { Splash } from './pages/auth/Splash';
 import { Language } from './pages/auth/Language';
-import { SignInPage } from './pages/auth/SignIn';
-import { SignUpPage } from './pages/auth/SignUp';
+import { SignInPage } from './pages/auth/SignInPage';
+import { SignUpPage } from './pages/auth/SignUpPage';
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
