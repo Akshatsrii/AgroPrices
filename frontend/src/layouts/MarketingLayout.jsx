@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { Footer } from '../components/Footer';
 
 export function MarketingLayout() {
@@ -62,7 +63,12 @@ export function MarketingLayout() {
 
           {/* CTA (Right) */}
           <div className="nav-cta" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <Link to="/auth/login" className="nav-link" style={{ fontWeight: '600', color: 'var(--color-primary)' }}>Login / Sign In</Link>
+            <SignedOut>
+              <Link to="/auth/login" className="nav-link" style={{ fontWeight: '600', color: 'var(--color-primary)' }}>Login / Sign In</Link>
+            </SignedOut>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
             <Link to="/contact" className="btn btn-primary">Get a Quote</Link>
           </div>
         </div>
