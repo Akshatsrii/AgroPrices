@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Home } from './pages/Home'
 import { About } from './pages/About'
 import { Projects } from './pages/Projects'
+import { Features } from './pages/Features'
+import { Services } from './pages/Services'
+import { Contact } from './pages/Contact'
 import { Footer } from './components/Footer'
 import './index.css'
 import './App.css'
@@ -37,15 +40,30 @@ function App() {
             >
               About Us
             </button>
-            <button className="nav-link">Features</button>
+            <button 
+              className={`nav-link ${currentPage === 'features' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('features')}
+            >
+              Features
+            </button>
             <button 
               className={`nav-link ${currentPage === 'projects' ? 'active' : ''}`}
               onClick={() => setCurrentPage('projects')}
             >
               Projects
             </button>
-            <button className="nav-link">Services</button>
-            <button className="nav-link">Contact</button>
+            <button 
+              className={`nav-link ${currentPage === 'services' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('services')}
+            >
+              Services
+            </button>
+            <button 
+              className={`nav-link ${currentPage === 'contact' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('contact')}
+            >
+              Contact
+            </button>
           </div>
 
           {/* CTA (Right) */}
@@ -60,7 +78,10 @@ function App() {
       <main className="main-content">
         {currentPage === 'home' && <Home />}
         {currentPage === 'about' && <About />}
+        {currentPage === 'features' && <Features />}
         {currentPage === 'projects' && <Projects />}
+        {currentPage === 'services' && <Services />}
+        {currentPage === 'contact' && <Contact />}
       </main>
 
       {/* Footer */}
