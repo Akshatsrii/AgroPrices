@@ -1,0 +1,42 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.hero-card {
+  color: white;
+}
+
+.hero-btn-outline {
+  border-color: rgba(255,255,255,0.5);
+  color: white;
+}
+
+.hero-btn-outline:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.input-field {
+  padding: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(26, 93, 26, 0.2);
+}
+
+.radius-md {
+  border-radius: var(--radius-md);
+}
