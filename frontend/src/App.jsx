@@ -14,10 +14,8 @@ import { Contact } from './pages/Contact';
 // Auth Pages (will be created next)
 import { Splash } from './pages/auth/Splash';
 import { Language } from './pages/auth/Language';
-import { Login } from './pages/auth/Login';
-import { OTP } from './pages/auth/OTP';
-import { Signup } from './pages/auth/Signup';
-import { ResetPin } from './pages/auth/ResetPin';
+import { SignInPage } from './pages/auth/SignInPage';
+import { SignUpPage } from './pages/auth/SignUpPage';
 
 import './index.css';
 import './App.css';
@@ -40,10 +38,8 @@ function App() {
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="splash" element={<Splash />} />
           <Route path="language" element={<Language />} />
-          <Route path="login" element={<Login />} />
-          <Route path="otp" element={<OTP />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="reset-pin" element={<ResetPin />} />
+          <Route path="login/*" element={<SignInPage />} />
+          <Route path="signup/*" element={<SignUpPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
