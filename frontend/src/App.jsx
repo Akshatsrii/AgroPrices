@@ -38,6 +38,8 @@ import { EnterQuantityPage } from './pages/sell/EnterQuantityPage';
 import { SelectQualityPage } from './pages/sell/SelectQualityPage';
 import { ExpectedPricePage } from './pages/sell/ExpectedPricePage';
 import { TraderOfferPage } from './pages/sell/TraderOfferPage';
+import { NeedMoneyPage } from './pages/sell/NeedMoneyPage';
+import { VehicleAvailablePage } from './pages/sell/VehicleAvailablePage';
 import { ReviewDetailsPage } from './pages/sell/ReviewDetailsPage';
 import { AIAnalysisPage } from './pages/sell/AIAnalysisPage';
 import { AIRecommendationPage } from './pages/sell/AIRecommendationPage';
@@ -100,12 +102,14 @@ function App() {
           <Route path="dashboard/trending" element={<TrendingCropsPage />} />
           <Route path="dashboard/notifications" element={<NotificationsPage />} />
 
-          {/* Module 4: Sell Crop USP Wizard (8 Pages) */}
+          {/* Module 4: Sell Crop USP Wizard (8 Steps) */}
           <Route path="sell/crop" element={<SelectCropPage />} />
           <Route path="sell/quantity" element={<EnterQuantityPage />} />
           <Route path="sell/quality" element={<SelectQualityPage />} />
           <Route path="sell/expected-price" element={<ExpectedPricePage />} />
           <Route path="sell/trader-offer" element={<TraderOfferPage />} />
+          <Route path="sell/urgency" element={<NeedMoneyPage />} />
+          <Route path="sell/vehicle" element={<VehicleAvailablePage />} />
           <Route path="sell/review" element={<ReviewDetailsPage />} />
           <Route path="sell/ai-analysis" element={<AIAnalysisPage />} />
           <Route path="sell/ai-recommendation" element={<AIRecommendationPage />} />
