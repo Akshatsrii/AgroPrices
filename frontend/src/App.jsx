@@ -14,8 +14,11 @@ import { Services } from './pages/Services';
 import { Contact } from './pages/Contact';
 
 // Onboarding
-import { LocationPage } from './pages/onboarding/LocationPage';
-import { CropSelectionPage } from './pages/onboarding/CropSelectionPage';
+import { WelcomePage } from './pages/onboarding/WelcomePage';
+import { FarmerProfilePage } from './pages/onboarding/FarmerProfilePage';
+import { FarmDetailsPage } from './pages/onboarding/FarmDetailsPage';
+import { TransportDetailsPage } from './pages/onboarding/TransportDetailsPage';
+import { OnboardingSummaryPage } from './pages/onboarding/OnboardingSummaryPage';
 
 // Auth Pages
 import { Splash } from './pages/auth/Splash';
@@ -38,7 +41,7 @@ function App() {
           <Route path="contact" element={<Contact />} />
         </Route>
 
-        {/* Authentication & Onboarding Splash */}
+        {/* Authentication */}
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="splash" element={<Splash />} />
           <Route path="language" element={<Language />} />
@@ -46,23 +49,12 @@ function App() {
           <Route path="signup/*" element={<SignUpPage />} />
         </Route>
 
-        {/* Onboarding Flow */}
-        <Route 
-          path="/onboarding/location" 
-          element={
-            <SignedIn>
-              <LocationPage />
-            </SignedIn>
-          } 
-        />
-        <Route 
-          path="/onboarding/crop" 
-          element={
-            <SignedIn>
-              <CropSelectionPage />
-            </SignedIn>
-          } 
-        />
+        {/* Module 2: Onboarding Flow (5 Steps) */}
+        <Route path="/onboarding/welcome" element={<WelcomePage />} />
+        <Route path="/onboarding/profile" element={<FarmerProfilePage />} />
+        <Route path="/onboarding/farm" element={<FarmDetailsPage />} />
+        <Route path="/onboarding/transport" element={<TransportDetailsPage />} />
+        <Route path="/onboarding/summary" element={<OnboardingSummaryPage />} />
 
         {/* Protected Dashboard */}
         <Route 
@@ -76,8 +68,8 @@ function App() {
           } 
         />
 
-        {/* Redirect /onboarding to /onboarding/location */}
-        <Route path="/onboarding" element={<Navigate to="/onboarding/location" replace />} />
+        {/* Redirect /onboarding to /onboarding/welcome */}
+        <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
         
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
