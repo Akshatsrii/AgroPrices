@@ -25,10 +25,10 @@ export function AuthLayout() {
         {/* Close Button (X) */}
         <button
           onClick={() => navigate('/')}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-all border-0 cursor-pointer z-30 active:scale-95 shadow-sm"
+          className="absolute top-6 right-6 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-all border-0 cursor-pointer z-30 active:scale-95 shadow-sm"
           aria-label="Close modal"
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
             <path d="M13 1L1 13M1 1L13 13" />
           </svg>
         </button>
