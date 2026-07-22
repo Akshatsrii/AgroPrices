@@ -1,28 +1,56 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+
+/**
+ * Execute inlined batch requests using GoogleGenAI SDK pattern.
+ */
+export async function executeInlinedRequests(requests) {
+  if (!ai) return null;
+  try {
+    const results = [];
+    for (const req of requests) {
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: req.contents,
+      });
+      results.push(response.text);
+    }
+    return results;
+  } catch (err) {
+    console.error('Inlined request error:', err);
+    return null;
+  }
+}
 
 /**
  * Ask Gemini AI Assistant a question in farmer's preferred language.
  */
 export async function askGeminiAssistant(prompt, language = 'English') {
-  if (!genAI) {
+  if (!ai) {
     return `[Demo Mode - Configure VITE_GEMINI_API_KEY in .env]\nNamaste! Based on current APMC Mandi trends for ${language}, selling at Khanna APMC gives higher net payout after freight deductions.`;
   }
 
   try {
-    const model = genAI.getGenerativeAIModel({ model: 'gemini-1.5-flash' });
-    const systemPrompt = `You are AgroPrice AI, an expert agricultural economist and Mandi price advisor for Indian farmers.
-Always reply in the user's requested language: ${language}.
-Keep your advice clear, practical, quantitative, and supportive for farmers.
-Farmer Question: ${prompt}`;
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: `You are AgroPrice AI, an expert agricultural economist and Mandi price advisor for Indian farmers. Always reply in ${language}.\nFarmer Question: ${prompt}`
+            }
+          ]
+        }
+      ]
+    });
 
-    const result = await model.generateContent(systemPrompt);
-    return result.response.text();
+    return response.text || response.candidates?.[0]?.content?.parts?.[0]?.text || 'No text generated.';
   } catch (error) {
-    console.error('Gemini API Error:', error);
-    return `Apologies, unable to fetch live AI response at the moment. Please try again. (${error.message})`;
+    console.error('Gemini GenAI Error:', error);
+    return `Apologies, unable to fetch live AI response at the moment. (${error.message || 'API error'})`;
   }
 }
 
@@ -32,7 +60,7 @@ Farmer Question: ${prompt}`;
 export async function generateCropRecommendation(cropDetails, language = 'English') {
   const { crop, quantity, quality, expectedPrice, traderOffer } = cropDetails;
 
-  if (!genAI) {
+  if (!ai) {
     const grossVal = (quantity || 50) * 2380;
     const traderVal = (quantity || 50) * (traderOffer || 2250);
     const extraProfit = grossVal - traderVal - 1750;
@@ -46,8 +74,7 @@ export async function generateCropRecommendation(cropDetails, language = 'Englis
   }
 
   try {
-    const model = genAI.getGenerativeAIModel({ model: 'gemini-1.5-flash' });
-    const prompt = `Act as AgroPrice AI decision engine. Analyze this crop sale in ${language}:
+    const promptText = `Act as AgroPrice AI decision engine. Analyze this crop sale in ${language}:
 - Crop: ${crop}
 - Quantity: ${quantity} quintals
 - Quality Grade: ${quality}
@@ -62,8 +89,12 @@ Provide a JSON formatted answer with exact keys:
 
 Return ONLY valid JSON format.`;
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{ role: 'user', parts: [{ text: promptText }] }]
+    });
+
+    const text = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(cleanJson);
   } catch (error) {
