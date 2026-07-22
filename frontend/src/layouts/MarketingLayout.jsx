@@ -23,23 +23,31 @@ export function MarketingLayout() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link to="/" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/' ? 'text-green' : 'text-navy'}`}>Home</Link>
-          <Link to="/about" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/about' ? 'text-green' : 'text-navy'}`}>About Us</Link>
-          <Link to="/features" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/features' ? 'text-green' : 'text-navy'}`}>Features</Link>
-          <Link to="/services" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/services' ? 'text-green' : 'text-navy'}`}>Services</Link>
-          <Link to="/contact" className={`text-[15px] font-medium no-underline hover:text-green transition-colors ${currentPath === '/contact' ? 'text-green' : 'text-navy'}`}>Contact</Link>
+        <nav className="hidden md:flex items-center gap-6">
+          <Link to="/" className={`text-[14px] font-bold no-underline hover:text-green transition-colors ${currentPath === '/' ? 'text-green' : 'text-navy'}`}>Home</Link>
+          <Link to="/dashboard/market" className={`text-[14px] font-bold no-underline hover:text-green transition-colors ${currentPath === '/dashboard/market' ? 'text-green' : 'text-navy'}`}>Live Market</Link>
+          <Link to="/market/nearby" className={`text-[14px] font-bold no-underline hover:text-green transition-colors ${currentPath === '/market/nearby' ? 'text-green' : 'text-navy'}`}>Nearby Mandis</Link>
+          <Link to="/sell/crop" className={`text-[14px] font-bold no-underline hover:text-green transition-colors ${currentPath === '/sell/crop' ? 'text-green' : 'text-navy'}`}>Sell Crop (AI)</Link>
+          <Link to="/assistant/chat" className={`text-[14px] font-bold no-underline hover:text-green transition-colors ${currentPath === '/assistant/chat' ? 'text-green' : 'text-navy'}`}>AI Assistant</Link>
+          <Link to="/about" className={`text-[14px] font-bold no-underline hover:text-green transition-colors ${currentPath === '/about' ? 'text-green' : 'text-navy'}`}>About Us</Link>
         </nav>
 
         {/* CTA & Auth */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Link 
+            to="/sell/crop" 
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 no-underline transition-all flex items-center gap-1.5 active:scale-95"
+          >
+            <span>🌾</span> Sell Crop
+          </Link>
+
           <SignedOut>
-            <Link to="/auth/login" className="hidden md:inline-block text-[15px] font-semibold text-green hover:text-green-dark no-underline">Login</Link>
-            <Link to="/auth/login" className="bg-navy text-white border-none py-3 px-6 rounded-lg text-sm font-semibold cursor-pointer no-underline hover:bg-gray-800 transition-colors">Sign In</Link>
+            <Link to="/auth/login" className="bg-navy text-white border-none py-2.5 px-5 rounded-xl text-xs sm:text-sm font-semibold cursor-pointer no-underline hover:bg-gray-800 transition-colors">Login / Sign In</Link>
           </SignedOut>
+          
           <SignedIn>
+            <Link to="/dashboard" className="hidden sm:inline-block bg-gray-100 text-navy hover:bg-gray-200 border-none py-2.5 px-4 rounded-xl text-xs font-bold cursor-pointer no-underline transition-colors">Dashboard</Link>
             <UserButton afterSignOutUrl="/" />
-            <Link to="/app" className="bg-navy text-white border-none py-3 px-6 rounded-lg text-sm font-semibold cursor-pointer no-underline hover:bg-gray-800 transition-colors">Dashboard</Link>
           </SignedIn>
         </div>
       </header>

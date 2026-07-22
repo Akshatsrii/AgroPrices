@@ -70,11 +70,11 @@ export function Home() {
               </motion.div>
               
               <motion.div variants={fadeInUp} className="mt-8 flex flex-col sm:flex-row gap-4">
-                <Link to="/auth/signup" className="inline-flex items-center justify-center font-bold rounded-lg transition-all duration-200 bg-navy text-white hover:bg-gray-800 px-8 py-4 text-lg shadow-lg">
-                  Get My Recommendation
+                <Link to="/sell/crop" className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-4 text-base sm:text-lg shadow-xl shadow-emerald-600/25 active:scale-95 no-underline">
+                  🌾 Sell Crop (AI Engine) &rarr;
                 </Link>
-                <Link to="/features" className="inline-flex items-center justify-center font-bold rounded-lg transition-all duration-200 border-2 border-navy text-navy hover:bg-navy hover:text-white px-8 py-4 text-lg">
-                  See How It Works
+                <Link to="/dashboard/market" className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 border-2 border-navy text-navy hover:bg-navy hover:text-white px-8 py-4 text-base sm:text-lg no-underline">
+                  📈 Live Mandi Rates
                 </Link>
               </motion.div>
               
@@ -87,7 +87,7 @@ export function Home() {
               transition={{ duration: 0.8 }}
               className="relative mt-10 lg:mt-0"
             >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <img 
                   src="/hero-farmer-premium.jpg" 
                   alt="Indian farmer using smartphone" 
@@ -99,12 +99,10 @@ export function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
-                className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-6 border border-gray-100 flex items-center gap-4"
+                className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100 flex items-center gap-4"
               >
-                <div className="w-12 h-12 bg-green-bg rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"></path>
-                  </svg>
+                <div className="w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center text-2xl">
+                  🚜
                 </div>
                 <div>
                   <p className="text-2xl font-black text-navy leading-none mb-1">50,000+</p>
@@ -117,33 +115,43 @@ export function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white border-y border-border">
+      {/* Live Mandi Ticker Section Directly on Home Page */}
+      <section className="py-12 bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
-          >
-            <motion.div variants={fadeInUp} className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-navy">1.2<span className="text-green">M+</span></div>
-              <p className="mt-2 text-text-muted font-semibold">Live Mandi Prices</p>
-            </motion.div>
-            <motion.div variants={fadeInUp} className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-navy">92<span className="text-green">%</span></div>
-              <p className="mt-2 text-text-muted font-semibold">Prediction Accuracy</p>
-            </motion.div>
-            <motion.div variants={fadeInUp} className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-navy">80<span className="text-green">+</span></div>
-              <p className="mt-2 text-text-muted font-semibold">Crops Tracked</p>
-            </motion.div>
-            <motion.div variants={fadeInUp} className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-navy">₹15<span className="text-green">Cr</span></div>
-              <p className="mt-2 text-text-muted font-semibold">Extra Profit Generated</p>
-            </motion.div>
-          </motion.div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div>
+              <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
+                🔴 Live APMC Updates
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mt-2 m-0">Today's Live Mandi Rates</h2>
+            </div>
+            <Link to="/dashboard/market" className="text-xs font-bold text-emerald-400 hover:text-emerald-300 no-underline">
+              View All 48 Regional Mandis &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Khanna APMC • Wheat</span>
+              <p className="text-2xl font-black text-white mt-1 m-0">₹2,380 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400">↑ +₹50 Today</span>
+            </div>
+            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Ludhiana APMC • Paddy</span>
+              <p className="text-2xl font-black text-white mt-1 m-0">₹2,210 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400">↑ +₹15 Today</span>
+            </div>
+            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Samrala Mandi • Potato</span>
+              <p className="text-2xl font-black text-white mt-1 m-0">₹1,510 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400">↑ +₹80 Today</span>
+            </div>
+            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Jalandhar Mandi • Mustard</span>
+              <p className="text-2xl font-black text-white mt-1 m-0">₹5,450 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400">↑ +₹120 Today</span>
+            </div>
+          </div>
         </div>
       </section>
 
