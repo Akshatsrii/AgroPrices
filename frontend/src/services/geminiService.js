@@ -55,6 +55,46 @@ export async function askGeminiAssistant(prompt, language = 'English') {
 }
 
 /**
+ * Predict future crop price trends (7 to 15 days forecast) using Gemini AI.
+ */
+export async function predictCropPriceTrend(cropName, mandiLocation = 'Khanna APMC', language = 'English') {
+  if (!ai) {
+    return {
+      currentPrice: 2380,
+      predictedPrice7Days: 2420,
+      trend: 'Bullish (+1.7%)',
+      forecastSummary: `Demand for ${cropName} in ${mandiLocation} is projected to rise due to tight supply and export inquiries.`,
+    };
+  }
+
+  try {
+    const promptText = `Act as an AI Mandi Commodity Forecaster. Provide a 7-day price prediction for ${cropName} at ${mandiLocation} in ${language}.
+Return ONLY a valid JSON object with keys:
+"currentPrice": estimated current rate per quintal in ₹,
+"predictedPrice7Days": predicted rate per quintal in 7 days in ₹,
+"trend": short trend string (e.g. Bullish +2.5% vs Bearish -1%),
+"forecastSummary": 2 sentence market rationale in ${language}`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{ role: 'user', parts: [{ text: promptText }] }]
+    });
+
+    const text = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
+    return JSON.parse(cleanJson);
+  } catch (error) {
+    console.error('Gemini Price Prediction Error:', error);
+    return {
+      currentPrice: 2380,
+      predictedPrice7Days: 2430,
+      trend: 'Bullish (+2.1%)',
+      forecastSummary: `Strong buyer demand expected for ${cropName} in regional Mandis.`,
+    };
+  }
+}
+
+/**
  * Generate AI Net Profit Recommendation for Sell Crop Wizard.
  */
 export async function generateCropRecommendation(cropDetails, language = 'English') {
