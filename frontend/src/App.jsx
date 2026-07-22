@@ -57,6 +57,29 @@ import { TransportCostCalculatorPage } from './pages/ai/TransportCostCalculatorP
 import { NegotiationAssistantPage } from './pages/ai/NegotiationAssistantPage';
 import { SellVsWaitPage } from './pages/ai/SellVsWaitPage';
 
+// Module 7: AI Assistant (3 Pages)
+import { AIChatPage } from './pages/assistant/AIChatPage';
+import { AIHistoryPage } from './pages/assistant/AIHistoryPage';
+import { VoiceAssistantPage } from './pages/assistant/VoiceAssistantPage';
+
+// Module 8: Farmer History (3 Pages)
+import { PreviousSalesPage } from './pages/farmerHistory/PreviousSalesPage';
+import { ProfitAnalyticsPage } from './pages/farmerHistory/ProfitAnalyticsPage';
+import { CropHistoryPage } from './pages/farmerHistory/CropHistoryPage';
+
+// Module 9: Profile & Settings (4 Pages)
+import { ProfilePage } from './pages/profile/ProfilePage';
+import { SettingsPage } from './pages/settings/SettingsPage';
+import { LanguageSettingsPage } from './pages/settings/LanguageSettingsPage';
+import { NotificationSettingsPage } from './pages/settings/NotificationSettingsPage';
+
+// Module 10: Admin Panel (5 Pages)
+import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+import { AdminCropsPage } from './pages/admin/AdminCropsPage';
+import { AdminMandisPage } from './pages/admin/AdminMandisPage';
+import { AdminPricesPage } from './pages/admin/AdminPricesPage';
+import { AdminUsersPage } from './pages/admin/AdminUsersPage';
+
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 function App() {
@@ -119,6 +142,29 @@ function App() {
         <Route path="/ai/transport-calculator" element={<TransportCostCalculatorPage />} />
         <Route path="/ai/negotiation-assistant" element={<NegotiationAssistantPage />} />
         <Route path="/ai/sell-vs-wait" element={<SellVsWaitPage />} />
+
+        {/* Module 7: AI Assistant (3 Pages) */}
+        <Route path="/assistant/chat" element={<AIChatPage />} />
+        <Route path="/assistant/history" element={<AIHistoryPage />} />
+        <Route path="/assistant/voice" element={<VoiceAssistantPage />} />
+
+        {/* Module 8: Farmer History (3 Pages) */}
+        <Route path="/farmer-history/sales" element={<PreviousSalesPage />} />
+        <Route path="/farmer-history/analytics" element={<ProfitAnalyticsPage />} />
+        <Route path="/farmer-history/crops" element={<CropHistoryPage />} />
+
+        {/* Module 9: Profile & Settings (4 Pages) */}
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/settings/language" element={<LanguageSettingsPage />} />
+        <Route path="/settings/notifications" element={<NotificationSettingsPage />} />
+
+        {/* Module 10: Admin Panel (5 Pages) */}
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/crops" element={<AdminCropsPage />} />
+        <Route path="/admin/mandis" element={<AdminMandisPage />} />
+        <Route path="/admin/prices" element={<AdminPricesPage />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
 
         {/* Redirect /onboarding to /onboarding/welcome */}
         <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
