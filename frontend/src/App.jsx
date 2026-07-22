@@ -42,6 +42,21 @@ import { ReviewDetailsPage } from './pages/sell/ReviewDetailsPage';
 import { AIAnalysisPage } from './pages/sell/AIAnalysisPage';
 import { AIRecommendationPage } from './pages/sell/AIRecommendationPage';
 
+// Module 5: Market (6 Pages)
+import { NearbyMandisPage } from './pages/market/NearbyMandisPage';
+import { SearchMandiPage } from './pages/market/SearchMandiPage';
+import { MandiDetailsPage } from './pages/market/MandiDetailsPage';
+import { PriceComparisonPage } from './pages/market/PriceComparisonPage';
+import { PriceHistoryPage } from './pages/market/PriceHistoryPage';
+import { MarketTrendsPage } from './pages/market/MarketTrendsPage';
+
+// Module 6: AI Decision Engine (5 Pages)
+import { AIRecommendationDetailsPage } from './pages/ai/AIRecommendationDetailsPage';
+import { ProfitCalculatorPage } from './pages/ai/ProfitCalculatorPage';
+import { TransportCostCalculatorPage } from './pages/ai/TransportCostCalculatorPage';
+import { NegotiationAssistantPage } from './pages/ai/NegotiationAssistantPage';
+import { SellVsWaitPage } from './pages/ai/SellVsWaitPage';
+
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 function App() {
@@ -89,6 +104,21 @@ function App() {
         <Route path="/sell/review" element={<ReviewDetailsPage />} />
         <Route path="/sell/ai-analysis" element={<AIAnalysisPage />} />
         <Route path="/sell/ai-recommendation" element={<AIRecommendationPage />} />
+
+        {/* Module 5: Market (6 Pages) */}
+        <Route path="/market/nearby" element={<NearbyMandisPage />} />
+        <Route path="/market/search" element={<SearchMandiPage />} />
+        <Route path="/market/details/:id" element={<MandiDetailsPage />} />
+        <Route path="/market/compare" element={<PriceComparisonPage />} />
+        <Route path="/market/history" element={<PriceHistoryPage />} />
+        <Route path="/market/trends" element={<MarketTrendsPage />} />
+
+        {/* Module 6: AI Decision Engine (5 Pages) */}
+        <Route path="/ai/recommendation-details" element={<AIRecommendationDetailsPage />} />
+        <Route path="/ai/profit-calculator" element={<ProfitCalculatorPage />} />
+        <Route path="/ai/transport-calculator" element={<TransportCostCalculatorPage />} />
+        <Route path="/ai/negotiation-assistant" element={<NegotiationAssistantPage />} />
+        <Route path="/ai/sell-vs-wait" element={<SellVsWaitPage />} />
 
         {/* Redirect /onboarding to /onboarding/welcome */}
         <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
