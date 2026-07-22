@@ -4,39 +4,41 @@ import { motion } from 'framer-motion';
 
 export function Home() {
   const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      transition: { staggerChildren: 0.15 }
     }
   };
 
   return (
     <div className="flex flex-col w-full bg-white font-sans text-navy overflow-x-hidden">
       
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-gray-50 to-white overflow-hidden py-20 md:py-0">
-        <div className="absolute inset-0 opacity-[0.03]">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5"></path>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)"></rect>
-          </svg>
+      {/* 🌟 Welcome Profile Bar (Home Dashboard Hub) */}
+      <div className="bg-gradient-to-r from-emerald-900 via-green-950 to-slate-900 text-white px-6 lg:px-12 py-3.5 border-b border-emerald-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <div className="flex items-center gap-2 text-xs font-semibold">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>👨‍🌾 Welcome, Gurpreet Singh • Ludhiana, Punjab</span>
         </div>
-        <div className="absolute top-20 right-0 w-96 h-96 bg-green/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-navy/5 rounded-full blur-3xl"></div>
+        <div className="flex items-center gap-3 text-xs">
+          <span className="text-emerald-300 font-bold">Recommended Action: Sell Wheat at Khanna Mandi (+₹4,000 Extra Net)</span>
+          <Link to="/sell/crop" className="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-3 py-1 rounded-lg no-underline transition-all">
+            Launch AI Wizard &rarr;
+          </Link>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative min-h-[85vh] flex items-center bg-gradient-to-br from-gray-50 via-white to-emerald-50/30 overflow-hidden py-12 md:py-0">
+        <div className="absolute top-20 right-0 w-96 h-96 bg-green/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-navy/5 rounded-full blur-3xl" />
         
-        <div className="relative mx-auto max-w-[1280px] px-6 lg:px-12 pt-24 md:pt-32 pb-12 md:pb-20 w-full">
+        <div className="relative mx-auto max-w-[1280px] px-6 lg:px-12 pt-12 md:pt-16 pb-12 md:pb-20 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
             {/* Left Content */}
@@ -46,41 +48,39 @@ export function Home() {
               variants={staggerContainer}
               className="max-w-2xl"
             >
-              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 bg-green-bg rounded-full mb-6 border border-green-light shadow-sm">
-                <span className="w-2 h-2 bg-green rounded-full animate-pulse"></span>
-                <span className="text-sm font-medium text-green-dark">AI-Powered Decision Engine</span>
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full mb-6 border border-emerald-200 shadow-sm">
+                <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" />
+                <span className="text-xs font-bold text-emerald-800">AI-Powered Decision Engine • Live Mandi Intelligence</span>
               </motion.div>
               
               <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-navy leading-tight tracking-tight">
                 Don't Just Sell.<br />
-                <span className="text-green">Sell Smart.</span>
+                <span className="text-emerald-600">Sell Smart with AI.</span>
               </motion.h1>
               
-              <motion.p variants={fadeInUp} className="mt-4 md:mt-6 text-base md:text-lg text-text-muted leading-relaxed max-w-[500px]">
-                Most farmers sell their crop without knowing the best price, the nearest mandi, or tomorrow's trend. AgroPrice AI compares every option and tells you exactly what to do.
+              <motion.p variants={fadeInUp} className="mt-4 md:mt-6 text-base md:text-lg text-text-muted leading-relaxed max-w-[520px]">
+                Most farmers sell their crop without knowing the true Mandi rate or tomorrow's trend. AgroPrice AI compares local traders vs APMC Mandis and calculates net profit in seconds.
               </motion.p>
               
-              <motion.div variants={fadeInUp} className="mt-6 md:mt-8 p-4 md:p-6 bg-gradient-to-r from-green-bg to-white border-l-4 border-green rounded-r-xl shadow-sm">
-                <p className="text-base md:text-lg font-semibold text-navy italic">
-                  "Sell tomorrow in Ramganj Mandi — ₹1,450 more profit."
-                </p>
-                <p className="mt-2 text-xs md:text-sm text-text-muted">
-                  That's a real AI recommendation, not just a price number.
+              {/* Live Recommendation Badge */}
+              <motion.div variants={fadeInUp} className="mt-6 p-5 bg-white border-l-4 border-emerald-600 rounded-r-2xl shadow-md border border-gray-100 space-y-1">
+                <span className="text-[10px] font-black uppercase text-emerald-700 tracking-wider">Live AI Recommendation</span>
+                <p className="text-base font-extrabold text-slate-900 m-0">
+                  "Sell Grade A Wheat tomorrow in Khanna APMC — ₹1,350 higher profit than local trader."
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeInUp} className="mt-8 flex flex-col sm:flex-row gap-4">
-                <Link to="/sell/crop" className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-4 text-base sm:text-lg shadow-xl shadow-emerald-600/25 active:scale-95 no-underline">
-                  🌾 Sell Crop (AI Engine) &rarr;
+              <motion.div variants={fadeInUp} className="mt-8 flex flex-col sm:flex-row gap-3.5">
+                <Link to="/sell/crop" className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-4 text-base shadow-xl shadow-emerald-600/25 active:scale-95 no-underline">
+                  🌾 Start Sell Crop Wizard (8 Steps) &rarr;
                 </Link>
-                <Link to="/dashboard/market" className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 border-2 border-navy text-navy hover:bg-navy hover:text-white px-8 py-4 text-base sm:text-lg no-underline">
-                  📈 Live Mandi Rates
+                <Link to="/dashboard/market" className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 border-2 border-navy text-navy hover:bg-navy hover:text-white px-8 py-4 text-base no-underline">
+                  📈 Check Live Mandi Rates
                 </Link>
               </motion.div>
-              
             </motion.div>
             
-            {/* Right Image */}
+            {/* Right Image Card */}
             <motion.div 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -93,20 +93,21 @@ export function Home() {
                   alt="Indian farmer using smartphone" 
                   className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-700" 
                 />
-                <div className="absolute inset-0 bg-navy/10"></div>
+                <div className="absolute inset-0 bg-navy/10" />
               </div>
+              
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
-                className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100 flex items-center gap-4"
+                className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-5 border border-gray-100 flex items-center gap-4"
               >
-                <div className="w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-2xl">
                   🚜
                 </div>
                 <div>
                   <p className="text-2xl font-black text-navy leading-none mb-1">50,000+</p>
-                  <p className="text-sm font-semibold text-text-muted">Farmers Trust Us</p>
+                  <p className="text-xs font-bold text-text-muted">Farmers Maximize Profit Daily</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -115,315 +116,179 @@ export function Home() {
         </div>
       </section>
 
-      {/* Live Mandi Ticker Section Directly on Home Page */}
-      <section className="py-12 bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white">
+      {/* 🔴 Live Mandi Rates Ticker (Home Dashboard Widget) */}
+      <section className="py-12 bg-slate-900 text-white">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
             <div>
-              <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
-                🔴 Live APMC Updates
+              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
+                🔴 Real-time APMC Mandi Rates
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mt-2 m-0">Today's Live Mandi Rates</h2>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mt-2 m-0">Live Regional Rates Today</h2>
             </div>
-            <Link to="/dashboard/market" className="text-xs font-bold text-emerald-400 hover:text-emerald-300 no-underline">
-              View All 48 Regional Mandis &rarr;
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link to="/market/nearby" className="text-xs font-bold text-emerald-400 hover:underline no-underline">
+                📍 Nearby Mandis &rarr;
+              </Link>
+              <Link to="/dashboard/market" className="text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl no-underline">
+                Full Rate Table &rarr;
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+            <div className="bg-slate-800/90 p-5 rounded-2xl border border-slate-700/80 space-y-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Khanna APMC • Wheat</span>
-              <p className="text-2xl font-black text-white mt-1 m-0">₹2,380 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
-              <span className="text-[11px] font-bold text-emerald-400">↑ +₹50 Today</span>
+              <p className="text-2xl font-black text-white m-0">₹2,380 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400 block">↑ +₹50 vs Yesterday</span>
             </div>
-            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+
+            <div className="bg-slate-800/90 p-5 rounded-2xl border border-slate-700/80 space-y-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Ludhiana APMC • Paddy</span>
-              <p className="text-2xl font-black text-white mt-1 m-0">₹2,210 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
-              <span className="text-[11px] font-bold text-emerald-400">↑ +₹15 Today</span>
+              <p className="text-2xl font-black text-white m-0">₹2,210 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400 block">↑ +₹15 vs Yesterday</span>
             </div>
-            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+
+            <div className="bg-slate-800/90 p-5 rounded-2xl border border-slate-700/80 space-y-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Samrala Mandi • Potato</span>
-              <p className="text-2xl font-black text-white mt-1 m-0">₹1,510 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
-              <span className="text-[11px] font-bold text-emerald-400">↑ +₹80 Today</span>
+              <p className="text-2xl font-black text-white m-0">₹1,510 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400 block">↑ +₹80 vs Yesterday</span>
             </div>
-            <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+
+            <div className="bg-slate-800/90 p-5 rounded-2xl border border-slate-700/80 space-y-1">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Jalandhar Mandi • Mustard</span>
-              <p className="text-2xl font-black text-white mt-1 m-0">₹5,450 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
-              <span className="text-[11px] font-bold text-emerald-400">↑ +₹120 Today</span>
+              <p className="text-2xl font-black text-white m-0">₹5,450 <span className="text-xs text-emerald-400 font-bold">/q</span></p>
+              <span className="text-[11px] font-bold text-emerald-400 block">↑ +₹120 vs Yesterday</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What We Do */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="mb-14 text-center"
-          >
-            <h2 className="text-3xl md:text-4xl font-extrabold text-navy">How We Empower You</h2>
-            <p className="mt-4 text-lg max-w-2xl mx-auto text-text-muted">
-              We translate complex agricultural data, weather patterns, and market fluctuations into one simple recommendation.
-            </p>
-          </motion.div>
+      {/* 📊 Quick AI Decision Tools Hub (Home Dashboard Sections) */}
+      <section className="py-16 bg-gray-50 border-b border-gray-200">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12 space-y-10">
           
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            <motion.div variants={fadeInUp} className="group p-8 rounded-2xl border border-border hover:border-green hover:shadow-xl transition-all duration-300 bg-gray-50 hover:bg-white overflow-hidden relative">
-              <div className="w-20 h-20 bg-white shadow-md rounded-2xl border border-border mb-6 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src="/icon-chart.jpg" alt="Market Chart" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-xl font-bold text-navy group-hover:text-green transition-colors">Live Mandi Prices</h3>
-              <p className="mt-3 text-text-muted leading-relaxed">
-                Instant access to verified rates from every APMC market across India. Know what your crop is worth right now.
-              </p>
-            </motion.div>
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-100">
+              🛠️ Interactive AI Tools
+            </span>
+            <h2 className="text-3xl font-black text-slate-900 m-0">AI Agricultural Decision Hub</h2>
+            <p className="text-xs text-gray-500 m-0">Everything you need to compare rates, calculate transport, and negotiate higher prices.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <motion.div variants={fadeInUp} className="group p-8 rounded-2xl border border-border hover:border-green hover:shadow-xl transition-all duration-300 bg-gray-50 hover:bg-white overflow-hidden relative">
-              <div className="w-20 h-20 bg-white shadow-md rounded-2xl border border-border mb-6 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src="/icon-ai.jpg" alt="AI Brain" className="w-full h-full object-cover" />
+            {/* Tool 1 */}
+            <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl font-black mb-3">
+                  🌾
+                </div>
+                <h3 className="text-lg font-black text-slate-900 m-0">Sell Crop 8-Step Wizard</h3>
+                <p className="text-xs text-gray-500 m-0 mt-2 leading-relaxed">
+                  Enter crop type, quantity, expected price, and trader offer to get immediate net profit AI advice.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-navy group-hover:text-green transition-colors">AI Price Prediction</h3>
-              <p className="mt-3 text-text-muted leading-relaxed">
-                Our machine learning models forecast tomorrow's trends so you know whether to sell today or hold for better profits.
-              </p>
-            </motion.div>
-            
-            <motion.div variants={fadeInUp} className="group p-8 rounded-2xl border border-border hover:border-green hover:shadow-xl transition-all duration-300 bg-gray-50 hover:bg-white overflow-hidden relative">
-              <div className="w-20 h-20 bg-white shadow-md rounded-2xl border border-border mb-6 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src="/icon-truck.jpg" alt="Logistics Truck" className="w-full h-full object-cover" />
+              <Link to="/sell/crop" className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-4 py-3 rounded-2xl text-center no-underline transition-all">
+                Launch Sell Wizard &rarr;
+              </Link>
+            </div>
+
+            {/* Tool 2 */}
+            <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl font-black mb-3">
+                  🧮
+                </div>
+                <h3 className="text-lg font-black text-slate-900 m-0">Net Profit Calculator</h3>
+                <p className="text-xs text-gray-500 m-0 mt-2 leading-relaxed">
+                  Calculate gross sale revenue minus transport fuel charges and 1% APMC Mandi tax deductions.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-navy group-hover:text-green transition-colors">Transport & Profit Calculator</h3>
-              <p className="mt-3 text-text-muted leading-relaxed">
-                We calculate exact transport and commission costs, showing you the true net profit for every selling option.
-              </p>
-            </motion.div>
-          </motion.div>
+              <Link to="/ai/profit-calculator" className="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-4 py-3 rounded-2xl text-center no-underline transition-all">
+                Open Profit Calculator &rarr;
+              </Link>
+            </div>
+
+            {/* Tool 3 */}
+            <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl font-black mb-3">
+                  🗣️
+                </div>
+                <h3 className="text-lg font-black text-slate-900 m-0">Negotiation Assistant</h3>
+                <p className="text-xs text-gray-500 m-0 mt-2 leading-relaxed">
+                  Data-backed counter scripts in Hindi & Hinglish to counter low village trader (vyapari) offers.
+                </p>
+              </div>
+              <Link to="/ai/negotiation-assistant" className="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-4 py-3 rounded-2xl text-center no-underline transition-all">
+                Get Negotiation Scripts &rarr;
+              </Link>
+            </div>
+          </div>
 
         </div>
       </section>
 
-      {/* Featured Projects / Success Stories */}
-      <section className="py-20 md:py-28 bg-gray-50">
+      {/* Why Choose Us */}
+      <section className="py-20 bg-white">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="mb-14 text-center"
-          >
-            <h2 className="text-3xl md:text-4xl font-extrabold text-navy">Success Stories</h2>
-            <p className="mt-4 text-lg max-w-2xl mx-auto text-text-muted">
-              See how data intelligence is transforming the agricultural landscape across India.
-            </p>
-          </motion.div>
-          
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            
-            {/* Story 1 */}
-            <motion.div variants={fadeInUp} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-border hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop" 
-                  alt="Wheat Farm" 
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                />
-                <div className="absolute inset-0 bg-navy/10 group-hover:bg-navy/30 transition-colors"></div>
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur text-navy text-xs font-bold rounded-full">Wheat</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-navy group-hover:text-green transition-colors">Punjab Yield Optimization</h3>
-                <div className="mt-2 text-sm text-text-muted font-medium">Ludhiana</div>
-                <div className="mt-3 pt-3 border-t border-border flex justify-between text-sm">
-                  <span className="font-bold text-green">+₹12,000 Profit</span>
-                </div>
-              </div>
-            </motion.div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-navy">Why Smart Farmers Choose AgroPrice AI</h2>
+              <p className="mt-4 text-base text-text-muted leading-relaxed">
+                By combining machine learning price forecasting with verified APMC Mandi directories, we eliminate guesswork and ensure you never sell below market value.
+              </p>
 
-            {/* Story 2 */}
-            <motion.div variants={fadeInUp} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-border hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?q=80&w=800&auto=format&fit=crop" 
-                  alt="Soybean Farm" 
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                />
-                <div className="absolute inset-0 bg-navy/10 group-hover:bg-navy/30 transition-colors"></div>
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur text-navy text-xs font-bold rounded-full">Soybean</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-navy group-hover:text-green transition-colors">Malwa AI Prediction</h3>
-                <div className="mt-2 text-sm text-text-muted font-medium">Indore</div>
-                <div className="mt-3 pt-3 border-t border-border flex justify-between text-sm">
-                  <span className="font-bold text-green">94% Accuracy</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Story 3 */}
-            <motion.div variants={fadeInUp} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-border hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=800&auto=format&fit=crop" 
-                  alt="Onion Market" 
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                />
-                <div className="absolute inset-0 bg-navy/10 group-hover:bg-navy/30 transition-colors"></div>
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur text-navy text-xs font-bold rounded-full">Onion</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-navy group-hover:text-green transition-colors">Lasalgaon Network</h3>
-                <div className="mt-2 text-sm text-text-muted font-medium">Nashik</div>
-                <div className="mt-3 pt-3 border-t border-border flex justify-between text-sm">
-                  <span className="font-bold text-green">2s Data Latency</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Story 4 */}
-            <motion.div variants={fadeInUp} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-border hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1595841696677-6479c04fbc52?q=80&w=800&auto=format&fit=crop" 
-                  alt="Cotton Field" 
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                />
-                <div className="absolute inset-0 bg-navy/10 group-hover:bg-navy/30 transition-colors"></div>
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur text-navy text-xs font-bold rounded-full">Cotton</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-navy group-hover:text-green transition-colors">Trader Negotiation</h3>
-                <div className="mt-2 text-sm text-text-muted font-medium">Nagpur</div>
-                <div className="mt-3 pt-3 border-t border-border flex justify-between text-sm">
-                  <span className="font-bold text-green">+₹500/Quintal</span>
-                </div>
-              </div>
-            </motion.div>
-
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section className="py-20 md:py-28 bg-white overflow-hidden">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={staggerContainer}
-            >
-              <motion.h2 variants={fadeInUp} className="text-3xl md:text-5xl font-extrabold text-navy leading-tight">Why Choose AgroPrice AI?</motion.h2>
-              <motion.p variants={fadeInUp} className="mt-6 text-lg text-text-muted leading-relaxed">
-                We are moving away from gut-feeling sales. By using artificial intelligence to analyze thousands of data points, we put the power of negotiation back into the hands of the farmer.
-              </motion.p>
-              
-              <div className="mt-10 space-y-8">
-                <motion.div variants={fadeInUp} className="flex gap-5">
-                  <div className="flex-shrink-0 w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center">
-                    <span className="text-2xl text-green-dark">🇮🇳</span>
+              <div className="mt-8 space-y-6">
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl shrink-0">
+                    🇮🇳
                   </div>
                   <div>
-                    <h3 className="font-bold text-xl text-navy">Built for Bharat</h3>
-                    <p className="mt-2 text-text-muted">Vernacular language support and optimized for slow internet connections in rural areas.</p>
+                    <h3 className="font-extrabold text-base text-slate-900 m-0">Built for Indian Farmers</h3>
+                    <p className="text-xs text-gray-500 m-0 mt-1">Multi-language support (Hindi, Punjabi, English) and works on mobile devices.</p>
                   </div>
-                </motion.div>
-                
-                <motion.div variants={fadeInUp} className="flex gap-5">
-                  <div className="flex-shrink-0 w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center">
-                    <span className="text-2xl text-green-dark">🎯</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-xl text-navy">Zero Guesswork</h3>
-                    <p className="mt-2 text-text-muted">Stop wondering if you got a good price. Get hard data and AI confidence scores before you sell.</p>
-                  </div>
-                </motion.div>
+                </div>
 
-                <motion.div variants={fadeInUp} className="flex gap-5">
-                  <div className="flex-shrink-0 w-12 h-12 bg-green-bg rounded-xl flex items-center justify-center">
-                    <span className="text-2xl text-green-dark">🆓</span>
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl shrink-0">
+                    🎯
                   </div>
                   <div>
-                    <h3 className="font-bold text-xl text-navy">100% Free for Farmers</h3>
-                    <p className="mt-2 text-text-muted">Core decision intelligence features are completely free for individual farmers forever.</p>
+                    <h3 className="font-extrabold text-base text-slate-900 m-0">Zero Guesswork</h3>
+                    <p className="text-xs text-gray-500 m-0 mt-1">Real net payout figures after deducting freight costs before you load your trolley.</p>
                   </div>
-                </motion.div>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
-              <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl border-8 border-gray-50">
-                <img 
-                  src="https://images.unsplash.com/photo-1530507629858-e4977d30e9e0?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Happy Indian Farmer" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent"></div>
-                <div className="absolute bottom-8 left-8 right-8">
-                  <p className="text-white text-xl font-bold italic">"AgroPrice AI helped me negotiate ₹400 extra per quintal with my local trader."</p>
-                  <p className="text-green-light mt-2 font-semibold">— Ramesh Singh, Wheat Farmer</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-gray-100">
+              <img 
+                src="https://images.unsplash.com/photo-1595841696677-6479c04fbc52?q=80&w=1000&auto=format&fit=crop" 
+                alt="Agricultural field harvest" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="py-20 md:py-28 bg-navy text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center"></div>
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Ready to Make Smarter Decisions?</h2>
-            <p className="text-lg text-gray-300 leading-relaxed mb-10">
-              Join the thousands of smart farmers who have stopped guessing and started profiting. Set up your profile and get your first AI recommendation in under 2 minutes.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-5 justify-center">
-              <Link to="/auth/signup" className="inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 bg-green text-white hover:bg-green-dark px-10 py-4 text-lg shadow-[0_0_20px_rgba(22,163,74,0.4)]">
-                Create Free Account
-              </Link>
-              <Link to="/auth/login" className="inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 border-2 border-white text-white hover:bg-white hover:text-navy px-10 py-4 text-lg">
-                Login to Dashboard
-              </Link>
-            </div>
-          </motion.div>
+      {/* Bottom CTA Banner */}
+      <section className="py-16 bg-emerald-950 text-white text-center">
+        <div className="mx-auto max-w-[900px] px-6 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-black text-white m-0">Ready to Get Your First AI Recommendation?</h2>
+          <p className="text-xs sm:text-sm text-emerald-200 leading-relaxed m-0">
+            Join 50,000+ farmers across Punjab, Haryana, Rajasthan & MP who sell crops smarter with AgroPrice AI.
+          </p>
+          <div className="flex justify-center gap-4 pt-2">
+            <Link to="/sell/crop" className="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-8 py-3.5 rounded-2xl no-underline text-sm shadow-xl transition-all">
+              🌾 Sell Crop Wizard Now &rarr;
+            </Link>
+            <Link to="/assistant/chat" className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-2xl no-underline text-sm transition-all">
+              🤖 Talk to AI Assistant
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -86,85 +86,68 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Marketing Site */}
+        {/* Main Application with Unified Navigation */}
         <Route path="/" element={<MarketingLayout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="features" element={<Features />} />
           <Route path="services" element={<Services />} />
           <Route path="contact" element={<Contact />} />
+
+          {/* Module 3: Dashboard */}
+          <Route path="dashboard" element={<DashboardHomePage />} />
+          <Route path="dashboard/market" element={<TodaysMarketPage />} />
+          <Route path="dashboard/trending" element={<TrendingCropsPage />} />
+          <Route path="dashboard/notifications" element={<NotificationsPage />} />
+
+          {/* Module 4: Sell Crop USP Wizard (8 Pages) */}
+          <Route path="sell/crop" element={<SelectCropPage />} />
+          <Route path="sell/quantity" element={<EnterQuantityPage />} />
+          <Route path="sell/quality" element={<SelectQualityPage />} />
+          <Route path="sell/expected-price" element={<ExpectedPricePage />} />
+          <Route path="sell/trader-offer" element={<TraderOfferPage />} />
+          <Route path="sell/review" element={<ReviewDetailsPage />} />
+          <Route path="sell/ai-analysis" element={<AIAnalysisPage />} />
+          <Route path="sell/ai-recommendation" element={<AIRecommendationPage />} />
+
+          {/* Module 5: Market (6 Pages) */}
+          <Route path="market/nearby" element={<NearbyMandisPage />} />
+          <Route path="market/search" element={<SearchMandiPage />} />
+          <Route path="market/details/:id" element={<MandiDetailsPage />} />
+          <Route path="market/compare" element={<PriceComparisonPage />} />
+          <Route path="market/history" element={<PriceHistoryPage />} />
+          <Route path="market/trends" element={<MarketTrendsPage />} />
+
+          {/* Module 6: AI Decision Engine (5 Pages) */}
+          <Route path="ai/recommendation-details" element={<AIRecommendationDetailsPage />} />
+          <Route path="ai/profit-calculator" element={<ProfitCalculatorPage />} />
+          <Route path="ai/transport-calculator" element={<TransportCostCalculatorPage />} />
+          <Route path="ai/negotiation-assistant" element={<NegotiationAssistantPage />} />
+          <Route path="ai/sell-vs-wait" element={<SellVsWaitPage />} />
+
+          {/* Module 7: AI Assistant (3 Pages) */}
+          <Route path="assistant/chat" element={<AIChatPage />} />
+          <Route path="assistant/history" element={<AIHistoryPage />} />
+          <Route path="assistant/voice" element={<VoiceAssistantPage />} />
+
+          {/* Module 8: Farmer History (3 Pages) */}
+          <Route path="farmer-history/sales" element={<PreviousSalesPage />} />
+          <Route path="farmer-history/analytics" element={<ProfitAnalyticsPage />} />
+          <Route path="farmer-history/crops" element={<CropHistoryPage />} />
+
+          {/* Module 9: Profile & Settings (4 Pages) */}
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="settings/language" element={<LanguageSettingsPage />} />
+          <Route path="settings/notifications" element={<NotificationSettingsPage />} />
+
+          {/* Module 10: Admin Panel (5 Pages) */}
+          <Route path="admin" element={<AdminDashboardPage />} />
+          <Route path="admin/crops" element={<AdminCropsPage />} />
+          <Route path="admin/mandis" element={<AdminMandisPage />} />
+          <Route path="admin/prices" element={<AdminPricesPage />} />
+          <Route path="admin/users" element={<AdminUsersPage />} />
         </Route>
-
-        {/* Module 1: Authentication */}
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="splash" element={<Splash />} />
-          <Route path="language" element={<Language />} />
-          <Route path="login/*" element={<SignInPage />} />
-          <Route path="signup/*" element={<SignUpPage />} />
-        </Route>
-
-        {/* Module 2: Onboarding Flow (5 Steps) */}
-        <Route path="/onboarding/welcome" element={<WelcomePage />} />
-        <Route path="/onboarding/profile" element={<FarmerProfilePage />} />
-        <Route path="/onboarding/farm" element={<FarmDetailsPage />} />
-        <Route path="/onboarding/transport" element={<TransportDetailsPage />} />
-        <Route path="/onboarding/summary" element={<OnboardingSummaryPage />} />
-
-        {/* Module 3: Dashboard Layout & Sub-pages */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardHomePage />} />
-          <Route path="market" element={<TodaysMarketPage />} />
-          <Route path="trending" element={<TrendingCropsPage />} />
-          <Route path="notifications" element={<NotificationsPage />} />
-        </Route>
-
-        {/* Module 4: Sell Crop USP Wizard (8 Pages) */}
-        <Route path="/sell/crop" element={<SelectCropPage />} />
-        <Route path="/sell/quantity" element={<EnterQuantityPage />} />
-        <Route path="/sell/quality" element={<SelectQualityPage />} />
-        <Route path="/sell/expected-price" element={<ExpectedPricePage />} />
-        <Route path="/sell/trader-offer" element={<TraderOfferPage />} />
-        <Route path="/sell/review" element={<ReviewDetailsPage />} />
-        <Route path="/sell/ai-analysis" element={<AIAnalysisPage />} />
-        <Route path="/sell/ai-recommendation" element={<AIRecommendationPage />} />
-
-        {/* Module 5: Market (6 Pages) */}
-        <Route path="/market/nearby" element={<NearbyMandisPage />} />
-        <Route path="/market/search" element={<SearchMandiPage />} />
-        <Route path="/market/details/:id" element={<MandiDetailsPage />} />
-        <Route path="/market/compare" element={<PriceComparisonPage />} />
-        <Route path="/market/history" element={<PriceHistoryPage />} />
-        <Route path="/market/trends" element={<MarketTrendsPage />} />
-
-        {/* Module 6: AI Decision Engine (5 Pages) */}
-        <Route path="/ai/recommendation-details" element={<AIRecommendationDetailsPage />} />
-        <Route path="/ai/profit-calculator" element={<ProfitCalculatorPage />} />
-        <Route path="/ai/transport-calculator" element={<TransportCostCalculatorPage />} />
-        <Route path="/ai/negotiation-assistant" element={<NegotiationAssistantPage />} />
-        <Route path="/ai/sell-vs-wait" element={<SellVsWaitPage />} />
-
-        {/* Module 7: AI Assistant (3 Pages) */}
-        <Route path="/assistant/chat" element={<AIChatPage />} />
-        <Route path="/assistant/history" element={<AIHistoryPage />} />
-        <Route path="/assistant/voice" element={<VoiceAssistantPage />} />
-
-        {/* Module 8: Farmer History (3 Pages) */}
-        <Route path="/farmer-history/sales" element={<PreviousSalesPage />} />
-        <Route path="/farmer-history/analytics" element={<ProfitAnalyticsPage />} />
-        <Route path="/farmer-history/crops" element={<CropHistoryPage />} />
-
-        {/* Module 9: Profile & Settings (4 Pages) */}
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/settings/language" element={<LanguageSettingsPage />} />
-        <Route path="/settings/notifications" element={<NotificationSettingsPage />} />
-
-        {/* Module 10: Admin Panel (5 Pages) */}
-        <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/admin/crops" element={<AdminCropsPage />} />
-        <Route path="/admin/mandis" element={<AdminMandisPage />} />
-        <Route path="/admin/prices" element={<AdminPricesPage />} />
-        <Route path="/admin/users" element={<AdminUsersPage />} />
 
         {/* Redirect /onboarding to /onboarding/welcome */}
         <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
