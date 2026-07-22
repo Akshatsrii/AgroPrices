@@ -27,64 +27,62 @@ const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 function App() {
   return (
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <Router>
-        <Routes>
-          {/* Public Marketing Site */}
-          <Route path="/" element={<MarketingLayout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="features" element={<Features />} />
-            <Route path="services" element={<Services />} />
-            <Route path="contact" element={<Contact />} />
-          </Route>
+    <Router>
+      <Routes>
+        {/* Public Marketing Site */}
+        <Route path="/" element={<MarketingLayout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="features" element={<Features />} />
+          <Route path="services" element={<Services />} />
+          <Route path="contact" element={<Contact />} />
+        </Route>
 
-          {/* Authentication & Onboarding Splash */}
-          <Route path="/auth" element={<AuthLayout />}>
-            <Route path="splash" element={<Splash />} />
-            <Route path="language" element={<Language />} />
-            <Route path="login/*" element={<SignInPage />} />
-            <Route path="signup/*" element={<SignUpPage />} />
-          </Route>
+        {/* Authentication & Onboarding Splash */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="splash" element={<Splash />} />
+          <Route path="language" element={<Language />} />
+          <Route path="login/*" element={<SignInPage />} />
+          <Route path="signup/*" element={<SignUpPage />} />
+        </Route>
 
-          {/* Onboarding Flow */}
-          <Route 
-            path="/onboarding/location" 
-            element={
-              <SignedIn>
-                <LocationPage />
-              </SignedIn>
-            } 
-          />
-          <Route 
-            path="/onboarding/crop" 
-            element={
-              <SignedIn>
-                <CropSelectionPage />
-              </SignedIn>
-            } 
-          />
+        {/* Onboarding Flow */}
+        <Route 
+          path="/onboarding/location" 
+          element={
+            <SignedIn>
+              <LocationPage />
+            </SignedIn>
+          } 
+        />
+        <Route 
+          path="/onboarding/crop" 
+          element={
+            <SignedIn>
+              <CropSelectionPage />
+            </SignedIn>
+          } 
+        />
 
-          {/* Protected Dashboard */}
-          <Route 
-            path="/dashboard" 
-            element={
-              <SignedIn>
-                <div className="min-h-screen flex items-center justify-center bg-gray-50 text-navy font-bold text-2xl">
-                  Dashboard Coming Soon...
-                </div>
-              </SignedIn>
-            } 
-          />
+        {/* Protected Dashboard */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <SignedIn>
+              <div className="min-h-screen flex items-center justify-center bg-gray-50 text-navy font-bold text-2xl">
+                Dashboard Coming Soon...
+              </div>
+            </SignedIn>
+          } 
+        />
 
-          {/* Redirect /onboarding to /onboarding/location */}
-          <Route path="/onboarding" element={<Navigate to="/onboarding/location" replace />} />
-          
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </ClerkProvider>
+        {/* Redirect /onboarding to /onboarding/location */}
+        <Route path="/onboarding" element={<Navigate to="/onboarding/location" replace />} />
+        
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 
