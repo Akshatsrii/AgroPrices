@@ -1,14 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiService } from '../../services/apiService';
 
 export function ReviewDetailsPage() {
   const navigate = useNavigate();
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('agro_sell_data');
     if (saved) setData(JSON.parse(saved));
   }, []);
+
+  const handleAnalyze = async () => {
+    setLoading(true);
+    try {
+      await apiService.createCropListing({
+        cropName: data.crop || 'Tomato',
+        quantity: data.quantity || 70,
+        qualityGrade: data.quality || 'A',
+        expectedPrice: data.expectedPrice || 20,
+        traderOfferPrice: data.traderPrice || 17,
+        urgencyDays: data.urgency === 'Immediately' ? 1 : 7,
+        hasVehicle: data.hasVehicle === 'Yes'
+      });
+    } catch (err) {
+      console.warn('Backend listing error, proceeding with local analysis:', err);
+    } finally {
+      setLoading(false);
+      navigate('/sell/ai-analysis');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50/70 via-white to-gray-50 flex items-center justify-center p-4 sm:p-6 font-sans">
@@ -59,10 +81,11 @@ export function ReviewDetailsPage() {
         </div>
 
         <button
-          onClick={() => navigate('/sell/ai-analysis')}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-2xl text-base shadow-xl shadow-emerald-600/30 transition-all cursor-pointer border-0 flex items-center justify-center gap-2 active:scale-98"
+          onClick={handleAnalyze}
+          disabled={loading}
+          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-extrabold py-4 rounded-2xl text-base shadow-xl shadow-emerald-600/30 transition-all cursor-pointer border-0 flex items-center justify-center gap-2 active:scale-98"
         >
-          <span>🤖</span> Analyze with AI &rarr;
+          <span>🤖</span> {loading ? 'Saving & Analyzing...' : 'Analyze with AI →'}
         </button>
       </div>
     </div>
