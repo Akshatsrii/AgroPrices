@@ -15,6 +15,7 @@ import { Contact } from './pages/Contact';
 // Auth Pages
 import { SignInPage } from './pages/auth/SignInPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
+import { OTPVerificationPage } from './pages/auth/OTPVerificationPage';
 
 // Onboarding Pages
 import { WelcomePage } from './pages/onboarding/WelcomePage';
@@ -149,6 +150,13 @@ function App() {
           <Route path="admin/mandis" element={<AdminMandisPage />} />
           <Route path="admin/prices" element={<AdminPricesPage />} />
           <Route path="admin/users" element={<AdminUsersPage />} />
+        </Route>
+
+        {/* Module 2: Authentication Routes */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="login" element={<SignInPage />} />
+          <Route path="signup" element={<SignUpPage />} />
+          <Route path="verify-otp" element={<OTPVerificationPage />} />
         </Route>
 
         {/* Redirect /onboarding to /onboarding/welcome */}
