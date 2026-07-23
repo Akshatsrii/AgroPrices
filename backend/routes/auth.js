@@ -1,89 +1,89 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Middleware to authenticate JWT token
-const authMiddleware = (req, res, next) => {
-  const token = req.header('x-auth-token');
-  if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
-  }
+const JWT_SECRET = process.env.JWT_SECRET || 'agroprice_secret_key_2026';
+
+// POST /api/auth/send-otp
+router.post('/send-otp', async (req, res) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'agro_default_jwt_secret_2026');
-    req.user = decoded.user;
-    next();
-  } catch (err) {
-    res.status(401).json({ msg: 'Token is not valid' });
-  }
-};
+    const { phoneNumber } = req.body;
+    if (!phoneNumber) {
+      return res.status(400).json({ error: 'Phone number is required' });
+    }
 
-// Register
-router.post('/register', async (req, res) => {
-  try {
-    const { name, phone, password, role, location, landSizeAcres, primaryCrops } = req.body;
-    let user = await User.findOne({ phone });
-    if (user) return res.status(400).json({ msg: 'User already exists with this phone number' });
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    user = new User({
-      name,
-      phone,
-      password: hashedPassword,
-      role: role || 'farmer',
-      location: location || {},
-      landSizeAcres: landSizeAcres || 0,
-      primaryCrops: primaryCrops || []
-    });
-
-    await user.save();
-
-    const payload = { user: { id: user.id } };
-    const jwtSecret = process.env.JWT_SECRET || 'agro_default_jwt_secret_2026';
-    jwt.sign(payload, jwtSecret, { expiresIn: '7d' }, (err, token) => {
-      if (err) throw err;
-      res.json({ token, user: { id: user.id, name: user.name, phone: user.phone, role: user.role } });
+    // Demo SMS trigger mock response
+    return res.json({
+      success: true,
+      message: `OTP sent to ${phoneNumber}. Use demo code 123456`,
+      demoCode: '123456',
     });
   } catch (err) {
-    console.error('Register error:', err.message);
-    res.status(500).json({ msg: 'Server Error during registration' });
+    return res.status(500).json({ error: err.message });
   }
 });
 
-// Login
-router.post('/login', async (req, res) => {
+// POST /api/auth/verify-otp
+router.post('/verify-otp', async (req, res) => {
   try {
-    const { phone, password } = req.body;
-    const user = await User.findOne({ phone });
-    if (!user) return res.status(400).json({ msg: 'Invalid Credentials' });
+    const { phoneNumber, otpCode, name, state, district } = req.body;
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: 'Invalid Credentials' });
+    if (!phoneNumber || !otpCode) {
+      return res.status(400).json({ error: 'Phone number and OTP code are required' });
+    }
 
-    const payload = { user: { id: user.id } };
-    const jwtSecret = process.env.JWT_SECRET || 'agro_default_jwt_secret_2026';
-    jwt.sign(payload, jwtSecret, { expiresIn: '7d' }, (err, token) => {
-      if (err) throw err;
-      res.json({ token, user: { id: user.id, name: user.name, phone: user.phone, role: user.role } });
+    if (otpCode !== '123456' && otpCode.length !== 6) {
+      return res.status(400).json({ error: 'Invalid OTP code' });
+    }
+
+    let user = await User.findOne({ phoneNumber });
+    if (!user) {
+      user = await User.create({
+        phoneNumber,
+        name: name || 'Ramesh Kumar',
+        state: state || 'Madhya Pradesh',
+        district: district || 'Sehore',
+        role: 'FARMER',
+        isVerified: true,
+      });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, phoneNumber: user.phoneNumber, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({
+      success: true,
+      token,
+      user,
     });
   } catch (err) {
-    console.error('Login error:', err.message);
-    res.status(500).json({ msg: 'Server Error during login' });
+    return res.status(500).json({ error: err.message });
   }
 });
 
-// Get Current User Profile
-router.get('/me', authMiddleware, async (req, res) => {
+// GET /api/auth/me
+router.get('/me', async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    if (!user) return res.status(404).json({ msg: 'User not found' });
-    res.json(user);
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized token required' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json({ success: true, user });
   } catch (err) {
-    console.error('Get profile error:', err.message);
-    res.status(500).json({ msg: 'Server Error' });
+    return res.status(401).json({ error: 'Invalid or expired token' });
   }
 });
 
