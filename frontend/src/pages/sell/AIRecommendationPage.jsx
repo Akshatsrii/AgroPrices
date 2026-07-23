@@ -1,118 +1,139 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { generateCropRecommendation } from '../../services/geminiService';
+import { useSellStore } from '../../store/useSellStore';
+import { Sparkles, TrendingUp, DollarSign, Truck, Calendar, MapPin, ArrowRight, Bot, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export function AIRecommendationPage() {
   const navigate = useNavigate();
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [aiResult, setAiResult] = useState(null);
+  const { selectedCrop, quantityQuintals, qualityGrade, expectedPrice, traderOffer, vehicleAvailable, aiAnalysis, computeAIRecommendation } = useSellStore();
 
   useEffect(() => {
-    const saved = localStorage.getItem('agro_sell_data');
-    const parsed = saved ? JSON.parse(saved) : {};
-    setData(parsed);
-
-    async function fetchAiRec() {
-      setLoading(true);
-      const rec = await generateCropRecommendation(parsed, 'Hindi (हिंदी)');
-      setAiResult(rec);
-      setLoading(false);
-    }
-
-    fetchAiRec();
+    computeAIRecommendation();
   }, []);
 
-  const crop = data.crop || 'Tomato';
-  const quantity = Number(data.quantity || 70); // 70 kg
-  const traderPrice = Number(data.traderPrice || 17); // ₹17/kg
-  const mandiPrice = 20; // ₹20/kg
-  const tomorrowPrice = 21; // ₹21/kg
-
-  const villageIncome = quantity * traderPrice; // 70 * 17 = 1190
-  const mandiIncome = quantity * mandiPrice; // 70 * 20 = 1400
-  const netProfit = mandiIncome - 40; // 1360 after transport
+  const isSellNow = aiAnalysis.recommendationType === 'SELL_NOW';
+  const score = aiAnalysis.decisionScore || 92;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50/70 via-white to-gray-50 flex items-center justify-center p-4 sm:p-6 font-sans">
-      <div className="max-w-lg w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-200/80 relative space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50/80 via-white to-gray-50 p-4 sm:p-6 font-sans">
+      <div className="max-w-3xl mx-auto space-y-6">
         
-        {/* Header Badge */}
-        <div className="flex justify-between items-center">
-          <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-wider">
-            ✨ AI Recommendation (USP Result)
-          </span>
-          <span className="text-xs font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
-            Confidence: {aiResult?.confidenceScore || 94}%
-          </span>
-        </div>
-
-        {loading ? (
-          <div className="p-12 text-center space-y-3">
-            <div className="w-12 h-12 rounded-full border-4 border-emerald-600 border-t-transparent animate-spin mx-auto" />
-            <p className="text-xs font-bold text-emerald-800">Gemini AI is calculating live Mandi arbitrage...</p>
-          </div>
-        ) : (
-          <>
-            {/* Recommendation Banner */}
-            <div className="p-6 rounded-3xl bg-gradient-to-r from-emerald-700 to-green-800 text-white text-center space-y-2 shadow-lg shadow-emerald-700/20">
-              <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-200 block">
-                Primary Recommendation
+        {/* Top Header Card */}
+        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-100 shadow-xl relative overflow-hidden space-y-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-2">
+              <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-sm">
+                AI
               </span>
-              <h2 className="text-3xl font-black m-0 tracking-tight">
-                {aiResult?.recommendedAction || 'Sell Tomorrow at Ramganj Mandi'}
-              </h2>
-              <p className="text-xs font-medium text-emerald-100 m-0">
-                Holding load until tomorrow morning maximizes net returns by +₹{netProfit - villageIncome}.
+              <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                Decision Engine Recommendation
+              </span>
+            </div>
+            <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              Confidence 96%
+            </span>
+          </div>
+
+          {/* AI Score Badge */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-2xl bg-gradient-to-r from-emerald-800 via-green-900 to-slate-900 text-white shadow-lg">
+            <div className="space-y-1 text-center sm:text-left">
+              <span className="text-xs font-bold text-emerald-300 uppercase tracking-widest block">Recommended Action</span>
+              <h1 className="text-2xl sm:text-3xl font-black m-0 tracking-tight text-emerald-400">
+                {aiAnalysis.recommendationText}
+              </h1>
+              <p className="text-xs text-emerald-100 mt-1 max-w-md">
+                Selling {quantityQuintals} Quintals of {selectedCrop.name} ({qualityGrade.name}) at {aiAnalysis.recommendedMandi}.
               </p>
             </div>
 
-            {/* Comparison Matrix */}
-            <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200 space-y-3 text-xs">
-              <h3 className="font-extrabold text-slate-900 uppercase tracking-wider m-0">
-                📊 Price & Income Comparison ({crop} - {quantity} KG)
-              </h3>
+            {/* Score Radial Box */}
+            <div className="w-28 h-28 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex flex-col items-center justify-center text-center shrink-0">
+              <span className="text-xs uppercase font-bold text-emerald-200">AI Score</span>
+              <span className="text-3xl font-black text-amber-400">{score}</span>
+              <span className="text-[10px] text-emerald-100 font-bold">/ 100</span>
+            </div>
+          </div>
 
-              <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="p-3 bg-white rounded-xl border border-gray-200">
-                  <span className="text-gray-500 font-bold block text-[10px]">Village Offer</span>
-                  <strong className="text-sm font-black text-slate-900 block mt-0.5">₹{traderPrice}/kg</strong>
-                  <span className="text-gray-500 font-bold text-[11px] block mt-1">₹{villageIncome} Total</span>
+          {/* Net Profit Breakdown Grid */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-2">
+              <TrendingUp className="w-4 h-4 text-emerald-600" />
+              <span>Net Profit Breakdown vs Middleman Offer</span>
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              {/* Local Trader Offer Box */}
+              <div className="p-5 rounded-2xl bg-red-50/60 border border-red-200 space-y-2">
+                <span className="text-red-700 font-bold uppercase block text-[10px]">Local Middleman Bid</span>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-2xl font-black text-slate-900">₹{traderOffer.toLocaleString('en-IN')}</span>
+                  <span className="text-gray-500 font-medium">/ quintal</span>
                 </div>
-
-                <div className="p-3 bg-white rounded-xl border border-gray-200">
-                  <span className="text-gray-500 font-bold block text-[10px]">Nearby Mandi</span>
-                  <strong className="text-sm font-black text-slate-900 block mt-0.5">₹{mandiPrice}/kg</strong>
-                  <span className="text-gray-500 font-bold text-[11px] block mt-1">₹{mandiIncome} Total</span>
-                </div>
-
-                <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-300">
-                  <span className="text-emerald-800 font-extrabold block text-[10px]">Tomorrow (AI)</span>
-                  <strong className="text-sm font-black text-emerald-900 block mt-0.5">₹{tomorrowPrice}/kg</strong>
-                  <span className="text-emerald-700 font-black text-[11px] block mt-1">₹{netProfit} Net</span>
+                <div className="pt-2 border-t border-red-200/60 text-gray-600">
+                  Total Payout: <strong className="text-slate-900 font-black">₹{(traderOffer * quantityQuintals).toLocaleString('en-IN')}</strong>
                 </div>
               </div>
 
-              {/* AI Reasons */}
-              <div className="pt-2 border-t border-gray-200/80 space-y-1">
-                <span className="text-[10px] font-extrabold text-gray-400 uppercase block">AI Decision Factors:</span>
-                <p className="text-[11px] text-slate-700 m-0 leading-relaxed font-medium">
-                  • 📈 Demand increasing in Ramganj Mandi<br />
-                  • 🚛 Transport cost is minimal (18 KM distance)<br />
-                  • ☀️ Weather clear, no rain forecast
-                </p>
+              {/* Mandi Net Profit Box */}
+              <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-300 space-y-2 shadow-sm relative overflow-hidden">
+                <div className="absolute top-2 right-2 text-xs font-black text-emerald-700 bg-emerald-200/80 px-2 py-0.5 rounded">
+                  BEST PROFIT
+                </div>
+                <span className="text-emerald-800 font-bold uppercase block text-[10px]">Mandi Net Profit</span>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-2xl font-black text-emerald-900">₹{aiAnalysis.netProfit.toLocaleString('en-IN')}</span>
+                  <span className="text-emerald-700 font-medium">Net</span>
+                </div>
+                <div className="pt-2 border-t border-emerald-200/80 text-emerald-900 font-semibold flex justify-between">
+                  <span>Gain vs Middleman:</span>
+                  <strong className="text-emerald-700 font-black">+₹{(aiAnalysis.netProfit - (traderOffer * quantityQuintals)).toLocaleString('en-IN')}</strong>
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* View Nearby Mandis Button */}
+          {/* AI Reasoning Insights */}
+          <div className="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2 text-xs">
+            <h4 className="font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>AI Market Insights</span>
+            </h4>
+            <p className="text-gray-700 leading-relaxed font-medium">
+              {aiAnalysis.advice}
+            </p>
+            <div className="pt-2 flex flex-wrap gap-2 text-[11px]">
+              <span className="bg-white border border-gray-200 px-3 py-1 rounded-lg text-gray-700 font-semibold">
+                📍 Distance: {aiAnalysis.distanceKm} KM
+              </span>
+              <span className="bg-white border border-gray-200 px-3 py-1 rounded-lg text-gray-700 font-semibold">
+                🚚 Fuel Cost: ₹{aiAnalysis.estimatedFuelCost}
+              </span>
+              <span className="bg-white border border-gray-200 px-3 py-1 rounded-lg text-gray-700 font-semibold">
+                🌾 Mandi Fee: ₹{aiAnalysis.mandiTax}
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Action Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             <Link
               to="/market/nearby"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-base shadow-xl shadow-emerald-600/30 transition-all cursor-pointer text-center block no-underline border-0 active:scale-98"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl text-xs transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center space-x-2 no-underline"
             >
-              📍 View Nearby Mandis &rarr;
+              <MapPin className="w-4 h-4" />
+              <span>View Mandi Route & Details</span>
             </Link>
-          </>
-        )}
+
+            <Link
+              to="/ai/negotiation-assistant"
+              className="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl text-xs transition-all shadow-md flex items-center justify-center space-x-2 no-underline"
+            >
+              <Bot className="w-4 h-4 text-emerald-400" />
+              <span>AI Negotiation Counter-Offer Helper</span>
+            </Link>
+          </div>
+
+        </div>
       </div>
     </div>
   );
