@@ -13,8 +13,6 @@ import { Services } from './pages/Services';
 import { Contact } from './pages/Contact';
 
 // Auth Pages
-import { Splash } from './pages/auth/Splash';
-import { Language } from './pages/auth/Language';
 import { SignInPage } from './pages/auth/SignInPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 
