@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { apiService } from '../../services/apiService';
 
-const MANDI_DATA = [
+const MOCK_MANDI_DATA = [
   { id: 1, name: 'Khanna APMC Mandi', district: 'Ludhiana', crop: 'Wheat (गेहूं)', price: 2380, msp: 2275, trend: '+₹50', trendType: 'up', distance: 14, arrivals: '4,500 Quintals' },
   { id: 2, name: 'Ludhiana Grain Market', district: 'Ludhiana', crop: 'Wheat (गेहूं)', price: 2360, msp: 2275, trend: '+₹30', trendType: 'up', distance: 22, arrivals: '8,200 Quintals' },
   { id: 3, name: 'Samrala Mandi', district: 'Ludhiana', crop: 'Potato (आलू)', price: 1510, msp: 1200, trend: '+₹80', trendType: 'up', distance: 8, arrivals: '1,200 Quintals' },
@@ -12,8 +13,33 @@ const MANDI_DATA = [
 export function TodaysMarketPage() {
   const [selectedCrop, setSelectedCrop] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [mandiList, setMandiList] = useState(MOCK_MANDI_DATA);
+  const [isBackendConnected, setIsBackendConnected] = useState(false);
 
-  const filteredData = MANDI_DATA.filter(item => {
+  useEffect(() => {
+    async function loadMarketPrices() {
+      const res = await apiService.getTodaysPrices();
+      if (res.success && res.data && res.data.data && res.data.data.length > 0) {
+        setIsBackendConnected(true);
+        const mapped = res.data.data.map((item, idx) => ({
+          id: item._id || idx,
+          name: item.mandiName || item.name,
+          district: item.district || 'Punjab',
+          crop: item.cropName || item.crop || 'Wheat',
+          price: item.modalPrice || item.price || 2350,
+          msp: 2275,
+          trend: `${item.trendPercentage > 0 ? '+' : ''}${item.trendPercentage || 0}%`,
+          trendType: item.trend === 'UP' ? 'up' : item.trend === 'DOWN' ? 'down' : 'neutral',
+          distance: item.distanceKm || 15,
+          arrivals: '3,500 Quintals'
+        }));
+        setMandiList(mapped);
+      }
+    }
+    loadMarketPrices();
+  }, []);
+
+  const filteredData = mandiList.filter(item => {
     const matchesCrop = selectedCrop === 'All' || item.crop.toLowerCase().includes(selectedCrop.toLowerCase());
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || item.crop.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCrop && matchesSearch;
@@ -25,7 +51,12 @@ export function TodaysMarketPage() {
       {/* Header */}
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Today's Market Mandi Rates 📈</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Today's Market Mandi Rates 📈</h1>
+            {isBackendConnected && (
+              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">⚡ Live Backend API</span>
+            )}
+          </div>
           <p className="text-xs text-gray-500 m-0 mt-1">Live market prices updated directly from APMC Mandis across Punjab & Northern India.</p>
         </div>
 
