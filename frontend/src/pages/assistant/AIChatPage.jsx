@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { askGeminiAssistant } from '../../services/geminiService';
+import { apiService } from '../../services/apiService';
 
 const LANGUAGES = [
   { code: 'English', label: 'English' },
@@ -34,10 +35,21 @@ export function AIChatPage() {
     setLoading(true);
 
     try {
+      // Try backend endpoint first
+      const backendRes = await apiService.sendAIChat(
+        newMsgs.map(m => ({ role: m.sender === 'user' ? 'user' : 'model', content: m.text }))
+      );
+
+      if (backendRes.success && backendRes.data && backendRes.data.reply) {
+        setMessages([...newMsgs, { sender: 'ai', text: backendRes.data.reply }]);
+      } else {
+        // Fall back to direct Gemini client service
+        const responseText = await askGeminiAssistant(userText, selectedLanguage);
+        setMessages([...newMsgs, { sender: 'ai', text: responseText }]);
+      }
+    } catch (err) {
       const responseText = await askGeminiAssistant(userText, selectedLanguage);
       setMessages([...newMsgs, { sender: 'ai', text: responseText }]);
-    } catch (err) {
-      setMessages([...newMsgs, { sender: 'ai', text: 'Sorry, AI response error. Please try again.' }]);
     } finally {
       setLoading(false);
     }
@@ -50,7 +62,7 @@ export function AIChatPage() {
       <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-1">
-            <span>✨ Powered by Google Gemini AI</span>
+            <span>✨ Powered by Express API & Google Gemini AI</span>
           </div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">AI Mandi Assistant 🤖</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Ask questions in your preferred language for instant data advice.</p>
