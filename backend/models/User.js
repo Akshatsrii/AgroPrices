@@ -1,18 +1,47 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  phone: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['farmer', 'trader', 'admin'], default: 'farmer' },
-  location: {
-    district: { type: String, default: '' },
-    state: { type: String, default: '' },
-    pincode: { type: String, default: '' }
+const userSchema = new mongoose.Schema({
+  phoneNumber: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    index: true,
   },
-  landSizeAcres: { type: Number, default: 0 },
-  primaryCrops: [{ type: String }],
-  createdAt: { type: Date, default: Date.now }
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  role: {
+    type: String,
+    enum: ['FARMER', 'TRADER', 'AGGREGATOR', 'ADMIN'],
+    default: 'FARMER',
+  },
+  state: {
+    type: String,
+    default: 'Madhya Pradesh',
+  },
+  district: {
+    type: String,
+    default: 'Sehore',
+  },
+  village: {
+    type: String,
+    default: '',
+  },
+  preferredLanguage: {
+    type: String,
+    default: 'Hindi',
+  },
+  isVerified: {
+    type: Boolean,
+    default: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);
