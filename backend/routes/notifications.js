@@ -1,16 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const Notification = require('../models/Notification');
+const notificationEngine = require('../services/notificationEngine');
 
 // GET /api/notifications
 router.get('/', async (req, res) => {
   try {
-    const mockNotifications = [
-      { id: 'N1', title: '📈 Tomato Price Surge (+5%)', message: 'Ramganj Mandi & Indore Mandi prices up due to hotel inquiries.', type: 'PRICE_SURGE', isRead: false, createdAt: '2026-07-23T08:00:00Z' },
-      { id: 'N2', title: '🌧️ Heavy Rain Warning (48 Hours)', message: 'Cover transport trolleys before heading to Mandi.', type: 'WEATHER_ALERT', isRead: false, createdAt: '2026-07-22T14:30:00Z' },
-      { id: 'N3', title: '⚡ Direct Buyer Inquiry', message: 'Buyer requested 40 Quintals Wheat at ₹2,470/quintal.', type: 'DEAL_OFFER', isRead: true, createdAt: '2026-07-21T10:15:00Z' },
-    ];
-    return res.json({ success: true, count: mockNotifications.length, notifications: mockNotifications });
+    const alerts = notificationEngine.getAllAlerts();
+    return res.json({ success: true, count: alerts.length, notifications: alerts });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/notifications/trigger
+router.post('/trigger', async (req, res) => {
+  try {
+    const { userId, type, cropName, mandiName, price, changePct, district, condition, advisory } = req.body;
+    let notif;
+
+    if (type === 'PRICE_ALERT') {
+      notif = await notificationEngine.createPriceAlert(userId, cropName, mandiName, price, changePct);
+    } else if (type === 'PREDICTION_ALERT') {
+      notif = await notificationEngine.createPredictionAlert(userId, cropName, price, changePct);
+    } else if (type === 'WEATHER_ALERT') {
+      notif = await notificationEngine.createWeatherAlert(userId, district, condition, advisory);
+    } else {
+      notif = await notificationEngine.createSellingReminder(userId, cropName, mandiName, '06:00 AM - 08:00 AM');
+    }
+
+    return res.json({ success: true, notification: notif });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
