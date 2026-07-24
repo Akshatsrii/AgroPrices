@@ -1,8 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuthStore } from '../store/useAuthStore';
+import { useUser } from '@clerk/clerk-react';
 
 export function Home() {
+  const { user: storeUser } = useAuthStore();
+  
+  let clerkUser = null;
+  try {
+    const clerk = useUser();
+    clerkUser = clerk?.user;
+  } catch (e) {}
+
+  const displayName = clerkUser?.fullName || clerkUser?.firstName || storeUser?.name || 'Farmer';
+  const displayLocation = (storeUser?.district && storeUser?.state)
+    ? `${storeUser.district}, ${storeUser.state}`
+    : (storeUser?.village || storeUser?.state || storeUser?.district || 'India');
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 25 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -23,7 +38,7 @@ export function Home() {
       <div className="bg-gradient-to-r from-emerald-900 via-green-950 to-slate-900 text-white px-6 lg:px-12 py-3.5 border-b border-emerald-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div className="flex items-center gap-2 text-xs font-semibold">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>👨‍🌾 Welcome, Gurpreet Singh • Ludhiana, Punjab</span>
+          <span>👨‍🌾 Welcome, {displayName} • {displayLocation}</span>
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="text-emerald-300 font-bold">Recommended Action: Sell Wheat at Khanna Mandi (+₹4,000 Extra Net)</span>

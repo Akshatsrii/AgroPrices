@@ -1,7 +1,14 @@
 import { create } from 'zustand';
 
-export const useAuthStore = create((set) => ({
-  user: {
+const getInitialUser = () => {
+  try {
+    const saved = localStorage.getItem('agro_user');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && typeof parsed === 'object') return parsed;
+    }
+  } catch (e) {}
+  return {
     phoneNumber: '+91 98765 43210',
     name: 'Ramesh Kumar',
     state: 'Madhya Pradesh',
@@ -11,7 +18,11 @@ export const useAuthStore = create((set) => ({
     primaryCrops: ['Wheat', 'Soybean'],
     vehicle: 'Tractor Trolley',
     isAuthenticated: true,
-  },
+  };
+};
+
+export const useAuthStore = create((set) => ({
+  user: getInitialUser(),
   otpSent: false,
   otpCode: '',
   phoneInput: '',
@@ -26,40 +37,52 @@ export const useAuthStore = create((set) => ({
   
   verifyOtp: (code) => {
     if (code === '123456' || code.length === 6) {
-      set((state) => ({
-        user: {
+      set((state) => {
+        const updatedUser = {
           ...state.user,
           phoneNumber: state.phoneInput || state.user.phoneNumber,
           isAuthenticated: true,
-        },
-        otpSent: false,
-      }));
+        };
+        try {
+          localStorage.setItem('agro_user', JSON.stringify(updatedUser));
+        } catch (e) {}
+        return { user: updatedUser, otpSent: false };
+      });
       return true;
     }
     return false;
   },
   
   updateFarmerProfile: (profileData) => {
-    set((state) => ({
-      user: {
+    set((state) => {
+      const updatedUser = {
         ...state.user,
         ...profileData,
-      },
-    }));
+      };
+      try {
+        localStorage.setItem('agro_user', JSON.stringify(updatedUser));
+      } catch (e) {}
+      return { user: updatedUser };
+    });
   },
   
-  logout: () => set({
-    user: {
-      phoneNumber: '',
-      name: '',
-      state: '',
-      district: '',
-      village: '',
-      landSize: '',
-      primaryCrops: [],
-      vehicle: '',
-      isAuthenticated: false,
-    },
-    otpSent: false,
-  }),
+  logout: () => {
+    try {
+      localStorage.removeItem('agro_user');
+    } catch (e) {}
+    set({
+      user: {
+        phoneNumber: '',
+        name: '',
+        state: '',
+        district: '',
+        village: '',
+        landSize: '',
+        primaryCrops: [],
+        vehicle: '',
+        isAuthenticated: false,
+      },
+      otpSent: false,
+    });
+  },
 }));

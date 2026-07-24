@@ -1,7 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore';
+import { useUser } from '@clerk/clerk-react';
 
 export function DashboardHomePage() {
+  const { user: storeUser } = useAuthStore();
+  
+  let clerkUser = null;
+  try {
+    const clerk = useUser();
+    clerkUser = clerk?.user;
+  } catch (e) {}
+
+  const displayName = clerkUser?.fullName || clerkUser?.firstName || storeUser?.name || 'Farmer';
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto py-4 px-4 sm:px-0 font-sans">
       
@@ -12,7 +24,7 @@ export function DashboardHomePage() {
             ☀️ Good Morning
           </span>
           <h1 className="text-3xl font-black text-white m-0 mt-1 tracking-tight">
-            Hello Ramesh 👋
+            Hello {displayName} 👋
           </h1>
           <p className="text-xs text-emerald-100 m-0 mt-1">Welcome back to your AgroPrice AI Decision Hub.</p>
         </div>
