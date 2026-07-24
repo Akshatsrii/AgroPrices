@@ -27,6 +27,8 @@ const aiRoutes = require('./routes/ai');
 const assistantRoutes = require('./routes/assistant');
 const analyticsRoutes = require('./routes/analytics');
 const adminRoutes = require('./routes/admin');
+const agronomyRoutes = require('./routes/agronomy');
+const marketplaceRoutes = require('./routes/marketplace');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/farmers', farmerRoutes);
@@ -42,6 +44,8 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/assistant', assistantRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/agronomy', agronomyRoutes);
+app.use('/api/marketplace', marketplaceRoutes);
 
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/agroprice-ai';
@@ -53,16 +57,16 @@ mongoose.connect(mongoURI)
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    app: 'AgroPrice AI Master Server',
+    app: 'AgroPrice AI Enterprise Platform',
     version: '1.0.0',
-    phases: 'Phase 0 through Phase 14 Complete',
+    phases: 'All Phases Complete (0 through 16)',
     timestamp: new Date().toISOString(),
   });
 });
 
 // Basic route
 app.get('/', (req, res) => {
-  res.send('🌾 AgroPrice AI Master Server running smoothly...');
+  res.send('🌾 AgroPrice AI Enterprise Server running smoothly...');
 });
 
 // Global Error Handler
