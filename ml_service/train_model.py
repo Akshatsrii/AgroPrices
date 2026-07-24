@@ -38,7 +38,6 @@ def generate_synthetic_agmarknet_data(num_days: int = 180) -> pd.DataFrame:
         current = max(1800.0, current + trend + noise)
         prices.append(round(current, 2))
         
-        # Arrival volume inversely correlated to price
         arrival = 1500 - (current - 2200) * 0.8 + np.random.normal(0, 50)
         arrivals.append(max(400, round(arrival)))
 
@@ -65,29 +64,26 @@ class PriceModelTrainer:
         ]
 
     def train_and_evaluate(self):
-        print("🌾 Step 1: Loading & Cleaning AGMARKNET Dataset...")
+        print("[Step 1] Loading & Cleaning AGMARKNET Dataset...")
         df_raw = generate_synthetic_agmarknet_data(num_days=180)
         df_clean = self.cleaner.clean_dataset(df_raw)
 
-        print("⚡ Step 2: Feature Engineering & Lag Transformations...")
+        print("[Step 2] Feature Engineering & Lag Transformations...")
         df_featured = self.engineer.create_features(df_clean)
 
-        # Target variable: Next day's price (modal_price shifted -1)
         df_featured['target_tomorrow_price'] = df_featured['modal_price'].shift(-1)
         df_dataset = df_featured.dropna().reset_index(drop=True)
 
         X = df_dataset[self.features]
         y = df_dataset['target_tomorrow_price']
 
-        # Train-Test Split (80% Train, 20% Test)
         split_idx = int(len(X) * 0.8)
         X_train, X_test = X.iloc[:split_idx], X.iloc[split_idx:]
         y_train, y_test = y.iloc[:split_idx], y.iloc[split_idx:]
 
-        print(f"📊 Dataset Split: Train Rows={len(X_train)}, Test Rows={len(X_test)}")
+        print(f"[Dataset Split] Train Rows={len(X_train)}, Test Rows={len(X_test)}")
 
-        # Train Model
-        print("🤖 Step 3: Training Price Prediction Regressor Model...")
+        print("[Step 3] Training Price Prediction Regressor Model...")
         if XGBOOST_AVAILABLE:
             model = XGBRegressor(n_estimators=100, max_depth=5, learning_rate=0.05, random_state=42)
             model_type = "XGBoost Regressor"
@@ -97,25 +93,23 @@ class PriceModelTrainer:
 
         model.fit(X_train, y_train)
 
-        # Evaluate Model
-        print(f"📈 Step 4: Evaluating {model_type} Performance...")
+        print(f"[Step 4] Evaluating {model_type} Performance...")
         predictions = model.predict(X_test)
         mae = mean_absolute_error(y_test, predictions)
         rmse = root_mean_squared_error(y_test, predictions)
         r2 = r2_score(y_test, predictions)
 
-        print(f"✅ Model Performance Results:")
-        print(f"   • Model Architecture: {model_type}")
-        print(f"   • Mean Absolute Error (MAE): ₹{mae:.2f} / quintal")
-        print(f"   • Root Mean Squared Error (RMSE): ₹{rmse:.2f}")
-        print(f"   • R² Accuracy Score: {r2 * 100:.2f}%")
+        print(f"Model Performance Results:")
+        print(f"   * Model Architecture: {model_type}")
+        print(f"   * Mean Absolute Error (MAE): Rs. {mae:.2f} / quintal")
+        print(f"   * Root Mean Squared Error (RMSE): Rs. {rmse:.2f}")
+        print(f"   * R2 Accuracy Score: {r2 * 100:.2f}%")
 
-        # Save Model Artifact
         model_path = os.path.join(MODEL_DIR, 'xgboost_price_model.pkl')
         with open(model_path, 'wb') as f:
             pickle.dump({'model': model, 'features': self.features, 'metrics': {'mae': mae, 'r2': r2}}, f)
 
-        print(f"💾 Saved Model Artifact to: {model_path}")
+        print(f"Saved Model Artifact to: {model_path}")
         return model_path, r2, mae
 
 if __name__ == '__main__':
