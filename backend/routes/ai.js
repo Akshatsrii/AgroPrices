@@ -1,49 +1,69 @@
 const express = require('express');
 const router = express.Router();
+const geminiAiEngine = require('../services/geminiAiEngine');
 
-// POST AI Chat endpoint
-router.post('/chat', async (req, res) => {
+// POST /api/ai/explain
+router.post('/explain', async (req, res) => {
   try {
-    const { messages } = req.body;
-    const userPrompt = messages && messages.length > 0 ? messages[messages.length - 1].content : 'Hello';
-
-    // Simple rule-based intelligent fallback / AI responses
-    let reply = `In response to your query regarding "${userPrompt.slice(0, 50)}...": Based on live mandi intelligence and current weather patterns, crop prices are showing steady trends. Ensure proper storage moisture levels below 12% to preserve grain quality and command premium rates at local Mandis.`;
-
-    if (userPrompt.toLowerCase().includes('wheat') || userPrompt.toLowerCase().includes('gehun')) {
-      reply = '🌾 Wheat market analysis: Current modal prices are hovering around ₹2,250 - ₹2,450 / quintal. Nearby Mandi demand remains strong due to procurement season. We recommend holding high-quality Lok-1 varieties for 5-7 days for peak rates.';
-    } else if (userPrompt.toLowerCase().includes('rice') || userPrompt.toLowerCase().includes('paddy') || userPrompt.toLowerCase().includes('dhan')) {
-      reply = '🌾 Paddy (Dhan) market analysis: Basmati quality prices are strong at ₹4,100 / quintal. Export demand is driving high trader bids across North Indian Mandis.';
-    } else if (userPrompt.toLowerCase().includes('mandi') || userPrompt.toLowerCase().includes('price')) {
-      reply = '📊 Mandi prices update: Local market arrivals are moderate today. Nearby Azadpur and Khanna mandis report a +3.2% increase in prices. Check the "Today\'s Market" section for real-time rates.';
-    }
-
-    res.json({
-      success: true,
-      reply,
-      timestamp: new Date().toISOString()
-    });
+    const { cropName, mandiName, currentPrice, predictedPrice, pctChange } = req.body;
+    const result = await geminiAiEngine.explainPrediction(
+      cropName || 'Wheat',
+      mandiName || 'Indore Central Mandi',
+      currentPrice || 2480,
+      predictedPrice || 2600,
+      pctChange || 4.8
+    );
+    return res.json({ success: true, explanation: result });
   } catch (err) {
-    console.error('AI chat error:', err.message);
-    res.status(500).json({ success: false, msg: 'Error generating AI response' });
+    return res.status(500).json({ error: err.message });
   }
 });
 
-// POST AI Recommendation overview
-router.post('/recommendation', async (req, res) => {
+// POST /api/ai/recommend
+router.post('/recommend', async (req, res) => {
   try {
-    const { cropName, quantity, mandi } = req.body;
-    res.json({
-      success: true,
-      cropName: cropName || 'Wheat',
-      action: 'HOLD',
-      bestMandi: mandi || 'Azadpur Mandi (12 km)',
-      expectedPriceIncrease: '₹140 / quintal',
-      optimalSellWindow: '3 to 5 Days',
-      riskFactor: 'Low'
-    });
+    const result = await geminiAiEngine.generateRecommendation(req.body);
+    return res.json({ success: true, recommendation: result });
   } catch (err) {
-    res.status(500).json({ success: false, msg: 'Error generating recommendation' });
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/ai/compare
+router.post('/compare', async (req, res) => {
+  try {
+    const { cropName, quantityQuintals, mandisList } = req.body;
+    const defaultMandis = mandisList || [
+      { name: 'Indore Central Mandi', distanceKm: 28, modalPrice: 2480, mandiFeePercent: 1.5 },
+      { name: 'Sehore APMC Mandi', distanceKm: 12, modalPrice: 2420, mandiFeePercent: 1.5 },
+      { name: 'Karond Mandi Bhopal', distanceKm: 38, modalPrice: 2450, mandiFeePercent: 1.5 },
+    ];
+    const result = await geminiAiEngine.compareMandis(cropName, quantityQuintals, defaultMandis);
+    return res.json({ success: true, comparison: result });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/ai/negotiate
+router.post('/negotiate', async (req, res) => {
+  try {
+    const { cropName, traderOffer, mandiPrice } = req.body;
+    const result = await geminiAiEngine.generateNegotiationScript(cropName, traderOffer, mandiPrice);
+    return res.json({ success: true, negotiation: result });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/ai/summarize
+router.get('/summarize', async (req, res) => {
+  try {
+    const { state, district } = req.query;
+    const result = await geminiAiEngine.summarizeMarket(state, district);
+    return res.json({ success: true, summary: result });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 });
 
