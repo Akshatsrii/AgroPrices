@@ -1,16 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const Mandi = require('../models/Mandi');
+const mapsService = require('../services/mapsService');
 
 const MOCK_MANDIS = [
-  { id: 'indore', name: 'Indore Central Mandi', district: 'Indore', state: 'Madhya Pradesh', distanceKm: 28, mandiFeePercent: 1.5, rating: 4.8, location: { type: 'Point', coordinates: [75.8577, 22.7196] } },
-  { id: 'sehore', name: 'Sehore APMC Mandi', district: 'Sehore', state: 'Madhya Pradesh', distanceKm: 12, mandiFeePercent: 1.5, rating: 4.6, location: { type: 'Point', coordinates: [77.0850, 23.2000] } },
-  { id: 'bhopal', name: 'Karond Mandi Bhopal', district: 'Bhopal', state: 'Madhya Pradesh', distanceKm: 38, mandiFeePercent: 1.5, rating: 4.7, location: { type: 'Point', coordinates: [77.4126, 23.2599] } },
-  { id: 'dewas', name: 'Dewas Grain Market', district: 'Dewas', state: 'Madhya Pradesh', distanceKm: 45, mandiFeePercent: 1.5, rating: 4.4, location: { type: 'Point', coordinates: [76.0534, 22.9676] } },
-  { id: 'uain', name: 'Ujjain APMC Mandi', district: 'Ujjain', state: 'Madhya Pradesh', distanceKm: 65, mandiFeePercent: 1.5, rating: 4.5, location: { type: 'Point', coordinates: [75.7873, 23.1765] } },
+  { id: 'indore', name: 'Indore Central Mandi', district: 'Indore', state: 'Madhya Pradesh', distanceKm: 28, travelTimeFormatted: '0h 42m', mandiFeePercent: 1.5, rating: 4.8, location: { type: 'Point', coordinates: [75.8577, 22.7196] } },
+  { id: 'sehore', name: 'Sehore APMC Mandi', district: 'Sehore', state: 'Madhya Pradesh', distanceKm: 12, travelTimeFormatted: '0h 18m', mandiFeePercent: 1.5, rating: 4.6, location: { type: 'Point', coordinates: [77.0850, 23.2000] } },
+  { id: 'bhopal', name: 'Karond Mandi Bhopal', district: 'Bhopal', state: 'Madhya Pradesh', distanceKm: 38, travelTimeFormatted: '0h 55m', mandiFeePercent: 1.5, rating: 4.7, location: { type: 'Point', coordinates: [77.4126, 23.2599] } },
+  { id: 'dewas', name: 'Dewas Grain Market', district: 'Dewas', state: 'Madhya Pradesh', distanceKm: 45, travelTimeFormatted: '1h 05m', mandiFeePercent: 1.5, rating: 4.4, location: { type: 'Point', coordinates: [76.0534, 22.9676] } },
 ];
 
-// GET /api/mandis/nearby?lat=23.2000&lng=77.0850&maxDistanceKm=100
+// POST /api/mandis/route-cost
+router.post('/route-cost', async (req, res) => {
+  try {
+    const { originLat, originLng, destLat, destLng, vehicleType } = req.body;
+    const result = await mapsService.calculateRouteAndCost(
+      originLat || 23.2000,
+      originLng || 77.0850,
+      destLat || 22.7196,
+      destLng || 75.8577,
+      vehicleType || 'Tractor Trolley'
+    );
+    return res.json({ success: true, route: result });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/mandis/nearby
 router.get('/nearby', async (req, res) => {
   try {
     const { lat, lng, maxDistanceKm } = req.query;
@@ -45,7 +62,6 @@ router.get('/search', async (req, res) => {
       return res.json({ success: true, mandis: MOCK_MANDIS });
     }
 
-    // Text search query index
     const mandis = await Mandi.find({ $text: { $search: q } });
     if (mandis.length > 0) {
       return res.json({ success: true, mandis });
