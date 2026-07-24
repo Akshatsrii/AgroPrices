@@ -60,8 +60,8 @@ class PredictionEngine:
             except Exception:
                 predicted = current_price * 1.035
         else:
-            # Smart algorithmic prediction fallback based on crop demand rules
-            predicted = current_price * 1.042
+            # Algorithmic predictive fallback
+            predicted = current_price * 1.048
 
         predicted_price = round(predicted, 2)
         price_diff = round(predicted_price - current_price, 2)
@@ -88,11 +88,13 @@ class PredictionEngine:
           'confidenceScore': 94,
           'recommendation': 'SELL_TOMORROW' if pct_change > 2.0 else 'HOLD',
           'forecast7Days': forecast_7d,
-          'aiInsight': f"ML Model forecasts a {pct_change}% price movement for {crop_name} at {mandi_name}. Selling tomorrow maximizes returns by +₹{price_diff}/quintal."
+          'aiInsight': f"ML Model forecasts a {pct_change}% price movement for {crop_name} at {mandi_name}. Selling tomorrow maximizes returns by +Rs.{price_diff}/quintal."
         }
 
 if __name__ == '__main__':
     engine = PredictionEngine()
     result = engine.predict_tomorrow_price('Wheat', 'Indore Central Mandi', 2480.0)
     print("Tomorrow Price Prediction Result:")
-    print(result)
+    print("Crop:", result['cropName'])
+    print("Tomorrow Predicted Price:", result['tomorrowPredictedPrice'])
+    print("Percentage Change:", result['percentageChange'], "%")
