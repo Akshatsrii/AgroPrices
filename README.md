@@ -1,276 +1,298 @@
-# AgroPrice AI: AI-Powered Agricultural Decision Intelligence Platform
+<div align="center">
 
-> **"What should the farmer do today to maximize profit?"**
+# 🌾 AgroPrice AI
+
+### AI-Powered Agricultural Decision Intelligence Platform
+
+**"What should the farmer do today to maximize profit?"**
+
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/atlas)
+[![Python](https://img.shields.io/badge/Python-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](#-license)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-contribution-guide--engineering-standards)
+
+</div>
 
 ---
 
 ## 📌 Executive Summary
 
-**AgroPrice AI** is an enterprise-grade **Agricultural Decision Intelligence Platform** designed to solve the structural information asymmetry and economic loss faced by agricultural producers. Unlike traditional crop monitoring apps or static mandi price listing dashboards, AgroPrice AI operates as an actionable, real-time decision engine.
+**AgroPrice AI** is an enterprise-grade **Agricultural Decision Intelligence Platform** built to close the information gap that costs farmers money at the farm gate. Unlike static mandi-price dashboards or generic crop-monitoring apps, AgroPrice AI works as an **actionable, real-time decision engine**.
 
-By synthesizing **live government mandi prices (Agmarknet)**, **historical commodity price series**, **ensemble machine learning models (XGBoost / LightGBM)**, **hyper-local weather feeds**, **dynamic logistical route estimation**, and **Google Gemini 1.5 Pro cognitive reasoning**, the platform delivers personalized, risk-adjusted, and highly profitable selling recommendations directly to farmers.
+It synthesizes **live government mandi prices (Agmarknet)**, **historical commodity price series**, **ensemble machine learning models (XGBoost / LightGBM)**, **hyper-local weather feeds**, **dynamic logistics/route estimation**, and **Google Gemini 1.5 Pro reasoning** to deliver personalized, risk-adjusted, profit-maximizing selling recommendations directly to farmers.
 
 ---
 
 ## 📋 Table of Contents
 
-1. [Cover Page & Executive Summary](#-executive-summary)
-2. [Introduction & Product Vision](#-introduction--product-vision)
-3. [Product Philosophy & Problem Statement](#-product-philosophy--problem-statement)
-4. [Business Objectives & Success Metrics](#-business-objectives--success-metrics)
-5. [System Workflow & Farmer Decision Journey](#-system-workflow--farmer-decision-journey)
-6. [User Personas & Requirements](#-user-personas--requirements)
-7. [Product Modules (Deep Dive)](#-product-modules-deep-dive)
-8. [Screen-by-Screen Architecture](#-screen-by-screen-architecture)
-9. [Frontend Architecture](#-frontend-architecture)
-10. [Backend & Layered Architecture](#-backend--layered-architecture)
-11. [MongoDB Schema & Database Architecture](#-mongodb-schema--database-architecture)
-12. [REST API Documentation](#-rest-api-documentation)
-13. [Government Data Integration & Scheduling Pipeline](#-government-data-integration--scheduling-pipeline)
-14. [Machine Learning Pipeline & Price Forecasting](#-machine-learning-pipeline--price-forecasting)
-15. [Google Gemini AI Integration & Prompt Engineering](#-google-gemini-ai-integration--prompt-engineering)
-16. [Recommendation Engine & Scoring Architecture](#-recommendation-engine--scoring-architecture)
-17. [Domain Calculation Engines](#-domain-calculation-engines)
-18. [Security, AuthN/AuthZ & Compliance](#-security-authnauthz--compliance)
-19. [Performance Optimization & Scalability](#-performance-optimization--scalability)
-20. [DevOps, CI/CD & Deployment Architecture](#-devops-cicd--deployment-architecture)
-21. [Observability, Monitoring & Logging](#-observability-monitoring--logging)
-22. [Testing & Quality Assurance Strategy](#-testing--quality-assurance-strategy)
-23. [Product Roadmap](#-product-roadmap)
-24. [Contribution Guide & Engineering Standards](#-contribution-guide--engineering-standards)
-25. [Complete Repository Folder Breakdown](#-complete-repository-folder-breakdown)
-26. [Conclusion](#-conclusion)
+1. [Executive Summary](#-executive-summary)
+2. [Product Vision & Mission](#-product-vision--mission)
+3. [Problem Statement](#-problem-statement)
+4. [Business Objectives & KPIs](#-business-objectives--kpis)
+5. [Farmer Decision Journey](#-farmer-decision-journey)
+6. [User Personas](#-user-personas)
+7. [Product Modules](#-product-modules)
+8. [Screen Architecture](#-screen-architecture)
+9. [Tech Stack](#-tech-stack)
+10. [Getting Started](#-getting-started)
+11. [Frontend Architecture](#-frontend-architecture)
+12. [Backend Architecture](#-backend-architecture)
+13. [Database Schema](#-database-schema)
+14. [REST API Reference](#-rest-api-reference)
+15. [Government Data Pipeline](#-government-data-pipeline)
+16. [Machine Learning Pipeline](#-machine-learning-pipeline)
+17. [Gemini AI Integration](#-gemini-ai-integration)
+18. [Recommendation Scoring Engine](#-recommendation-scoring-engine)
+19. [Domain Calculation Engines](#-domain-calculation-engines)
+20. [Security & Compliance](#-security--compliance)
+21. [Performance & Scalability](#-performance--scalability)
+22. [DevOps & Deployment](#-devops--deployment)
+23. [Observability & Monitoring](#-observability--monitoring)
+24. [Testing Strategy](#-testing-strategy)
+25. [Product Roadmap](#-product-roadmap)
+26. [Contribution Guide](#-contribution-guide--engineering-standards)
+27. [Repository Structure](#-repository-structure)
+28. [License](#-license)
 
 ---
 
-## 🎯 Introduction & Product Vision
+## 🎯 Product Vision & Mission
 
-### Product Vision
-To empower every agricultural producer with enterprise-class market intelligence, cognitive AI decision support, and transparent price discovery—eliminating distress selling and maximizing farmgate profitability.
+**Vision:** Empower every agricultural producer with enterprise-class market intelligence, cognitive AI decision support, and transparent price discovery — eliminating distress selling and maximizing farmgate profitability.
 
-### Mission
-To bridge the digital and economic divide in agriculture by building an intuitive, multi-lingual, decision-first intelligence platform that converts complex market dynamics, weather patterns, logistical overheads, and price trends into simple, high-confidence selling instructions.
+**Mission:** Bridge the digital and economic divide in agriculture with an intuitive, multilingual, decision-first platform that turns complex market dynamics, weather patterns, and logistics costs into simple, high-confidence selling instructions.
 
 ---
 
-## 🧠 Product Philosophy & Problem Statement
+## 🧠 Problem Statement
 
-### Why This Project Exists
-Agriculture accounts for over 16% of India's GDP and employs nearly half of the workforce, yet smallholder farmers capture less than 30-40% of the final consumer value of their produce. Information asymmetry at the farm gate forces farmers into distress selling.
+Agriculture contributes over 16% of India's GDP and employs nearly half its workforce — yet smallholder farmers typically capture only 30–40% of the final consumer value of their produce. Information asymmetry at the farm gate forces farmers into distress selling.
 
 ```
-+-----------------------------------------------------------------------------------+
-|                              TRADITIONAL FARM GATE                                |
-+-----------------------------------------------------------------------------------+
-|  No Future Visibility  +  Village Trader Monopoly  +  Hidden Transport/Commission  |
-|                                         =                                         |
-|                             30-40% VALUE REALIZATION                              |
-+-----------------------------------------------------------------------------------+
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                              TRADITIONAL FARM GATE                                │
+├───────────────────────────────────────────────────────────────────────────────────┤
+│   No Future Visibility  +  Village Trader Monopoly  +  Hidden Transport Costs      │
+│                                        =                                           │
+│                             30–40% VALUE REALIZATION                              │
+└───────────────────────────────────────────────────────────────────────────────────┘
                                          │
                                          ▼
-+-----------------------------------------------------------------------------------+
-|                                AGROPRICE AI GATE                                  |
-+-----------------------------------------------------------------------------------+
-|  Predictive Forecast  +  Multi-Mandi Discovery  +  Net Net Profit Optimization    |
-|                                         =                                         |
-|                             75-85% VALUE REALIZATION                              |
-+-----------------------------------------------------------------------------------+
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                                AGROPRICE AI GATE                                   │
+├───────────────────────────────────────────────────────────────────────────────────┤
+│   Predictive Forecast  +  Multi-Mandi Discovery  +  Net Profit Optimization        │
+│                                        =                                           │
+│                             75–85% VALUE REALIZATION                              │
+└───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Real-World Farmer Problems
-1. **Lack of Live Market Information**: Prices vary up to 25% between mandis within a 50 km radius, but farmers lack real-time visibility.
-2. **Trader Dependence**: Farmers rely on local *arhtiyas* (commission agents) or village middlemen who offer below-market prices.
-3. **Price Volatility**: Perishable crops (e.g., tomatoes, onions) experience wild price swings within 24–48 hours.
-4. **Opaque Transport & Commission Costs**: High transport rates or hidden mandi fees erode expected profits.
-5. **No Negotiation Power**: Without verified benchmark data, farmers cannot negotiate effectively with buyers.
 
-### Why Existing Solutions Fail
-- **Government Portals (Agmarknet)**: Static tabular data, difficult mobile UI, no predictive capabilities, no personalization.
-- **Generic Price Apps**: Show raw today prices without deducting logistics, weather impacts, or quality differentials.
-- **E-Commerce / B2B Agri Platforms**: Focus on purchasing crops at low prices rather than empowering the farmer to choose the best venue.
+| # | Problem | Impact |
+|---|---|---|
+| 1 | **No live market visibility** | Prices vary up to 25% between mandis within a 50 km radius |
+| 2 | **Trader dependence** | Local commission agents (*arhtiyas*) offer below-market rates |
+| 3 | **Price volatility** | Perishables (tomato, onion) can swing wildly within 24–48 hours |
+| 4 | **Opaque logistics costs** | Hidden transport/mandi fees quietly erode expected profit |
+| 5 | **No negotiation power** | Without benchmark data, farmers can't counter buyer offers |
 
-### How AgroPrice AI Solves Them
-AgroPrice AI shifts the focus from **"Data Display"** to **"Actionable Recommendation"**. It calculates **Net Realized Profit**:
+### Why Existing Solutions Fall Short
+
+- **Government portals (Agmarknet):** static tables, poor mobile UX, zero personalization or forecasting.
+- **Generic price apps:** show raw "today" prices without netting out logistics, weather, or quality differentials.
+- **B2B agri-platforms:** optimized for buyers sourcing cheaply, not for farmers maximizing return.
+
+### How AgroPrice AI Solves It
+
+AgroPrice AI shifts the product from **"data display"** to **"actionable recommendation"** by computing a true **Net Realized Profit** for every option:
 
 $$\text{Net Profit} = (\text{Predicted Price} \times \text{Quality Multiplier} \times \text{Quantity}) - \text{Transport Cost} - \text{Mandi Fees} - \text{Storage/Holding Cost}$$
 
 ---
 
-## 📈 Business Objectives & Success Metrics
+## 📈 Business Objectives & KPIs
 
-### Business Objectives
-1. Increase average farmgate price realization by **12% to 22%**.
+**Objectives**
+1. Increase average farmgate price realization by **12–22%**.
 2. Reduce post-harvest distress selling by **35%**.
-3. Drive daily active user (DAU) retention above **60%** during harvest seasons.
+3. Sustain daily active user (DAU) retention above **60%** during harvest seasons.
 
-### Key Performance Indicators (KPIs)
-- **Net Profit Lift (NPL)**: Difference between farmer's initial offer and AI recommended selling price minus transport.
-- **Recommendation Accuracy**: Difference between ML predicted price and actual realized mandi price on target date ($\le 4.5\%$ MAPE).
-- **Decision Conversion Rate**: Percentage of users who follow the AI recommended selling action.
-- **API Latency**: End-to-end recommendation response time $< 800\text{ ms}$.
+**Key Performance Indicators**
+
+| KPI | Definition | Target |
+|---|---|---|
+| Net Profit Lift (NPL) | Delta between farmer's initial offer and AI-recommended net price | Maximize |
+| Recommendation Accuracy | ML predicted price vs. actual realized mandi price | ≤ 4.5% MAPE |
+| Decision Conversion Rate | % of users who act on the AI recommendation | Track & improve |
+| API Latency | End-to-end recommendation response time | < 800 ms |
 
 ---
 
-## 🔄 System Workflow & Farmer Decision Journey
+## 🔄 Farmer Decision Journey
 
 ```
 ┌────────────────┐     ┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│  1. Select     │     │  2. Enter      │     │  3. Enter      │     │ 4. Optional    │
-│     Crop       │ ──► │     Quantity   │ ──► │     Quality    │ ──► │    Trader Offer│
-│  (e.g., Wheat) │     │  (e.g., 50 Qtl)│     │  (Grade A/B/C) │     │    & Expected  │
+│  1. Select     │     │  2. Enter      │     │  3. Enter      │     │  4. Optional   │
+│     Crop       │ ──► │     Quantity   │ ──► │     Quality    │ ──► │  Trader Offer  │
+│  (e.g., Wheat) │     │  (e.g., 50 Qtl)│     │  (Grade A/B/C) │     │  & Expected ₹  │
 └────────────────┘     └────────────────┘     └────────────────┘     └────────────────┘
                                                                               │
                                                                               ▼
 ┌────────────────┐     ┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│  8. Farmer     │     │  7. Gemini AI  │     │  6. ML Price   │     │ 5. Fetch Live  │
-│     Executes   │ ◄── │     Reasoning  │ ◄── │     Prediction │ ◄── │    Mandi, Route│
-│     Decision   │     │  & Insights    │     │     (7-Day)    │     │    & Weather   │
+│  8. Farmer     │     │  7. Gemini AI  │     │  6. ML Price   │     │  5. Fetch Live │
+│     Executes   │ ◄── │     Reasoning  │ ◄── │     Prediction │ ◄── │  Mandi, Route, │
+│     Decision   │     │  & Insights    │     │     (7-Day)    │     │     Weather    │
 └────────────────┘     └────────────────┘     └────────────────┘     └────────────────┘
 ```
 
 ---
 
-## 👥 User Personas & Requirements
+## 👥 User Personas
 
-### Personas
-
-#### 1. Ramesh Kumar (Smallholder Farmer)
-- **Land**: 2 Acres in Sehore, Madhya Pradesh.
-- **Crop**: Soyabean, Wheat.
-- **Tech Literacy**: Moderate (WhatsApp user, prefers Voice/Hindi).
-- **Goal**: Wants to know if selling at the village gate for ₹4,200/Qtl is a loss compared to taking it to Bhopal Mandi.
-
-#### 2. Vikram Singh (Progressive Medium Farmer)
-- **Land**: 12 Acres in Nashik, Maharashtra.
-- **Crop**: Tomato, Onion.
-- **Tech Literacy**: High. Uses smartphones for agricultural tools.
-- **Goal**: Wants 7-day price forecasts to time harvests and negotiate with wholesale traders.
-
-#### 3. Suresh Patel (Agri-Trader / Aggregator)
-- **Operation**: Local aggregator purchasing from 50+ village farmers.
-- **Goal**: Needs real-time regional mandi spread analysis to arbitrate prices across state borders.
+| Persona | Profile | Goal |
+|---|---|---|
+| **Ramesh Kumar** — Smallholder Farmer | 2 acres, Sehore (MP) · Soyabean, Wheat · moderate tech literacy (WhatsApp, Hindi-first) | Know if a ₹4,200/Qtl village-gate offer beats taking the crop to Bhopal Mandi |
+| **Vikram Singh** — Progressive Medium Farmer | 12 acres, Nashik (MH) · Tomato, Onion · high tech literacy | 7-day price forecasts to time harvest and negotiate with wholesale traders |
+| **Suresh Patel** — Agri-Trader / Aggregator | Buys from 50+ village farmers | Real-time regional mandi spread analysis to arbitrate prices across state lines |
 
 ---
 
-## 🧩 Product Modules (Deep Dive)
+## 🧩 Product Modules
 
-### 1. Authentication & Identity Management
-- **Purpose**: Secure, friction-free login optimized for rural users via Phone OTP and Social Login.
-- **Features**: Phone number + OTP, Google Auth, JWT access/refresh token rotation, Language preference select (English, Hindi, Marathi, Gujarati, Punjabi, Telugu, Tamil).
-- **User Flow**: Enter Phone $\rightarrow$ Receive SMS OTP $\rightarrow$ Auto-verify $\rightarrow$ Select preferred language $\rightarrow$ Redirect to Onboarding / Dashboard.
-- **Business Logic**: Unregistered phone numbers automatically trigger the onboarding flow. Tokens expire in 15 days (refresh token) and 15 mins (access token).
-
-### 2. Farmer Profile & Land Onboarding
-- **Purpose**: Collect farm location, crop history, and storage capacities for hyper-personalized recommendations.
-- **Features**: GPS Location auto-capture, Manual District/Tehsil pick, Land size (Acres/Bigha), Storage availability (Yes/No, capacity), Primary crops cultivated.
-- **User Flow**: Set Location $\rightarrow$ Select Primary Crops $\rightarrow$ Configure Vehicles/Transport access $\rightarrow$ Finish Profile.
-
-### 3. Real-Time Dashboard
-- **Purpose**: Central command center providing instant market pulses and daily selling signals.
-- **Features**: "Today's Selling Signal" widget, Top 5 Nearby Mandi tickers, 7-day trend highlights, Weather alerts, Quick-action "Sell My Crop" trigger.
-- **User Flow**: User lands on Dashboard $\rightarrow$ Sees top recommendation badge $\rightarrow$ Clicks badge to view deep analysis or clicks "Sell Crop".
-
-### 4. Sell Crop Decision Module
-- **Purpose**: The core decision pipeline where inputs are converted into profit-maximized selling strategies.
-- **Features**: Crop selection wizard, Quantity/Unit converter (Quintal, KG, Ton, Bag), Quality grading input (Moisture %, Grade A/B/C), Village Trader offer input, Storage timeline selector.
-
-### 5. Nearby Mandi Discovery & Route Engine
-- **Purpose**: Locate, rank, and map mandis within a configurable radius ($25\text{ km} - 200\text{ km}$).
-- **Features**: GeoJSON spatial query, distance calculation, road toll estimation, transport rate per km/quintal, mandi arrival volume indicator.
-
-### 6. Multi-Mandi Price Comparison Engine
-- **Purpose**: Side-by-side comparison of net profit across 5+ mandis taking into account all overheads.
-- **Features**: Gross vs Net price toggle, Cost itemization breakdown (Freight, Loading, Mandi Cess, Agent Commission, Unloading).
-
-### 7. AI Recommendation & Cognitive Engine
-- **Purpose**: Generate high-confidence, natural-language actionable instructions using Gemini 1.5 Pro.
-- **Features**: Action badge (`SELL_NOW`, `HOLD_X_DAYS`, `SWITCH_MANDI`, `ACCEPT_TRADER`), Net Profit forecast, Confidence score (0-100%), Risk factors, Actionable reasoning summary.
-
-### 8. AI Negotiation Assistant
-- **Purpose**: Equip farmers with script-based and chat-based counter-offers against aggressive traders.
-- **Features**: "Negotiate with Trader" modal, target counter-price calculator, bulletproof talking points, Hindi script generation.
-
-### 9. Historical Sales & Analytics
-- **Purpose**: Track past selling decisions, realized vs predicted profits, and seasonal performance.
-- **Features**: Revenue trends, cumulative profit lift tracker, decision success rate chart.
-
-### 10. AI Agricultural Chatbot (AgroBot)
-- **Purpose**: Conversational assistant for voice and text inquiries about prices, schemes, and weather.
-- **Features**: Voice-to-text input, multi-lingual support, grounded retrieval from live mandi DB and weather APIs.
-
-### 11. Notification System
-- **Purpose**: Proactive alerts for price spikes, adverse weather, or target price thresholds.
-- **Features**: Push notifications (Web Push / FCM), SMS alerts, WhatsApp Business API integration.
-
-### 12. Settings & Localization
-- **Purpose**: System customization, language switching, unit adjustments, and offline data sync management.
-
-### 13. Admin & Market Intelligence Panel
-- **Purpose**: Platform health, ML model metrics, Agmarknet sync status, user management, and manual override controls.
+| # | Module | Purpose | Key Features |
+|---|---|---|---|
+| 1 | **Authentication & Identity** | Frictionless login for rural users | Phone OTP, Google Auth, JWT rotation, 7-language selector |
+| 2 | **Farmer Profile & Land Onboarding** | Capture farm context for personalization | GPS auto-capture, land size, storage capacity, primary crops |
+| 3 | **Real-Time Dashboard** | Daily market pulse & selling signal | "Today's Selling Signal", top-5 mandi ticker, weather alerts |
+| 4 | **Sell Crop Decision Module** | Core input → recommendation pipeline | Crop wizard, unit converter, quality grading, trader-offer input |
+| 5 | **Nearby Mandi Discovery & Route Engine** | Locate & rank mandis in radius (25–200 km) | GeoJSON spatial query, toll estimation, transport rate/km |
+| 6 | **Multi-Mandi Price Comparison** | Net profit across 5+ mandis | Gross vs. net toggle, full cost itemization |
+| 7 | **AI Recommendation Engine** | Natural-language action guidance (Gemini 1.5 Pro) | `SELL_NOW` / `HOLD_X_DAYS` / `SWITCH_MANDI` / `ACCEPT_TRADER`, confidence score |
+| 8 | **AI Negotiation Assistant** | Counter-offer support vs. traders | Target counter-price calculator, Hindi negotiation scripts |
+| 9 | **Historical Sales & Analytics** | Track decisions over time | Realized vs. predicted profit, seasonal performance |
+| 10 | **AgroBot (AI Chatbot)** | Conversational Q&A on prices/schemes/weather | Voice-to-text, multilingual, grounded retrieval |
+| 11 | **Notification System** | Proactive alerts | Push (FCM), SMS, WhatsApp Business API |
+| 12 | **Settings & Localization** | System customization | Language, units, offline sync |
+| 13 | **Admin & Market Intelligence Panel** | Platform ops | ML metrics, Agmarknet sync status, manual overrides |
 
 ---
 
-## 🖥️ Screen-by-Screen Architecture
+## 🖥️ Screen Architecture
 
-| Screen ID | Screen Name | Key Components | Primary Actions | Business Rules & Validation |
-|---|---|---|---|---|
-| `SCR-01` | Auth / OTP Login | Phone input, OTP card, Language pill selector | Send OTP, Verify OTP, Resend | 10-digit Indian phone regex; 60s OTP cooldown timer |
-| `SCR-02` | Onboarding Wizard | Geo-location picker, Crop multiselect, Vehicle toggle | Save Profile, Skip | Must select at least 1 primary crop and state/district |
-| `SCR-03` | Main Dashboard | Hero Recommendation Card, Mandi Carousel, Trend Chart | Navigate to Sell, View Mandi | Render cached recommendation if offline; update every 30m |
-| `SCR-04` | Sell Crop Entry | Step form: Crop, Quantity, Quality, Trader Offer | Next Step, Calculate Profit | Quantity $> 0$; Moisture % between $0\%$ and $50\%$ |
-| `SCR-05` | Decision Result | Comparison Table, Gemini AI Insight Box, Action Buttons | Execute Decision, Save, Share | If Net Profit Spread $< \text{₹20/Qtl}$, default to closest mandi |
-| `SCR-06` | Nearby Mandis Map | Leaflet/Mapbox Map, Mandi Cards, Filter Drawer | Filter Radius, Get Directions | Radius bounds $10\text{ km} - 300\text{ km}$; GeoJSON spatial index query |
-| `SCR-07` | Price Comparison | Side-by-side Mandi Matrix, Cost Breakdown Modal | Export PDF, Sort by Net Profit | Deduct state-specific Mandi Tax ($1\% - 2.5\%$) dynamically |
-| `SCR-08` | AI Negotiator | Trader Offer Input, Counter Offer Output, Script Cards | Copy Script, Recalculate | Counter-price capped at max 95th percentile market price |
-| `SCR-09` | Analytics & History | Profit Lift Bar Chart, Past Sales List | Filter by Date, Export CSV | Display historical accuracy vs actual mandi settlement |
-| `SCR-10` | AI Chat (AgroBot) | Voice Mic Button, Message Thread, Quick Chips | Send Prompt, Record Voice | Stream Gemini response via Server-Sent Events (SSE) |
+| Screen | Name | Key Components | Business Rules |
+|---|---|---|---|
+| `SCR-01` | Auth / OTP Login | Phone input, OTP card, language selector | 10-digit Indian phone regex; 60s OTP cooldown |
+| `SCR-02` | Onboarding Wizard | Geo-picker, crop multiselect, vehicle toggle | Requires ≥1 primary crop + state/district |
+| `SCR-03` | Main Dashboard | Recommendation card, mandi carousel, trend chart | Offline cache fallback; refresh every 30 min |
+| `SCR-04` | Sell Crop Entry | Crop → Quantity → Quality → Trader Offer | Quantity > 0; moisture 0–50% |
+| `SCR-05` | Decision Result | Comparison table, Gemini insight box | Net profit spread < ₹20/Qtl → default to nearest mandi |
+| `SCR-06` | Nearby Mandis Map | Map view, mandi cards, filter drawer | Radius 10–300 km; GeoJSON spatial index |
+| `SCR-07` | Price Comparison | Mandi matrix, cost breakdown modal | State-specific mandi tax (1–2.5%) applied dynamically |
+| `SCR-08` | AI Negotiator | Trader offer input, counter-offer output | Counter price capped at 95th percentile market price |
+| `SCR-09` | Analytics & History | Profit-lift chart, past sales list | Shows historical accuracy vs. actual settlement |
+| `SCR-10` | AI Chat (AgroBot) | Voice input, message thread, quick chips | Gemini response streamed via SSE |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 18, Vite, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, Framer Motion |
+| Backend | Node.js, Express, Mongoose |
+| ML Service | Python, FastAPI, XGBoost, LightGBM, Prophet / Bi-LSTM |
+| Database & Cache | MongoDB Atlas, Redis |
+| AI Reasoning | Google Gemini 1.5 Pro |
+| Infra | Docker, Docker Compose, Nginx, Hetzner Cloud, GitHub Actions |
+| Observability | Winston, Structlog, Prometheus, Grafana Loki, Sentry |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js ≥ 18.x and npm/yarn
+- Python ≥ 3.10
+- MongoDB Atlas connection string
+- Redis instance (local or cloud)
+- API keys: Google Gemini, Agmarknet/data.gov.in, OpenWeatherMap
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/<your-org>/agroprice-ai.git
+cd agroprice-ai
+
+# 2. Backend setup
+cd backend
+npm install
+cp .env.example .env      # fill in MONGO_URI, JWT_SECRET, REDIS_URL, GEMINI_API_KEY
+npm run dev
+
+# 3. Frontend setup
+cd ../frontend
+npm install
+cp .env.example .env      # fill in VITE_API_BASE_URL
+npm run dev
+
+# 4. ML service setup
+cd ../ml_service
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### Docker (all services)
+
+```bash
+docker-compose up --build
+```
+
+The frontend will be available at `http://localhost:5173`, the backend API at `http://localhost:5000`, and the ML service at `http://localhost:8000`.
 
 ---
 
 ## 🎨 Frontend Architecture
 
-### Technology Selection
-- **Framework**: React 18 with Vite (Ultra-fast build & HMR).
-- **Styling**: Vanilla CSS Modules & Tailwind CSS token system.
-- **Component Library**: shadcn/ui (Radix UI primitives).
-- **Routing**: React Router v6 (Data loaders, nested routes).
-- **State Management**: Zustand (Global UI/Auth state) + TanStack Query v5 (Server state caching & synchronization).
-- **Animations**: Framer Motion (Page transitions, micro-interactions).
+**Stack:** React 18 + Vite · Tailwind CSS + CSS Modules · shadcn/ui (Radix primitives) · React Router v6 · Zustand (UI/auth state) + TanStack Query v5 (server state) · Framer Motion.
 
-### Repository Structure (`frontend/`)
 ```
 frontend/
 ├── src/
-│   ├── assets/             # SVGs, static images, fonts
-│   ├── components/         # Shared UI atomic elements
-│   │   ├── ui/             # shadcn primitives (Button, Card, Modal)
-│   │   ├── common/         # Navbar, Sidebar, Footer, LoadingSpinners
-│   │   └── charts/         # Recharts wrappers for price series
-│   ├── features/           # Feature-based domain modules
-│   │   ├── auth/           # Login, OTP, Auth Context
-│   │   ├── dashboard/      # Dashboard widgets, tickers
-│   │   ├── sell/           # Decision wizard steps
-│   │   ├── mandis/         # Mandi map, comparison matrix
-│   │   ├── ai-chat/        # AgroBot chat UI, voice handler
-│   │   └── analytics/      # Profit charts, history tables
-│   ├── hooks/              # Custom hooks (useGeolocation, useMandiPrices)
-│   ├── services/           # Axios API client instances & endpoints
-│   ├── store/              # Zustand stores (useAuthStore, useSellStore)
-│   ├── utils/              # Calculators, formatters, currency/unit parsing
-│   ├── App.jsx             # Route definitions & providers
-│   └── main.jsx            # Entry point
+│   ├── assets/              # SVGs, images, fonts
+│   ├── components/
+│   │   ├── ui/               # shadcn primitives (Button, Card, Modal)
+│   │   ├── common/            # Navbar, Sidebar, Footer, Spinners
+│   │   └── charts/            # Recharts wrappers for price series
+│   ├── features/
+│   │   ├── auth/               # Login, OTP, Auth context
+│   │   ├── dashboard/          # Widgets, tickers
+│   │   ├── sell/                # Decision wizard steps
+│   │   ├── mandis/              # Map, comparison matrix
+│   │   ├── ai-chat/             # AgroBot chat UI, voice handler
+│   │   └── analytics/           # Profit charts, history tables
+│   ├── hooks/                 # useGeolocation, useMandiPrices, ...
+│   ├── services/              # Axios API client & endpoints
+│   ├── store/                  # Zustand stores
+│   ├── utils/                  # Calculators, formatters, unit parsing
+│   ├── App.jsx
+│   └── main.jsx
 ├── index.html
 ├── vite.config.js
 └── tailwind.config.js
 ```
 
-### Design System Tokens
+**Design tokens:**
 ```css
 :root {
-  --primary-green: #15803d;     /* Deep Agricultural Green */
+  --primary-green: #15803d;     /* Deep agricultural green */
   --primary-hover: #166534;
-  --accent-gold: #d97706;      /* Harvest Amber */
-  --surface-dark: #0f172a;     /* Dark Slate Surface */
+  --accent-gold: #d97706;       /* Harvest amber */
+  --surface-dark: #0f172a;      /* Dark slate surface */
   --background-light: #f8fafc;
   --text-main: #1e293b;
   --status-success: #22c55e;
@@ -282,46 +304,30 @@ frontend/
 
 ---
 
-## 🏗️ Backend & Layered Architecture
+## 🏗️ Backend Architecture
 
-The backend follows a strict **Layered Architecture (Clean/Hexagonal Architecture principles)** ensuring decoupling between HTTP handlers, domain logic, and data persistence layers.
+A strict **layered (hexagonal) architecture** decouples HTTP handlers, domain logic, and persistence:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                      API Layer                          │
-│        (Express Routes, Controllers, Middleware)        │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│                     Business Layer                      │
-│     (Recommendation Engine, Price Predictor Client)     │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│                     Service Layer                       │
-│    (Agmarknet Sync, Transport Calculator, Gemini AI)    │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│                    Repository Layer                     │
-│           (Mongoose Models, Redis Cache Access)         │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│                    Database Layer                       │
-│             (MongoDB Atlas, Redis Cluster)              │
+│  API Layer            Express routes, controllers        │
+├─────────────────────────────────────────────────────────┤
+│  Business Layer       Recommendation engine, ML client    │
+├─────────────────────────────────────────────────────────┤
+│  Service Layer        Agmarknet sync, transport calc,     │
+│                        Gemini AI                          │
+├─────────────────────────────────────────────────────────┤
+│  Repository Layer     Mongoose models, Redis cache access │
+├─────────────────────────────────────────────────────────┤
+│  Database Layer       MongoDB Atlas, Redis cluster        │
 └─────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🗄️ MongoDB Schema & Database Architecture
+## 🗄️ Database Schema
 
-### 1. `users` Collection
+### `users`
 ```json
 {
   "_id": "ObjectId",
@@ -348,13 +354,9 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
   "updatedAt": "2026-07-24T12:00:00.000Z"
 }
 ```
-- **Indexes**:
-  - `{ "phone": 1 }` (Unique index for fast authentication lookups).
-  - `{ "location": "2dsphere" }` (Spatial index for proximity searches).
+**Indexes:** `{ phone: 1 }` (unique) · `{ location: "2dsphere" }`
 
----
-
-### 2. `mandis` Collection
+### `mandis`
 ```json
 {
   "_id": "ObjectId",
@@ -362,23 +364,16 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
   "name": "Sehore Main Mandi",
   "state": "Madhya Pradesh",
   "district": "Sehore",
-  "location": {
-    "type": "Point",
-    "coordinates": [77.0850, 23.2025]
-  },
+  "location": { "type": "Point", "coordinates": [77.0850, 23.2025] },
   "operatingDays": ["MON", "TUE", "WED", "THU", "FRI", "SAT"],
   "mandiCessPercentage": 1.5,
   "facilities": ["Cold Storage", "Weigh Bridge", "Electronic Auction"],
   "contactPhone": "+917562223344"
 }
 ```
-- **Indexes**:
-  - `{ "mandiCode": 1 }` (Unique).
-  - `{ "location": "2dsphere" }` (Enables `$near` and `$geoWithin` queries).
+**Indexes:** `{ mandiCode: 1 }` (unique) · `{ location: "2dsphere" }` (enables `$near`, `$geoWithin`)
 
----
-
-### 3. `mandi_prices` Collection
+### `mandi_prices`
 ```json
 {
   "_id": "ObjectId",
@@ -396,13 +391,9 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
   "createdAt": "2026-07-24T06:30:00.000Z"
 }
 ```
-- **Indexes**:
-  - `{ "crop": 1, "mandiCode": 1, "priceDate": -1 }` (Compound index for rapid price time-series retrieval).
-  - `{ "priceDate": -1 }` (TTL index options available for archiving old records).
+**Indexes:** `{ crop: 1, mandiCode: 1, priceDate: -1 }` (compound) · `{ priceDate: -1 }` (TTL-eligible for archiving)
 
----
-
-### 4. `price_predictions` Collection
+### `price_predictions`
 ```json
 {
   "_id": "ObjectId",
@@ -414,19 +405,12 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
     { "dayOffset": 2, "date": "2026-07-26", "predictedPrice": 2460, "confidenceLower": 2420, "confidenceUpper": 2500 },
     { "dayOffset": 3, "date": "2026-07-27", "predictedPrice": 2490, "confidenceLower": 2440, "confidenceUpper": 2530 }
   ],
-  "modelMeta": {
-    "modelName": "XGBoost_v2.4",
-    "mape": 3.2,
-    "trainedOn": "2026-07-20T00:00:00.000Z"
-  }
+  "modelMeta": { "modelName": "XGBoost_v2.4", "mape": 3.2, "trainedOn": "2026-07-20T00:00:00.000Z" }
 }
 ```
-- **Indexes**:
-  - `{ "crop": 1, "district": 1, "forecastDate": -1 }`.
+**Indexes:** `{ crop: 1, district: 1, forecastDate: -1 }`
 
----
-
-### 5. `sell_decisions` Collection
+### `sell_decisions`
 ```json
 {
   "_id": "ObjectId",
@@ -436,10 +420,7 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
   "qualityGrade": "Grade_A",
   "userExpectedPrice": 2500,
   "traderOffer": 2350,
-  "userLocation": {
-    "type": "Point",
-    "coordinates": [77.0589, 23.2420]
-  },
+  "userLocation": { "type": "Point", "coordinates": [77.0589, 23.2420] },
   "recommendation": {
     "action": "HOLD_AND_SELL_LATER",
     "recommendedMandiId": "ObjectId(mandis)",
@@ -448,47 +429,35 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
     "expectedTotalNetProfit": 122000,
     "decisionScore": 88.5,
     "confidenceScore": 91.0,
-    "reasoning": "Prices expected to rise by ₹90/Qtl over next 3 days due to lower arrivals. Storage cost is minimal."
+    "reasoning": "Prices expected to rise by ₹90/Qtl over the next 3 days due to lower arrivals; storage cost is minimal."
   },
   "executed": false,
   "createdAt": "2026-07-24T11:20:00.000Z"
 }
 ```
-- **Indexes**:
-  - `{ "userId": 1, "createdAt": -1 }`.
+**Indexes:** `{ userId: 1, createdAt: -1 }`
 
 ---
 
-## 📡 REST API Documentation
+## 📡 REST API Reference
 
-### Base URL: `https://api.agroprice.ai/v1`
+**Base URL:** `https://api.agroprice.ai/v1`
 
-#### 1. Auth Endpoint: Request OTP
-- **POST** `/auth/request-otp`
-- **Request Headers**: `Content-Type: application/json`
-- **Request Body**:
+### `POST /auth/request-otp`
 ```json
-{
-  "phone": "+919876543210"
-}
+// Request
+{ "phone": "+919876543210" }
 ```
-- **Response (200 OK)**:
 ```json
-{
-  "success": true,
-  "message": "OTP sent successfully",
-  "requestId": "req_otp_99238423"
-}
+// 200 OK
+{ "success": true, "message": "OTP sent successfully", "requestId": "req_otp_99238423" }
 ```
-- **Error Codes**: `400 Invalid Phone Number`, `429 Too Many Requests`.
+Errors: `400 Invalid Phone Number` · `429 Too Many Requests`
 
----
-
-#### 2. Decision Endpoint: Generate Selling Recommendation
-- **POST** `/decision/recommend`
-- **Headers**: `Authorization: Bearer <JWT_ACCESS_TOKEN>`
-- **Request Body**:
+### `POST /decision/recommend`
+_Auth: `Bearer <JWT_ACCESS_TOKEN>`_
 ```json
+// Request
 {
   "crop": "Tomato",
   "quantityQuintals": 25,
@@ -500,8 +469,8 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
   "maxDistanceKm": 100
 }
 ```
-- **Response (200 OK)**:
 ```json
+// 200 OK
 {
   "success": true,
   "data": {
@@ -510,11 +479,7 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
       "action": "SWITCH_MANDI",
       "actionLabel": "Sell Tomorrow in Ramganj Mandi",
       "badgeColor": "GREEN",
-      "targetMandi": {
-        "mandiId": "60d5ecb8b392a911",
-        "name": "Ramganj Mandi",
-        "distanceKm": 34.2
-      },
+      "targetMandi": { "mandiId": "60d5ecb8b392a911", "name": "Ramganj Mandi", "distanceKm": 34.2 },
       "economics": {
         "grossPricePerQtl": 2100,
         "transportCostPerQtl": 110,
@@ -524,25 +489,18 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
         "traderOfferNetProfit": 42500.0,
         "netProfitDifference": 6462.5
       },
-      "scores": {
-        "decisionScore": 92.4,
-        "confidenceScore": 89.0,
-        "riskLevel": "LOW"
-      },
-      "aiReasoningSummary": "Ramganj mandi offers ₹400/Qtl higher prices than your local trader. Even after deducting ₹110/Qtl transport, you net ₹6,462 extra."
+      "scores": { "decisionScore": 92.4, "confidenceScore": 89.0, "riskLevel": "LOW" },
+      "aiReasoningSummary": "Ramganj mandi offers ₹400/Qtl more than your local trader. Even after ₹110/Qtl transport, you net ₹6,462 extra."
     }
   }
 }
 ```
-- **Error Codes**: `401 Unauthorized`, `422 Unprocessable Entity (Invalid coordinates/crop)`.
+Errors: `401 Unauthorized` · `422 Unprocessable Entity` (invalid coordinates/crop)
 
----
-
-#### 3. Market Endpoint: Fetch Live Mandi Prices
-- **GET** `/market/prices?crop=Wheat&district=Sehore&limit=10`
-- **Headers**: `Authorization: Bearer <JWT_ACCESS_TOKEN>`
-- **Response (200 OK)**:
+### `GET /market/prices?crop=Wheat&district=Sehore&limit=10`
+_Auth: `Bearer <JWT_ACCESS_TOKEN>`_
 ```json
+// 200 OK
 {
   "success": true,
   "count": 2,
@@ -561,75 +519,74 @@ The backend follows a strict **Layered Architecture (Clean/Hexagonal Architectur
 
 ---
 
-## 🌾 Government Data Integration & Scheduling Pipeline
+## 🌾 Government Data Pipeline
 
-AgroPrice AI integrates with the official **Agmarknet API** (`data.gov.in`) and State Agricultural Marketing Boards.
+Integrates with the official **Agmarknet API** (`data.gov.in`) and State Agricultural Marketing Boards.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
 │                   Agmarknet API / Portal                 │
 └────────────────────────────┬─────────────────────────────┘
-                             │  Cron: Every 30 Minutes
+                             │  Cron: every 30 minutes
                              ▼
 ┌──────────────────────────────────────────────────────────┐
-│               Node.js Data Ingestion Worker              │
-│       - Validates Payload Structure                      │
-│       - Normalizes Crop Names (e.g. "Tomato" vs "Tamatar")│
-│       - Standardizes Units (Rs/Quintal)                  │
+│               Node.js Data Ingestion Worker               │
+│   Validates payload · normalizes crop names (e.g.         │
+│   "Tomato" vs. "Tamatar") · standardizes units (₹/Qtl)     │
 └────────────────────────────┬─────────────────────────────┘
                              │
             ┌────────────────┴────────────────┐
             ▼                                 ▼
-┌───────────────────────┐         ┌───────────────────────┐
-│     Redis Cache       │         │  MongoDB Price Store  │
-│  (TTL: 1800 Seconds)  │         │ (Historical Storage)  │
-└───────────────────────┘         └───────────────────────┘
+  ┌───────────────────────┐        ┌───────────────────────┐
+  │      Redis Cache       │        │  MongoDB Price Store  │
+  │   (TTL: 1800 seconds)  │        │ (historical storage)  │
+  └───────────────────────┘        └───────────────────────┘
 ```
 
-### Ingestion Resiliency Features
-- **Circuit Breaker**: If `data.gov.in` experiences downtime, fallback to web-scraping secondary state portals (e.g., MP Farm Gate API).
-- **Stale Data Prevention**: If no new price data is published for 24 hours, the system flags the mandi status as `UNVERIFIED_STALE` and expands prediction uncertainty intervals.
+**Resiliency:**
+- **Circuit breaker:** falls back to secondary state portals (e.g., MP Farm Gate API) if `data.gov.in` is down.
+- **Stale-data guard:** if a mandi reports no new prices for 24 hours, it's flagged `UNVERIFIED_STALE` and prediction uncertainty intervals widen automatically.
 
 ---
 
-## 🤖 Machine Learning Pipeline & Price Forecasting
+## 🤖 Machine Learning Pipeline
 
-The prediction engine forecasts commodity prices for $1\text{ to }7$ days into the future.
+Forecasts commodity prices 1–7 days out.
 
 ```
-Raw Data Ingestion ──► Feature Engineering ──► Model Inference (XGBoost) ──► Post-Processing Confidence
+Raw Data Ingestion ──► Feature Engineering ──► Model Inference (XGBoost) ──► Confidence Post-Processing
 ```
 
-### 1. Dataset & Features
-- **Historical Time Series**: 10 years of daily mandi prices across 3,000+ mandis.
-- **Exogenous Features**:
-  - **Temporal**: Day of week, Month, Harvest Seasonality Index.
-  - **Weather**: Rain anomaly (mm), Min/Max Temperature, Relative Humidity.
-  - **Macro**: Fuel/Diesel Price Index, Transport Inflation Factor.
-  - **Arrival Volume**: Lagged 1-day, 3-day, and 7-day total arrival quantities in Quintals.
+**Dataset & features**
+- 10 years of daily mandi prices across 3,000+ mandis
+- Temporal: day of week, month, harvest seasonality index
+- Weather: rain anomaly (mm), min/max temperature, relative humidity
+- Macro: diesel price index, transport inflation factor
+- Arrivals: lagged 1-day, 3-day, and 7-day arrival quantities (Qtl)
 
-### 2. Feature Matrix Construction
+**Feature matrix**
+
 $$Y_{t+k} = f(\text{Price}_{t}, \text{Price}_{t-1}, \dots, \text{Arrival}_{t}, \text{Rainfall}_{t}, \text{Month}, \text{District})$$
 
-### 3. Model Architecture & Training
-- **Primary Model**: **XGBoost Regressor** + **LightGBM** ensemble.
-- **Fallback / Long-term Model**: **Prophet** / **Bi-LSTM** for 30-day macro trend forecasting.
-- **Evaluation Metric**: Mean Absolute Percentage Error (MAPE). Target MAPE $< 4.5\%$.
+**Model architecture**
+- Primary: **XGBoost Regressor + LightGBM** ensemble
+- Long-horizon fallback: **Prophet / Bi-LSTM** for 30-day macro trends
+- Evaluation: MAPE, target **< 4.5%**
 
 ---
 
-## 🧠 Google Gemini AI Integration & Prompt Engineering
+## 🧠 Gemini AI Integration
 
-Google Gemini 1.5 Pro acts as the cognitive reasoning engine. While XGBoost provides raw price predictions and algorithms calculate route logistics, Gemini synthesizes these disparate outputs into a human-understandable narrative tailored to the farmer's dialect and context.
+Google Gemini 1.5 Pro is the cognitive reasoning layer: while XGBoost provides raw price predictions and rule-based engines compute logistics costs, Gemini synthesizes both into a human-readable, dialect-aware recommendation.
 
-### Structured Prompt Template
 ```
 SYSTEM PROMPT:
 You are an expert Agricultural Economist and Farmer Advisor for AgroPrice AI.
-Analyze the provided structured JSON data containing live prices, predictions, weather, transport costs, and trader offers.
-Produce a multi-lingual recommendation that is empathetic, direct, concise, and highly persuasive.
+Analyze the structured JSON containing live prices, predictions, weather,
+transport costs, and trader offers. Produce a multilingual recommendation
+that is empathetic, direct, concise, and persuasive.
 
-INPUT DATA:
+INPUT:
 {
   "farmerName": "Ramesh Kumar",
   "crop": "Tomato",
@@ -642,223 +599,197 @@ INPUT DATA:
   "transportCostTotal": 2750
 }
 
-OUTPUT REQUIREMENTS:
-1. Recommended Action (SELL_NOW | HOLD | SWITCH_MANDI | NEGOTIATE)
-2. Net Financial Benefit in INR
-3. 3-bullet point reasoning explanation in simple language
+OUTPUT:
+1. Recommended action (SELL_NOW | HOLD | SWITCH_MANDI | NEGOTIATE)
+2. Net financial benefit in INR
+3. 3-bullet reasoning in plain language
 4. Trader negotiation script
 ```
 
 ---
 
-## 📊 Recommendation Engine & Scoring Architecture
+## 📊 Recommendation Scoring Engine
 
-The Recommendation Engine assigns a **Decision Score** ($S_{\text{decision}} \in [0, 100]$) to every candidate selling pathway.
+Every candidate selling pathway gets a **Decision Score** ($S_{\text{decision}} \in [0, 100]$):
 
 $$S_{\text{decision}} = w_1 \cdot P_{\text{net\_norm}} + w_2 \cdot C_{\text{model}} - w_3 \cdot R_{\text{weather}} - w_4 \cdot D_{\text{logistics}}$$
 
-Where:
-- $P_{\text{net\_norm}}$: Normalized Net Profit compared to baseline trader offer.
-- $C_{\text{model}}$: ML Prediction Confidence score ($0.0 - 1.0$).
-- $R_{\text{weather}}$: Adverse weather risk penalty ($0 - 20$ points if heavy rain threatens transport).
-- $D_{\text{logistics}}$: Perishable travel risk penalty based on distance and travel time.
-- Weights: $w_1 = 0.50$, $w_2 = 0.25$, $w_3 = 0.15$, $w_4 = 0.10$.
+| Term | Meaning | Weight |
+|---|---|---|
+| $P_{\text{net\_norm}}$ | Normalized net profit vs. baseline trader offer | $w_1 = 0.50$ |
+| $C_{\text{model}}$ | ML prediction confidence (0.0–1.0) | $w_2 = 0.25$ |
+| $R_{\text{weather}}$ | Adverse-weather transport risk penalty (0–20 pts) | $w_3 = 0.15$ |
+| $D_{\text{logistics}}$ | Perishable travel-time/distance risk penalty | $w_4 = 0.10$ |
 
 ---
 
 ## 🧮 Domain Calculation Engines
 
-### 1. Transport Cost Engine
-Calculates vehicle freight dynamically:
-$$\text{Cost} = \text{Base Fare} + (\text{Distance in Km} \times \text{Rate/Km}) + (\text{Quantity in Qtl} \times \text{Handling Fee/Qtl})$$
-- Vehicle Profiles: Auto Loader (up to 15 Qtl), Pickup Truck (up to 35 Qtl), Tractor Trolley (up to 100 Qtl), 6-Tyre Truck ($>100\text{ Qtl}$).
+**Transport Cost Engine**
+$$\text{Cost} = \text{Base Fare} + (\text{Distance}_{km} \times \text{Rate/km}) + (\text{Quantity}_{Qtl} \times \text{Handling Fee/Qtl})$$
+Vehicle profiles: Auto Loader (≤15 Qtl) · Pickup Truck (≤35 Qtl) · Tractor Trolley (≤100 Qtl) · 6-Tyre Truck (>100 Qtl)
 
-### 2. Weather Engine
-Integrates OpenWeatherMap API to evaluate 48-hour precipitation risk for open-bed transport and moisture damage to harvested crops.
+**Weather Engine**
+Integrates OpenWeatherMap for 48-hour precipitation risk affecting open-bed transport and post-harvest moisture damage.
 
-### 3. Profit Calculator
-Computes exact net cash in hand:
-$$\text{Net Cash} = (\text{Quantity} \times \text{Mandi Price}) - \text{Freight} - \text{Mandi Cess} - \text{Loading Charge} - \text{Unloading Charge}$$
+**Profit Calculator**
+$$\text{Net Cash} = (\text{Quantity} \times \text{Mandi Price}) - \text{Freight} - \text{Mandi Cess} - \text{Loading} - \text{Unloading}$$
 
 ---
 
-## 🔒 Security, AuthN/AuthZ & Compliance
+## 🔒 Security & Compliance
 
-1. **Authentication**: JWT tokens signed with RS256 algorithm. Short-lived access tokens (15 mins) paired with HTTP-Only encrypted cookies for refresh tokens.
-2. **Rate Limiting**: Express Rate Limit paired with Redis. 100 requests per 15 minutes per IP; 5 OTP requests per hour per phone number.
-3. **Data Encryption**: AES-256 encryption at rest for MongoDB Atlas; TLS 1.3 in transit for all microservice communication.
-4. **Input Validation**: Strict schema enforcement using **Joi / Zod** on every controller endpoint.
-5. **CORS & Security Headers**: Helmet.js enabled to enforce Content Security Policy (CSP), HSTS, and X-Frame-Options (`DENY`).
-
----
-
-## ⚡ Performance Optimization & Scalability
-
-- **Redis Caching Strategy**: Mandi price queries cached with a 30-minute TTL. Geo-proximity calculation results cached per district.
-- **Frontend Code Splitting**: Route-based lazy loading via `React.lazy()` and React Suspense reduces initial bundle size to $< 180\text{ KB}$.
-- **Database Optimization**: Compound indexes on `{ crop: 1, mandiCode: 1, priceDate: -1 }` reduce MongoDB query execution time from $450\text{ ms}$ to $< 12\text{ ms}$.
-- **Image Optimization**: WebP format serving with responsive srcset attributes.
+- **AuthN:** RS256-signed JWTs — 15-minute access tokens, HTTP-only encrypted refresh cookies.
+- **Rate limiting:** 100 requests / 15 min per IP; 5 OTP requests / hour per phone number (Redis-backed).
+- **Encryption:** AES-256 at rest (MongoDB Atlas); TLS 1.3 in transit for all service communication.
+- **Validation:** strict schema enforcement (Joi/Zod) on every controller endpoint.
+- **Headers:** Helmet.js enforces CSP, HSTS, and `X-Frame-Options: DENY`.
 
 ---
 
-## 🐳 DevOps, CI/CD & Deployment Architecture
+## ⚡ Performance & Scalability
+
+- **Redis caching:** mandi-price queries cached with a 30-minute TTL; geo-proximity results cached per district.
+- **Frontend code-splitting:** route-based lazy loading (`React.lazy` + Suspense) keeps the initial bundle under ~180 KB.
+- **Database indexing:** the `{ crop, mandiCode, priceDate }` compound index cuts query time from ~450 ms to under 12 ms.
+- **Images:** served as WebP with responsive `srcset`.
+
+---
+
+## 🐳 DevOps & Deployment
 
 ```
-                               ┌──────────────────────────┐
-                               │    GitHub Repository     │
-                               └────────────┬─────────────┘
-                                            │
-                                            ▼  Git Push to main
-                               ┌──────────────────────────┐
-                               │   GitHub Actions CI/CD   │
-                               │  - Run ESLint & Jest     │
-                               │  - Build Docker Images   │
-                               │  - Push to Docker Hub    │
-                               └────────────┬─────────────┘
-                                            │
-                                            ▼  SSH Deploy Script
-                               ┌──────────────────────────┐
-                               │   Hetzner Cloud Server   │
-                               │  - Nginx Reverse Proxy   │
-                               │  - Docker Compose Setup  │
-                               │  (Frontend + Node + ML)  │
-                               └──────────────────────────┘
+GitHub Repository
+      │  git push → main
+      ▼
+GitHub Actions CI/CD
+  • ESLint + Jest
+  • Build Docker images
+  • Push to Docker Hub
+      │  SSH deploy script
+      ▼
+Hetzner Cloud Server
+  • Nginx reverse proxy
+  • Docker Compose (frontend + backend + ML service)
 ```
 
-### Production `docker-compose.yml` Architecture
-- `frontend_container`: Nginx static server delivering production Vite build.
-- `backend_container`: Node.js Express API server (clustered across CPU cores).
-- `ml_service_container`: Python FastAPI application running XGBoost inference models.
-- `redis_container`: Redis in-memory cache server.
+**Containers:** `frontend` (Nginx serving the Vite build) · `backend` (clustered Node/Express API) · `ml_service` (FastAPI + XGBoost inference) · `redis` (in-memory cache).
 
 ---
 
-## 📊 Observability, Monitoring & Logging
+## 📊 Observability & Monitoring
 
-- **Logging**: Structured JSON logging via **Winston** (Node.js) and **Structlog** (Python). Logs aggregated via Grafana Loki.
-- **Metrics**: Prometheus metrics endpoint exposing HTTP response times, DB connection pool utilization, and prediction latency.
-- **Crash Reporting**: Sentry SDK integrated across Frontend and Backend services for instant exception tracking.
-- **Health Checks**: `/healthz` endpoint returning DB status, Redis connectivity, and ML service responsiveness.
+- **Logging:** structured JSON via Winston (Node) and Structlog (Python), aggregated in Grafana Loki.
+- **Metrics:** Prometheus endpoint for HTTP latency, DB pool utilization, and prediction latency.
+- **Error tracking:** Sentry across frontend and backend.
+- **Health checks:** `/healthz` reports DB, Redis, and ML-service status.
 
 ---
 
-## 🧪 Testing & Quality Assurance Strategy
+## 🧪 Testing Strategy
 
-- **Frontend**: Unit & Component testing via **Vitest** and **React Testing Library**; E2E flows tested via **Playwright**.
-- **Backend**: Integration tests with **Supertest** against an in-memory MongoDB server (**MongoMemoryServer**).
-- **Machine Learning**: Backtesting model performance over historical 12-month backtest windows to guarantee bounded MAPE.
-- **API Security**: Automated OWASP ZAP security vulnerability scans integrated into CI/CD pipelines.
+| Layer | Tooling |
+|---|---|
+| Frontend | Vitest + React Testing Library (unit/component) · Playwright (E2E) |
+| Backend | Jest + Supertest against `mongodb-memory-server` |
+| ML | 12-month rolling backtests bounding MAPE |
+| Security | OWASP ZAP scans wired into CI/CD |
 
 ---
 
 ## 🗺️ Product Roadmap
 
 ```
-+-----------------------------------------------------------------------------------+
-| VERSION 1.0 (CURRENT RELEASE)                                                     |
-| • Live Agmarknet Price Ingestion                                                  |
-| • 7-Day XGBoost Price Forecasting                                                 |
-| • Multi-Mandi Net Profit Calculator                                               |
-| • Gemini AI Recommendation Engine (Hindi/English)                                 |
-+-----------------------------------------------------------------------------------+
-                                         │
-                                         ▼
-+-----------------------------------------------------------------------------------+
-| VERSION 2.0 (Q4 2026)                                                             |
-| • Voice-first Interaction in 6 Indian Languages                                   |
-| • Shared Logistics & Truck Pooling Marketplace for Farmers                        |
-| • WhatsApp Bot for Direct Instant Recommendations                                 |
-+-----------------------------------------------------------------------------------+
-                                         │
-                                         ▼
-+-----------------------------------------------------------------------------------+
-| VERSION 3.0 & ENTERPRISE (2027)                                                   |
-| • B2B Procurement Portal for Bulk Grain Buyers                                    |
-| • Credit Risk & Yield Scoring APIs for Agri-Banks & Insurers                      |
-| • Satellite Imagery Integration for Yield Estimation                              |
-+-----------------------------------------------------------------------------------+
+v1.0 (Current)
+  • Live Agmarknet price ingestion
+  • 7-day XGBoost price forecasting
+  • Multi-mandi net profit calculator
+  • Gemini AI recommendations (Hindi/English)
+
+v2.0 (Q4 2026)
+  • Voice-first interaction in 6 Indian languages
+  • Shared logistics / truck-pooling marketplace
+  • WhatsApp bot for instant recommendations
+
+v3.0 / Enterprise (2027)
+  • B2B procurement portal for bulk grain buyers
+  • Credit-risk & yield-scoring APIs for agri-banks and insurers
+  • Satellite imagery integration for yield estimation
 ```
 
 ---
 
 ## 🤝 Contribution Guide & Engineering Standards
 
-### Coding Standards
-- **JavaScript/React**: Standard Airbnb Style Guide enforced via ESLint & Prettier.
-- **Python (ML Service)**: PEP 8 compliant, type-hinted, formatted via `black` and `isort`.
+**Coding standards**
+- JS/React: Airbnb style guide via ESLint + Prettier
+- Python (ML service): PEP 8, type-hinted, formatted with `black` + `isort`
 
-### Git Workflow & Commit Conventions
-Follow **Conventional Commits**:
-- `feat(sell-module): add moisture percentage input step`
-- `fix(mandi-sync): resolve agmarknet API parser null pointer`
-- `docs(readme): expand architecture and database schemas`
+**Commit convention** — [Conventional Commits](https://www.conventionalcommits.org/):
+```
+feat(sell-module): add moisture percentage input step
+fix(mandi-sync): resolve agmarknet API parser null pointer
+docs(readme): expand architecture and database schemas
+```
 
-### Pull Request Rules
-1. Every PR must reference an open issue.
-2. All automated CI checks (Linter, Unit Tests, Build) must pass.
-3. Code review approval required from at least 1 Principal/Staff Engineer.
+**Pull requests**
+1. Reference an open issue.
+2. All CI checks (lint, unit tests, build) must pass.
+3. Requires review approval from at least one Principal/Staff engineer.
 
 ---
 
-## 📁 Complete Repository Folder Breakdown
+## 📁 Repository Structure
 
 ```
-Agroprice-ai/
-├── .github/
-│   └── workflows/
-│       ├── ci-cd.yml                # Main deployment and testing pipeline
-│       └── lint.yml                 # Code style checking
-├── backend/                         # Node.js + Express API Service
+agroprice-ai/
+├── .github/workflows/
+│   ├── ci-cd.yml               # Build, test, deploy pipeline
+│   └── lint.yml                # Style checks
+├── backend/                     # Node.js + Express API
 │   ├── src/
-│   │   ├── config/                  # DB, Redis, Environment variables
-│   │   ├── controllers/             # HTTP Route Handlers
-│   │   ├── middleware/              # Auth, Rate Limiting, Error Handling
-│   │   ├── models/                  # Mongoose Schemas (User, Mandi, Price, Decision)
-│   │   ├── repositories/            # Database Data Access Objects (DAOs)
-│   │   ├── routes/                  # Express Router definitions
-│   │   ├── services/                # Business logic, Agmarknet Sync, Gemini API
-│   │   └── utils/                   # Helpers, Math calculators, Logger
-│   ├── tests/                       # Jest + Supertest integration tests
-│   ├── package.json
+│   │   ├── config/               # DB, Redis, env vars
+│   │   ├── controllers/          # HTTP route handlers
+│   │   ├── middleware/           # Auth, rate limiting, error handling
+│   │   ├── models/                # Mongoose schemas
+│   │   ├── repositories/          # Data access objects
+│   │   ├── routes/                # Express routers
+│   │   ├── services/              # Business logic, Agmarknet sync, Gemini
+│   │   └── utils/                 # Helpers, calculators, logger
+│   ├── tests/                    # Jest + Supertest
 │   └── Dockerfile
-├── frontend/                        # React + Vite Client Application
+├── frontend/                    # React + Vite client
 │   ├── src/
-│   │   ├── assets/                  # Images, SVGs, Fonts
-│   │   ├── components/              # Reusable UI components (shadcn)
-│   │   ├── features/                # Domain-specific modules (Dashboard, Sell, Chat)
-│   │   ├── hooks/                   # Custom React hooks
-│   │   ├── services/                # Axios API handlers
-│   │   ├── store/                   # Zustand global state
-│   │   ├── utils/                   # Unit converters, price formatters
+│   │   ├── assets/ components/ features/ hooks/ services/ store/ utils/
 │   │   ├── App.jsx
 │   │   └── main.jsx
-│   ├── index.html
-│   ├── package.json
-│   ├── vite.config.js
 │   └── Dockerfile
-├── ml_service/                      # Python FastAPI Machine Learning Service
+├── ml_service/                  # Python FastAPI ML service
 │   ├── app/
-│   │   ├── api/                     # Inference endpoint routes
-│   │   ├── core/                    # Model loading & configuration
-│   │   ├── models/                  # Saved XGBoost / LightGBM model binaries (.pkl)
-│   │   ├── pipelines/               # Data cleaning & feature engineering scripts
-│   │   └── main.py                  # FastAPI server entrypoint
-│   ├── tests/                       # Pytest model test cases
-│   ├── requirements.txt
+│   │   ├── api/                   # Inference routes
+│   │   ├── core/                  # Model loading & config
+│   │   ├── models/                 # Saved XGBoost/LightGBM binaries
+│   │   ├── pipelines/              # Feature engineering
+│   │   └── main.py
+│   ├── tests/
 │   └── Dockerfile
-├── docs/                            # System Architecture & API Specifications
+├── docs/
 │   └── 00_PROJECT_MASTER_DOCUMENTATION.md
-├── Dockerfile                       # Multi-stage root build
-├── docker-compose.yml               # Container orchestration spec
+├── docker-compose.yml
 ├── .gitignore
-└── README.md                        # Master Documentation Entry Point
+└── README.md
 ```
 
 ---
 
-## 🏆 Conclusion
+## 📄 License
 
-**AgroPrice AI** represents a paradigm shift in agricultural decision support. By integrating real-time market data, predictive machine learning, hyper-local transport costs, and cognitive AI reasoning into a seamless, farmer-centric platform, AgroPrice AI turns complex market dynamics into simple, actionable, and profitable selling decisions. 
+Distributed under the MIT License. See `LICENSE` for details.
 
 ---
-*Maintained by the AgroPrice AI Core Engineering Team.*
+
+<div align="center">
+
+**Maintained by the AgroPrice AI Core Engineering Team** 🌱
+
+</div>
