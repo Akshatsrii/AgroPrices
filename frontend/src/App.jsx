@@ -81,8 +81,6 @@ import { AdminMandisPage } from './pages/admin/AdminMandisPage';
 import { AdminPricesPage } from './pages/admin/AdminPricesPage';
 import { AdminUsersPage } from './pages/admin/AdminUsersPage';
 
-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
 function App() {
   return (
     <Router>
@@ -152,10 +150,10 @@ function App() {
           <Route path="admin/users" element={<AdminUsersPage />} />
         </Route>
 
-        {/* Module 2: Authentication Routes */}
+        {/* Module 2: Authentication Routes (Wildcard /* required for Clerk internal sub-routes) */}
         <Route path="/auth" element={<AuthLayout />}>
-          <Route path="login" element={<SignInPage />} />
-          <Route path="signup" element={<SignUpPage />} />
+          <Route path="login/*" element={<SignInPage />} />
+          <Route path="signup/*" element={<SignUpPage />} />
           <Route path="verify-otp" element={<OTPVerificationPage />} />
         </Route>
 
