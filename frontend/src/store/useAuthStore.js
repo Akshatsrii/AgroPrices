@@ -53,11 +53,29 @@ export const useAuthStore = create((set) => ({
     return false;
   },
   
+  syncClerkUser: (clerkUser) => {
+    if (!clerkUser) return;
+    set((state) => {
+      const updatedUser = {
+        ...state.user,
+        name: clerkUser.fullName || clerkUser.firstName || state.user.name || 'Ramesh Kumar',
+        phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber || state.user.phoneNumber || '+91 98765 43210',
+        email: clerkUser.primaryEmailAddress?.emailAddress || state.user.email,
+        isAuthenticated: true,
+      };
+      try {
+        localStorage.setItem('agro_user', JSON.stringify(updatedUser));
+      } catch (e) {}
+      return { user: updatedUser };
+    });
+  },
+  
   updateFarmerProfile: (profileData) => {
     set((state) => {
       const updatedUser = {
         ...state.user,
         ...profileData,
+        isAuthenticated: true,
       };
       try {
         localStorage.setItem('agro_user', JSON.stringify(updatedUser));
