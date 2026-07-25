@@ -2,18 +2,38 @@ const express = require('express');
 const router = express.Router();
 const geminiAiEngine = require('../services/geminiAiEngine');
 
-function generateDynamicMandiResponse(promptText, language = 'English') {
-  const lower = (promptText || '').toLowerCase();
-  
-  // Extract Mandi location
-  let location = 'Indore Central Mandi';
-  if (lower.includes('kota') || lower.includes('कोटा')) location = 'Kota APMC Mandi';
-  else if (lower.includes('sehore') || lower.includes('सीहोर')) location = 'Sehore Mandi';
-  else if (lower.includes('bhopal') || lower.includes('भोपाल')) location = 'Karond Mandi Bhopal';
-  else if (lower.includes('ramganj') || lower.includes('रामगंज')) location = 'Ramganj Mandi';
-  else if (lower.includes('khanna') || lower.includes('खन्ना')) location = 'Khanna APMC Mandi';
-  else if (lower.includes('nashik') || lower.includes('नासिक')) location = 'Nashik Market';
-  else if (lower.includes('dewas') || lower.includes('देवास')) location = 'Dewas Mandi';
+function extractMandiAndCrop(promptText) {
+  const text = promptText || '';
+  const lower = text.toLowerCase();
+
+  let location = '';
+
+  // Dictionary matching for popular Indian cities & mandis
+  if (lower.includes('lucknow') || lower.includes('लखनऊ')) location = 'Lucknow APMC Mandi (लखनऊ मंडी)';
+  else if (lower.includes('kanpur') || lower.includes('कानपुर')) location = 'Kanpur Mandi (कानपुर मंडी)';
+  else if (lower.includes('patna') || lower.includes('पटना')) location = 'Patna APMC Mandi (पटना मंडी)';
+  else if (lower.includes('jaipur') || lower.includes('जयपुर')) location = 'Jaipur Grain Market (जयपुर मंडी)';
+  else if (lower.includes('delhi') || lower.includes('दिल्ली') || lower.includes('azadpur')) location = 'Azadpur Mandi Delhi (दिल्ली मंडी)';
+  else if (lower.includes('kota') || lower.includes('कोटा')) location = 'Kota APMC Mandi (कोटा मंडी)';
+  else if (lower.includes('sehore') || lower.includes('सीहोर')) location = 'Sehore Mandi (सीहोर मंडी)';
+  else if (lower.includes('bhopal') || lower.includes('भोपाल')) location = 'Karond Mandi Bhopal (भोपाल मंडी)';
+  else if (lower.includes('ramganj') || lower.includes('रामगंज')) location = 'Ramganj Mandi (रामगंज मंडी)';
+  else if (lower.includes('khanna') || lower.includes('खन्ना')) location = 'Khanna APMC Mandi (खन्ना मंडी)';
+  else if (lower.includes('nashik') || lower.includes('नासिक')) location = 'Nashik Market (नासिक मंडी)';
+  else if (lower.includes('dewas') || lower.includes('देवास')) location = 'Dewas Mandi (देवास मंडी)';
+  else {
+    const match = text.match(/([A-Za-z\u0900-\u097F]{3,20})\s+(?:में|मे|मंडी|mandi|in|at)/i);
+    if (match && match[1]) {
+      const parsed = match[1].replace(/(?:क्या|का|की|के|भाव|रेट|प्राइस|price|rate)/gi, '').trim();
+      if (parsed.length >= 3) {
+        location = `${parsed} Mandi`;
+      }
+    }
+  }
+
+  if (!location) {
+    location = 'Indore Central Mandi';
+  }
 
   // Extract Crop
   let crop = 'Wheat (गेहूं)';
@@ -23,7 +43,13 @@ function generateDynamicMandiResponse(promptText, language = 'English') {
   else if (lower.includes('soybean') || lower.includes('सोयाबीन')) { crop = 'Soybean (सोयाबीन)'; price = 4600; }
   else if (lower.includes('paddy') || lower.includes('rice') || lower.includes('धान') || lower.includes('चावल')) { crop = 'Paddy (धान)'; price = 3850; }
 
-  const isHindi = language === 'Hindi' || lower.includes('का') || lower.includes('भाव') || lower.includes('क्या') || lower.includes('रेट');
+  return { location, crop, price };
+}
+
+function generateDynamicMandiResponse(promptText, language = 'English') {
+  const { location, crop, price } = extractMandiAndCrop(promptText);
+  const lower = (promptText || '').toLowerCase();
+  const isHindi = language === 'Hindi' || lower.includes('का') || lower.includes('भाव') || lower.includes('क्या') || lower.includes('रेट') || lower.includes('में');
 
   if (isHindi) {
     return `${location} में आज ${crop} का मंडी भाव ₹${price.toLocaleString('en-IN')}${price < 100 ? '/किलो' : '/क्विंटल'} है। कल आवक कम होने की वजह से भाव +4.5% तक बढ़ने का अनुमान है।`;
@@ -35,7 +61,7 @@ function generateDynamicMandiResponse(promptText, language = 'English') {
 router.post('/chat', async (req, res) => {
   try {
     const { prompt, language, mode } = req.body;
-    const isHindi = language === 'Hindi' || (prompt && (prompt.includes('भाव') || prompt.includes('मंडी') || prompt.includes('नमस्ते') || prompt.includes('कोटा')));
+    const isHindi = language === 'Hindi' || (prompt && (prompt.includes('भाव') || prompt.includes('मंडी') || prompt.includes('नमस्ते') || prompt.includes('में')));
 
     let botResponse = generateDynamicMandiResponse(prompt, language);
     const queryMode = mode || 'GENERAL';
@@ -68,7 +94,7 @@ router.post('/chat', async (req, res) => {
 router.get('/history', async (req, res) => {
   try {
     const history = [
-      { id: 'H1', query: 'कोटा मंडी में गेहूं का क्या भाव है?', response: 'कोटा APMC मंडी में आज गेहूं का भाव ₹2,420/क्विंटल है।', language: 'Hindi' },
+      { id: 'H1', query: 'लखनऊ मंडी में क्या प्राइस है?', response: 'Lucknow APMC Mandi में आज गेहूं का भाव ₹2,480/क्विंटल है।', language: 'Hindi' },
       { id: 'H2', query: 'Trader offered 2150, should I sell?', response: 'No, middleman bid is Rs.330 below market value.', language: 'English' },
     ];
     return res.json({ success: true, count: history.length, history });
