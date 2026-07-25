@@ -12,20 +12,41 @@ try {
 }
 
 /**
- * Dynamic Mandi & Crop Entity Extractor for Farmer AI Query
+ * Universal Mandi & Crop Entity Extractor for Any Indian City / District
  */
-function generateDynamicMandiAdvice(promptText, language = 'English') {
-  const lower = (promptText || '').toLowerCase();
-  
-  // Extract Mandi location
-  let location = 'Indore Central Mandi';
-  if (lower.includes('kota') || lower.includes('कोटा')) location = 'Kota APMC Mandi';
-  else if (lower.includes('sehore') || lower.includes('सीहोर')) location = 'Sehore Mandi';
-  else if (lower.includes('bhopal') || lower.includes('भोपाल')) location = 'Karond Mandi Bhopal';
-  else if (lower.includes('ramganj') || lower.includes('रामगंज')) location = 'Ramganj Mandi';
-  else if (lower.includes('khanna') || lower.includes('खन्ना')) location = 'Khanna APMC Mandi';
-  else if (lower.includes('nashik') || lower.includes('नासिक')) location = 'Nashik Market';
-  else if (lower.includes('dewas') || lower.includes('देवास')) location = 'Dewas Mandi';
+function extractMandiAndCrop(promptText) {
+  const text = promptText || '';
+  const lower = text.toLowerCase();
+
+  let location = '';
+
+  // Dictionary matching for popular Indian cities & mandis
+  if (lower.includes('lucknow') || lower.includes('लखनऊ')) location = 'Lucknow APMC Mandi (लखनऊ मंडी)';
+  else if (lower.includes('kanpur') || lower.includes('कानपुर')) location = 'Kanpur Mandi (कानपुर मंडी)';
+  else if (lower.includes('patna') || lower.includes('पटना')) location = 'Patna APMC Mandi (पटना मंडी)';
+  else if (lower.includes('jaipur') || lower.includes('जयपुर')) location = 'Jaipur Grain Market (जयपुर मंडी)';
+  else if (lower.includes('delhi') || lower.includes('दिल्ली') || lower.includes('azadpur')) location = 'Azadpur Mandi Delhi (दिल्ली मंडी)';
+  else if (lower.includes('kota') || lower.includes('कोटा')) location = 'Kota APMC Mandi (कोटा मंडी)';
+  else if (lower.includes('sehore') || lower.includes('सीहोर')) location = 'Sehore Mandi (सीहोर मंडी)';
+  else if (lower.includes('bhopal') || lower.includes('भोपाल')) location = 'Karond Mandi Bhopal (भोपाल मंडी)';
+  else if (lower.includes('ramganj') || lower.includes('रामगंज')) location = 'Ramganj Mandi (रामगंज मंडी)';
+  else if (lower.includes('khanna') || lower.includes('खन्ना')) location = 'Khanna APMC Mandi (खन्ना मंडी)';
+  else if (lower.includes('nashik') || lower.includes('नासिक')) location = 'Nashik Market (नासिक मंडी)';
+  else if (lower.includes('dewas') || lower.includes('देवास')) location = 'Dewas Mandi (देवास मंडी)';
+  else {
+    // Regex parsing for "X में", "in X", "at X"
+    const match = text.match(/([A-Za-z\u0900-\u097F]{3,20})\s+(?:में|मे|मंडी|mandi|in|at)/i);
+    if (match && match[1]) {
+      const parsed = match[1].replace(/(?:क्या|का|की|के|भाव|रेट|प्राइस|price|rate)/gi, '').trim();
+      if (parsed.length >= 3) {
+        location = `${parsed} Mandi`;
+      }
+    }
+  }
+
+  if (!location) {
+    location = 'Indore Central Mandi';
+  }
 
   // Extract Crop
   let crop = 'Wheat (गेहूं)';
@@ -35,7 +56,13 @@ function generateDynamicMandiAdvice(promptText, language = 'English') {
   else if (lower.includes('soybean') || lower.includes('सोयाबीन')) { crop = 'Soybean (सोयाबीन)'; price = 4600; }
   else if (lower.includes('paddy') || lower.includes('rice') || lower.includes('धान') || lower.includes('चावल')) { crop = 'Paddy (धान)'; price = 3850; }
 
-  const isHindi = language === 'Hindi' || lower.includes('का') || lower.includes('भाव') || lower.includes('क्या') || lower.includes('रेट');
+  return { location, crop, price };
+}
+
+function generateDynamicMandiAdvice(promptText, language = 'English') {
+  const { location, crop, price } = extractMandiAndCrop(promptText);
+  const lower = (promptText || '').toLowerCase();
+  const isHindi = language === 'Hindi' || lower.includes('का') || lower.includes('भाव') || lower.includes('क्या') || lower.includes('रेट') || lower.includes('में');
 
   if (isHindi) {
     return `नमस्ते! ${location} में आज ${crop} का मंडी भाव ₹${price.toLocaleString('en-IN')}${price < 100 ? '/किलो' : '/क्विंटल'} है। कल आवक कम होने से भाव +4.5% तक बढ़ने का अनुमान है।`;
@@ -111,7 +138,7 @@ export async function askGeminiAssistant(prompt, language = 'English') {
 /**
  * Predict future crop price trends (7 to 15 days forecast) using Gemini AI.
  */
-export async function predictCropPriceTrend(cropName, mandiLocation = 'Kota APMC Mandi', language = 'English') {
+export async function predictCropPriceTrend(cropName, mandiLocation = 'Lucknow APMC Mandi', language = 'English') {
   const promptText = `Act as an AI Mandi Commodity Forecaster. Provide a 7-day price prediction for ${cropName} at ${mandiLocation} in ${language}.
 Return ONLY a valid JSON object with keys:
 "currentPrice": estimated current rate per quintal in ₹,
@@ -135,8 +162,8 @@ Return ONLY a valid JSON object with keys:
   }
 
   return {
-    currentPrice: 2420,
-    predictedPrice7Days: 2530,
+    currentPrice: 2480,
+    predictedPrice7Days: 2590,
     trend: 'Bullish (+4.5%)',
     forecastSummary: `Demand for ${cropName} in ${mandiLocation} is projected to rise due to lower arrivals and strong regional buyer demand.`,
   };
@@ -155,7 +182,7 @@ export async function generateCropRecommendation(cropDetails, language = 'Englis
 - Village Trader Offer: ₹${traderOffer}/q
 
 Provide a JSON formatted answer with exact keys:
-"recommendedAction": short verdict (e.g. Sell at Kota APMC Mandi),
+"recommendedAction": short verdict (e.g. Sell at Lucknow APMC Mandi),
 "reasoning": detailed 2-3 sentence analysis in ${language},
 "extraMargin": numerical extra profit amount in ₹,
 "confidenceScore": percentage (e.g. 96)
@@ -177,14 +204,14 @@ Return ONLY valid JSON format.`;
     console.warn('Gemini Crop Rec SDK Error:', error.message);
   }
 
-  const grossVal = (quantity || 50) * 2420;
+  const grossVal = (quantity || 50) * 2480;
   const traderVal = (quantity || 50) * (traderOffer || 2200);
   const extraProfit = grossVal - traderVal - 1800;
   
   return {
-    recommendedAction: 'Sell at Kota APMC Mandi',
-    reasoning: `Kota APMC offers ₹2,420/q vs local trader ₹${traderOffer || 2200}/q. Transporting load yields higher net return after freight.`,
-    extraMargin: extraProfit > 0 ? extraProfit : 9200,
+    recommendedAction: 'Sell at Lucknow APMC Mandi',
+    reasoning: `Lucknow APMC offers ₹2,480/q vs local trader ₹${traderOffer || 2200}/q. Transporting load yields higher net return after freight.`,
+    extraMargin: extraProfit > 0 ? extraProfit : 11200,
     confidenceScore: 96,
   };
 }
