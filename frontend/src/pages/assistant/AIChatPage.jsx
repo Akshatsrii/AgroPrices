@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { askGeminiAssistant } from '../../services/geminiService';
 import { apiService } from '../../services/apiService';
+import { Bot, Send, Sparkles, Languages, MessageSquare } from 'lucide-react';
 
 const LANGUAGES = [
   { code: 'English', label: 'English' },
@@ -56,25 +57,26 @@ export function AIChatPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto py-4 px-4 sm:px-0 font-sans">
+    <div className="space-y-6 max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8 font-sans">
       
       {/* Header Bar */}
-      <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-1">
-            <span>✨ Powered by Express API & Google Gemini AI</span>
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 font-extrabold text-xs uppercase tracking-wider mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>Express API & Google Gemini 1.5 Pro</span>
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">AI Mandi Assistant 🤖</h1>
-          <p className="text-xs text-gray-500 m-0 mt-1">Ask questions in your preferred language for instant data advice.</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">AI Mandi Assistant 🤖</h1>
+          <p className="text-xs sm:text-sm text-slate-500 m-0 mt-1">Ask questions in your preferred regional language for instant data guidance.</p>
         </div>
 
         {/* Language Selector */}
-        <div className="flex items-center gap-2">
-          <label className="text-xs font-bold text-gray-600">Language:</label>
+        <div className="flex items-center space-x-2 bg-slate-50 p-2 rounded-2xl border border-slate-200/80">
+          <Languages className="w-4 h-4 text-emerald-600 ml-1" />
           <select
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-900 outline-none cursor-pointer focus:bg-white focus:border-emerald-600"
+            className="bg-transparent text-xs font-bold text-slate-900 outline-none cursor-pointer pr-2"
           >
             {LANGUAGES.map(l => (
               <option key={l.code} value={l.code}>{l.label}</option>
@@ -83,17 +85,17 @@ export function AIChatPage() {
         </div>
       </div>
 
-      {/* Chat Card */}
-      <div className="bg-white rounded-3xl border border-gray-200/80 shadow-sm p-4 sm:p-6 flex flex-col h-[520px]">
+      {/* Main Chat Container */}
+      <div className="bg-white rounded-[32px] border border-slate-200/80 shadow-lg p-4 sm:p-6 flex flex-col h-[560px]">
         
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+        {/* Message Thread Area */}
+        <div className="flex-1 overflow-y-auto space-y-4 pr-2 pl-1">
           {messages.map((m, idx) => (
             <div key={idx} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[82%] rounded-2xl p-4 text-xs sm:text-sm leading-relaxed ${
+              <div className={`max-w-[85%] rounded-3xl p-4 sm:p-5 text-xs sm:text-sm leading-relaxed ${
                 m.sender === 'user'
-                  ? 'bg-emerald-700 text-white font-medium rounded-tr-none shadow-sm'
-                  : 'bg-gray-50 text-slate-900 font-medium rounded-tl-none border border-gray-200/70'
+                  ? 'bg-emerald-700 text-white font-medium rounded-tr-none shadow-md'
+                  : 'bg-slate-100/90 text-slate-900 font-medium rounded-tl-none border border-slate-200/60 shadow-2xs'
               }`}>
                 {m.text}
               </div>
@@ -101,30 +103,31 @@ export function AIChatPage() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-gray-50 text-emerald-700 text-xs font-bold p-3 rounded-2xl border border-gray-200 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-ping" />
-                AgroPrice AI is analyzing Mandi data in {selectedLanguage}...
+              <div className="bg-slate-100 text-emerald-800 text-xs font-bold p-3.5 rounded-2xl border border-slate-200 flex items-center space-x-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping" />
+                <span>AgroPrice AI is analyzing Mandi data in {selectedLanguage}...</span>
               </div>
             </div>
           )}
         </div>
 
         {/* Input Bar */}
-        <form onSubmit={handleSend} className="pt-4 border-t border-gray-100 flex gap-2">
+        <form onSubmit={handleSend} className="pt-4 border-t border-slate-100 flex gap-3">
           <input
             type="text"
             placeholder={`Ask in ${selectedLanguage} (e.g. Aaj Wheat ka bhav kya hai?)...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={loading}
-            className="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:bg-white focus:border-emerald-600 outline-none font-medium"
+            className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-xs sm:text-sm text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 outline-none font-medium transition-all"
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold px-6 py-3 rounded-2xl text-xs sm:text-sm shadow-md cursor-pointer transition-all border-0"
+            className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-extrabold px-6 py-3.5 rounded-2xl text-xs sm:text-sm shadow-md cursor-pointer transition-all border-0 flex items-center space-x-2 active:scale-95"
           >
-            Ask Gemini &rarr;
+            <span>Send</span>
+            <Send className="w-4 h-4" />
           </button>
         </form>
       </div>
