@@ -1,22 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useUser } from '@clerk/clerk-react';
 
 export function DashboardHomePage() {
-  const { user: storeUser, syncClerkUser } = useAuthStore();
+  const { user: storeUser } = useAuthStore();
   
   let clerkUser = null;
   try {
     const clerk = useUser();
     clerkUser = clerk?.user;
   } catch (e) {}
-
-  useEffect(() => {
-    if (clerkUser) {
-      syncClerkUser(clerkUser);
-    }
-  }, [clerkUser, syncClerkUser]);
 
   const displayName = clerkUser?.fullName || clerkUser?.firstName || storeUser?.name || 'Ramesh Kumar';
   const districtName = storeUser?.district || 'Sehore';
