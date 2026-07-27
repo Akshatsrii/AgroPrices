@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Search, MapPin, Building2, ArrowRight } from 'lucide-react';
 
 const MANDI_DIRECTORY = [
-  { id: 'khanna', name: 'Khanna APMC Mandi', state: 'Punjab', district: 'Ludhiana', code: 'PB-LDH-01', rate: '₹2,380/q' },
-  { id: 'azadpur', name: 'Azadpur Fruits & Veg Mandi', state: 'Delhi', district: 'North Delhi', code: 'DL-NDL-01', rate: '₹1,950/q' },
-  { id: 'ramganj', name: 'Ramganj Mandi', state: 'Rajasthan', district: 'Kota', code: 'RJ-KTA-03', rate: '₹4,820/q' },
-  { id: 'karnal', name: 'Karnal Grain Market', state: 'Haryana', district: 'Karnal', code: 'HR-KRN-02', rate: '₹2,365/q' },
-  { id: 'samrala', name: 'Samrala Grain Mandi', state: 'Punjab', district: 'Ludhiana', code: 'PB-LDH-05', rate: '₹1,510/q' },
-  { id: 'indore', name: 'Indore APMC Mandi', state: 'Madhya Pradesh', district: 'Indore', code: 'MP-IND-01', rate: '₹4,750/q' },
+  { id: 'indore', name: 'Indore Central Mandi', state: 'Madhya Pradesh', district: 'Indore', code: 'MP-IND-01', rate: '₹2,480/q' },
+  { id: 'sehore', name: 'Sehore APMC Mandi', state: 'Madhya Pradesh', district: 'Sehore', code: 'MP-SEH-02', rate: '₹2,420/q' },
+  { id: 'bhopal', name: 'Karond Mandi Bhopal', state: 'Madhya Pradesh', district: 'Bhopal', code: 'MP-BPL-03', rate: '₹2,450/q' },
+  { id: 'kota', name: 'Kota APMC Mandi', state: 'Rajasthan', district: 'Kota', code: 'RJ-KTA-03', rate: '₹2,420/q' },
+  { id: 'lucknow', name: 'Lucknow APMC Mandi', state: 'Uttar Pradesh', district: 'Lucknow', code: 'UP-LKN-01', rate: '₹2,480/q' },
+  { id: 'khanna', name: 'Khanna APMC Mandi', state: 'Punjab', district: 'Ludhiana', code: 'PB-LDH-01', rate: '₹3,850/q' },
+  { id: 'azadpur', name: 'Azadpur Fruits & Veg Mandi', state: 'Delhi', district: 'North Delhi', code: 'DL-NDL-01', rate: '₹2,000/q' },
+  { id: 'nashik', name: 'Nashik Red Onion Market', state: 'Maharashtra', district: 'Nashik', code: 'MH-NSK-01', rate: '₹1,700/q' },
 ];
 
 export function SearchMandiPage() {
@@ -21,65 +24,72 @@ export function SearchMandiPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 font-sans">
       
-      {/* Search Header */}
-      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+      {/* Hero Search Header */}
+      <div className="hero-gradient text-white p-6 sm:p-8 rounded-[32px] shadow-2xl space-y-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Search Mandi Directory 🔍</h1>
-          <p className="text-xs text-gray-500 m-0 mt-1">Lookup APMC Mandis by state, district, or Mandi license code.</p>
+          <div className="inline-flex items-center space-x-2 bg-emerald-500/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-emerald-400/30 text-xs font-bold text-emerald-200 mb-2">
+            <Building2 className="w-3.5 h-3.5 text-amber-400" />
+            <span>All-India APMC Mandi Search Engine</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Search Mandi Directory 🔍</h1>
+          <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
+            Lookup official APMC Mandis by state, district, or license code across India.
+          </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="text"
-            placeholder="Type Mandi name, district, or code..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 text-sm text-slate-900 focus:bg-white focus:border-emerald-600 outline-none font-medium"
-          />
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 text-slate-400 absolute left-4 top-4" />
+            <input
+              type="text"
+              placeholder="Search Mandi name, district, or code (e.g. Kota, Lucknow, Sehore)..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full bg-white border border-slate-200 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm text-slate-900 outline-none font-bold custom-input shadow-md"
+            />
+          </div>
           <select
             value={selectedState}
             onChange={(e) => setSelectedState(e.target.value)}
-            className="bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 text-sm text-slate-900 outline-none font-bold cursor-pointer"
+            className="bg-white border border-slate-200 rounded-2xl px-5 py-3.5 text-xs sm:text-sm text-slate-900 outline-none font-extrabold cursor-pointer shadow-md"
           >
-            <option value="All">All States</option>
-            <option value="Punjab">Punjab</option>
-            <option value="Haryana">Haryana</option>
-            <option value="Rajasthan">Rajasthan</option>
-            <option value="Delhi">Delhi</option>
+            <option value="All">All 28 States</option>
             <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Delhi">Delhi</option>
           </select>
         </div>
       </div>
 
-      {/* Directory List */}
-      <div className="space-y-3">
+      {/* Directory List Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filtered.map(m => (
-          <div key={m.id} className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex justify-between items-center">
+          <div key={m.id} className="bg-white p-6 rounded-[32px] border border-slate-200/80 shadow-sm hover:shadow-lg transition-all card-hover-effect flex justify-between items-center">
             <div>
-              <span className="text-[10px] font-extrabold uppercase text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-100">
-                {m.state} • {m.district}
+              <span className="text-[10px] font-black uppercase text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                {m.code}
               </span>
-              <h3 className="text-base font-extrabold text-slate-900 m-0 mt-1">{m.name}</h3>
-              <p className="text-xs text-gray-400 m-0">License Code: {m.code}</p>
+              <h3 className="text-lg font-black text-slate-900 m-0 mt-1.5">{m.name}</h3>
+              <p className="text-xs text-slate-500 font-semibold m-0 flex items-center gap-1 mt-0.5">
+                <MapPin className="w-3.5 h-3.5 text-emerald-600" /> {m.district}, {m.state}
+              </p>
             </div>
-
-            <div className="text-right flex flex-col items-end gap-2">
-              <div>
-                <span className="text-[10px] text-gray-400 block">Benchmark Rate:</span>
-                <strong className="text-sm font-black text-slate-900">{m.rate}</strong>
-              </div>
-              <Link
-                to={`/market/details/${m.id}`}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-xl no-underline transition-all"
-              >
-                Details &rarr;
+            <div className="text-right">
+              <span className="text-xs font-black text-slate-900 block">{m.rate}</span>
+              <Link to={`/market/details/${m.id}`} className="mt-2 bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-xl font-bold text-xs inline-flex items-center gap-1 no-underline transition-all active:scale-95">
+                <span>View</span>
+                <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
               </Link>
             </div>
           </div>
         ))}
       </div>
+
     </div>
   );
 }
