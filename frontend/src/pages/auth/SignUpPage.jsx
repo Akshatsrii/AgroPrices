@@ -19,53 +19,68 @@ export function SignUpPage() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-4 py-4">
-      {/* Production Clerk SignUp Container */}
-      <div className="w-full flex justify-center">
-        <SignUp 
-          routing="path" 
-          path="/auth/signup" 
-          signInUrl="/auth/login"
-          fallbackRedirectUrl="/dashboard"
-          signInFallbackRedirectUrl="/dashboard"
-          appearance={{
-            elements: {
-              rootBox: 'w-full',
-              cardBox: 'w-full shadow-2xl rounded-[32px]',
-              card: 'w-full bg-white shadow-2xl rounded-[32px] p-6 sm:p-8 border border-gray-100 relative overflow-hidden',
-              headerTitle: 'text-2xl sm:text-3xl font-black text-gray-900 tracking-tight text-left pr-8',
-              headerSubtitle: 'text-sm text-gray-500 mt-1 font-normal text-left mb-3',
-              socialButtonsBlockButton: 'w-full rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-3 flex items-center justify-center transition-all mb-2',
-              dividerLine: 'bg-gray-200',
-              dividerText: 'text-gray-400 text-xs font-semibold uppercase bg-white px-2',
-              formFieldLabel: 'text-xs font-bold text-gray-700 uppercase tracking-wider mb-1',
-              formFieldInput: 'w-full bg-gray-50/80 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 focus:bg-white focus:border-black focus:ring-2 focus:ring-black/10 transition-all font-medium',
-              formButtonPrimary: 'w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md active:scale-[0.98] cursor-pointer mt-3',
-              footerActionText: 'text-sm text-gray-500 font-medium',
-              footerActionLink: 'text-emerald-600 hover:text-emerald-700 font-bold ml-1 no-underline',
-              footer: 'bg-transparent border-t border-gray-100 pt-3 mt-3',
-            },
-            variables: {
-              colorPrimary: '#16a34a',
-              colorText: '#0f172a',
-              borderRadius: '0.75rem',
-            }
-          }}
-        />
-      </div>
+    <div className="min-h-screen bg-slate-50/50 flex flex-col justify-center items-center p-4 sm:p-6 font-sans">
+      <div className="w-full max-w-md mx-auto space-y-5">
+        
+        {/* Brand Header */}
+        <div className="hero-gradient text-white p-6 sm:p-8 rounded-[32px] shadow-2xl text-center space-y-2">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-black text-2xl flex items-center justify-center mx-auto shadow-md border border-white/20">
+            🌾
+          </div>
+          <h1 className="text-2xl font-black text-white m-0 tracking-tight">Create Farmer Account</h1>
+          <p className="text-xs text-emerald-100 m-0">Register to receive live Mandi alerts & AI decision engine recommendations.</p>
+        </div>
 
-      {/* Backup Quick Register Button */}
-      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center">
-        <p className="text-xs text-emerald-800 font-bold mb-2">Want to register and test instantly?</p>
-        <button
-          type="button"
-          onClick={handleQuickRegister}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 cursor-pointer shadow-md transition-all border-0"
-        >
-          <Sparkles className="w-4 h-4 text-amber-300" />
-          <span>⚡ Quick One-Click Register (Ramesh Kumar • Sehore)</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+        {/* Production Clerk SignUp Container */}
+        <div className="w-full flex justify-center">
+          <SignUp 
+            routing="path" 
+            path="/signup" 
+            signInUrl="/login"
+            fallbackRedirectUrl="/dashboard"
+            signInFallbackRedirectUrl="/dashboard"
+            appearance={{
+              elements: {
+                rootBox: 'w-full',
+                cardBox: 'w-full shadow-2xl rounded-[32px]',
+                card: 'w-full bg-white shadow-2xl rounded-[32px] p-6 sm:p-8 border border-slate-200/80 relative overflow-hidden',
+                headerTitle: 'text-2xl font-black text-slate-900 tracking-tight text-left pr-8',
+                headerSubtitle: 'text-xs text-slate-500 mt-1 font-semibold text-left mb-3',
+                socialButtonsBlockButton: 'w-full rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-900 font-extrabold py-3.5 flex items-center justify-center transition-all mb-2',
+                dividerLine: 'bg-slate-200',
+                dividerText: 'text-slate-400 text-xs font-bold uppercase bg-white px-2',
+                formFieldLabel: 'text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1',
+                formFieldInput: 'w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-xs font-bold text-slate-900 custom-input',
+                formButtonPrimary: 'w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/30 active:scale-[0.98] cursor-pointer mt-3 border-0',
+                footerActionText: 'text-xs text-slate-500 font-bold',
+                footerActionLink: 'text-emerald-700 hover:text-emerald-800 font-black ml-1 no-underline',
+                footer: 'bg-transparent border-t border-slate-100 pt-3 mt-3',
+              },
+              variables: {
+                colorPrimary: '#16a34a',
+                colorText: '#0f172a',
+                borderRadius: '1rem',
+              }
+            }}
+          />
+        </div>
+
+        {/* Backup Quick Register Button */}
+        <div className="bg-emerald-50/90 border border-emerald-200 rounded-[28px] p-5 text-center space-y-2 shadow-sm">
+          <div className="flex items-center justify-center space-x-1.5 text-xs text-emerald-900 font-black">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span>Instant Demo Registration</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleQuickRegister}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs transition-all border-0 shadow-md cursor-pointer flex items-center justify-center space-x-2"
+          >
+            <span>⚡ Instant One-Click Farmer Registration</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
       </div>
     </div>
   );
