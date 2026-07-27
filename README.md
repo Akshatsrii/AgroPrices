@@ -75,7 +75,7 @@ Agriculture contributes over 16% of India's GDP and employs nearly half its work
 │                              TRADITIONAL FARM GATE                                │
 ├───────────────────────────────────────────────────────────────────────────────────┤
 │   No Future Visibility  +  Village Trader Monopoly  +  Hidden Transport Costs      │
-│                                        =                                           │
+│                              \          =                                           │
 │                             30–40% VALUE REALIZATION                              │
 └───────────────────────────────────────────────────────────────────────────────────┘
                                          │
