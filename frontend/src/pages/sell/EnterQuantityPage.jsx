@@ -1,47 +1,52 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSellStore } from '../../store/useSellStore';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 export function EnterQuantityPage() {
   const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(() => {
-    const saved = localStorage.getItem('agro_sell_data');
-    return saved ? JSON.parse(saved).quantity || '50' : '50';
-  });
+  const { setQuantityQuintals } = useSellStore();
+  const [quantity, setQuantity] = useState('50');
   const [unit, setUnit] = useState('Quintals');
 
   const handleNext = (e) => {
     e.preventDefault();
-    const existing = JSON.parse(localStorage.getItem('agro_sell_data') || '{}');
-    localStorage.setItem('agro_sell_data', JSON.stringify({ ...existing, quantity, unit }));
+    const qtyNum = unit === 'Tons' ? Number(quantity) * 10 : Number(quantity);
+    setQuantityQuintals(qtyNum);
     navigate('/sell/quality');
   };
 
   const totalKg = unit === 'Quintals' ? Number(quantity) * 100 : Number(quantity) * 1000;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50/50 via-white to-gray-50 flex items-center justify-center p-4 sm:p-6">
-      <div className="max-w-xl w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 relative">
+    <div className="min-h-screen bg-slate-50/50 flex items-center justify-center p-4 sm:p-6 font-sans">
+      <div className="max-w-xl w-full bg-white rounded-[32px] p-6 sm:p-10 shadow-xl border border-slate-200/80 relative space-y-6">
         
-        {/* Step Indicator */}
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Step 2 of 8 • Enter Quantity</span>
-          <span className="text-xs font-bold text-gray-400">25% Complete</span>
-        </div>
-        <div className="w-full h-2 bg-gray-100 rounded-full mb-6 overflow-hidden">
-          <div className="h-full bg-emerald-500 rounded-full w-1/4 transition-all" />
+        {/* Step Indicator Bar */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs font-black uppercase tracking-wider">
+            <span className="text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              Step 2 of 8 • Enter Quantity
+            </span>
+            <span className="text-slate-500">25% Complete</span>
+          </div>
+          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-emerald-600 rounded-full w-1/4 transition-all duration-300" />
+          </div>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">
-          How much harvest do you have? ⚖️
-        </h2>
-        <p className="text-gray-500 text-sm mb-6">
-          Enter total harvest volume so we calculate total freight costs vs net returns.
-        </p>
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">
+            How much harvest do you have? ⚖️
+          </h2>
+          <p className="text-slate-500 text-xs sm:text-sm mt-1.5 m-0 leading-relaxed">
+            Enter total harvest volume so we calculate transport freight costs vs net Mandi payouts.
+          </p>
+        </div>
 
         <form onSubmit={handleNext} className="space-y-6">
-          
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
               Harvest Volume *
             </label>
             <div className="flex gap-2">
@@ -52,61 +57,62 @@ export function EnterQuantityPage() {
                 step="1"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                className="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-2xl font-black text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-2xl font-black text-slate-900 custom-input"
               />
               <select
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-                className="w-36 bg-gray-50 border border-gray-200 rounded-2xl px-4 py-4 text-sm font-bold text-slate-900 outline-none cursor-pointer"
+                className="w-36 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-4 text-xs sm:text-sm font-bold text-slate-900 outline-none cursor-pointer"
               >
-                <option value="Quintals">Quintals (कुंतल)</option>
-                <option value="Tons">Metric Tons</option>
-                <option value="Bags">Bags (50kg)</option>
+                <option value="Quintals">Quintals (100kg)</option>
+                <option value="Tons">Tons (1000kg)</option>
               </select>
             </div>
+            <span className="text-xs text-slate-500 font-bold block mt-2">
+              Equivalent Total Weight: <strong className="text-emerald-700 font-black">{totalKg.toLocaleString('en-IN')} kg</strong>
+            </span>
           </div>
 
-          {/* Quick Presets */}
+          {/* Preset Buttons */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Quick Presets</label>
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Quick Volume Presets:</label>
             <div className="flex gap-2">
-              {['20', '50', '100', '200', '500'].map(val => (
+              {['20', '50', '100', '250'].map(val => (
                 <button
-                  type="button"
                   key={val}
+                  type="button"
                   onClick={() => setQuantity(val)}
-                  className={`flex-1 py-2 rounded-xl text-xs font-bold border transition-all ${
-                    quantity === val ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all border cursor-pointer ${
+                    quantity === val ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  {val} q
+                  {val} Qtl
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Weight Summary Box */}
-          <div className="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100 flex justify-between items-center text-xs">
-            <span className="text-gray-600 font-medium">Converted Total Weight:</span>
-            <strong className="text-emerald-800 text-sm font-black">{totalKg.toLocaleString()} KG</strong>
-          </div>
-
+          {/* Action Buttons */}
           <div className="flex gap-3 pt-2">
             <button
               type="button"
               onClick={() => navigate('/sell/crop')}
-              className="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3.5 rounded-2xl text-sm transition-all cursor-pointer"
+              className="px-5 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold rounded-2xl text-xs sm:text-sm border-0 cursor-pointer flex items-center justify-center space-x-1"
             >
-              Back
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back</span>
             </button>
+
             <button
               type="submit"
-              className="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center space-x-2 border-0 cursor-pointer active:scale-98"
             >
-              Continue to Quality &rarr;
+              <span>Continue to Step 3 (Quality Grade)</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </form>
+
       </div>
     </div>
   );
