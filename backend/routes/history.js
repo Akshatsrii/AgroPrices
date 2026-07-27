@@ -2,18 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Sale = require('../models/Sale');
 
-// GET /api/history/sales?farmerId=123
+const mockSales = [
+  { id: 'S1', cropName: 'Wheat (गेहूं)', quantityQuintals: 50, salePricePerQuintal: 2480, mandiName: 'Indore Central Mandi', totalPayoutReceived: 124000, netProfit: 119932, saleDate: '2026-07-20' },
+  { id: 'S2', cropName: 'Soybean (सोयाबीन)', quantityQuintals: 30, salePricePerQuintal: 4600, mandiName: 'Sehore APMC Mandi', totalPayoutReceived: 138000, netProfit: 134200, saleDate: '2026-06-15' },
+  { id: 'S3', cropName: 'Gram (चना)', quantityQuintals: 25, salePricePerQuintal: 5100, mandiName: 'Karond Mandi Bhopal', totalPayoutReceived: 127500, netProfit: 124100, saleDate: '2026-05-10' },
+];
+
+// GET /api/history
+router.get('/', async (req, res) => {
+  return res.json({ success: true, count: mockSales.length, sales: mockSales });
+});
+
+// GET /api/history/sales
 router.get('/sales', async (req, res) => {
-  try {
-    const mockSales = [
-      { id: 'S1', cropName: 'Wheat (गेहूं)', quantityQuintals: 50, salePricePerQuintal: 2480, mandiName: 'Indore Central Mandi', totalPayoutReceived: 124000, netProfit: 119932, saleDate: '2026-07-20' },
-      { id: 'S2', cropName: 'Soybean (सोयाबीन)', quantityQuintals: 30, salePricePerQuintal: 4600, mandiName: 'Sehore APMC Mandi', totalPayoutReceived: 138000, netProfit: 134200, saleDate: '2026-06-15' },
-      { id: 'S3', cropName: 'Gram (चना)', quantityQuintals: 25, salePricePerQuintal: 5100, mandiName: 'Karond Mandi Bhopal', totalPayoutReceived: 127500, netProfit: 124100, saleDate: '2026-05-10' },
-    ];
-    return res.json({ success: true, count: mockSales.length, sales: mockSales });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
+  return res.json({ success: true, count: mockSales.length, sales: mockSales });
 });
 
 // GET /api/history/analytics
