@@ -1,37 +1,23 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-// Layouts
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MarketingLayout } from './layouts/MarketingLayout';
-import { AuthLayout } from './layouts/AuthLayout';
-
-// Marketing Pages
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Features } from './pages/Features';
 import { Services } from './pages/Services';
 import { Contact } from './pages/Contact';
 
-// Auth Pages
+// Authentication Pages
 import { SignInPage } from './pages/auth/SignInPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
-import { OTPVerificationPage } from './pages/auth/OTPVerificationPage';
 
-// Onboarding Pages
-import { WelcomePage } from './pages/onboarding/WelcomePage';
-import { FarmerProfilePage } from './pages/onboarding/FarmerProfilePage';
-import { FarmDetailsPage } from './pages/onboarding/FarmDetailsPage';
-import { TransportDetailsPage } from './pages/onboarding/TransportDetailsPage';
-import { OnboardingSummaryPage } from './pages/onboarding/OnboardingSummaryPage';
-
-// Module 3: Dashboard Layout & Pages
-import { DashboardLayout } from './layouts/DashboardLayout';
+// Module 3: Dashboard Pages
 import { DashboardHomePage } from './pages/dashboard/DashboardHomePage';
 import { TodaysMarketPage } from './pages/dashboard/TodaysMarketPage';
 import { TrendingCropsPage } from './pages/dashboard/TrendingCropsPage';
 import { NotificationsPage } from './pages/dashboard/NotificationsPage';
 
-// Module 4: Sell Crop (8 Steps - Main USP Module)
+// Module 4: Sell Crop USP Wizard (8 Steps)
 import { SelectCropPage } from './pages/sell/SelectCropPage';
 import { EnterQuantityPage } from './pages/sell/EnterQuantityPage';
 import { SelectQualityPage } from './pages/sell/SelectQualityPage';
@@ -63,18 +49,22 @@ import { AIChatPage } from './pages/assistant/AIChatPage';
 import { AIHistoryPage } from './pages/assistant/AIHistoryPage';
 import { VoiceAssistantPage } from './pages/assistant/VoiceAssistantPage';
 
-// Module 8: Farmer History (3 Pages)
+// Module 8: Agronomy & P2P Marketplace
+import { AgronomySuitePage } from './pages/agronomy/AgronomySuitePage';
+import { MarketplacePage } from './pages/marketplace/MarketplacePage';
+
+// Module 9: Farmer History (3 Pages)
 import { PreviousSalesPage } from './pages/farmerHistory/PreviousSalesPage';
 import { ProfitAnalyticsPage } from './pages/farmerHistory/ProfitAnalyticsPage';
 import { CropHistoryPage } from './pages/farmerHistory/CropHistoryPage';
 
-// Module 9: Profile & Settings (4 Pages)
+// Module 10: Profile & Settings (4 Pages)
 import { ProfilePage } from './pages/profile/ProfilePage';
 import { SettingsPage } from './pages/settings/SettingsPage';
 import { LanguageSettingsPage } from './pages/settings/LanguageSettingsPage';
 import { NotificationSettingsPage } from './pages/settings/NotificationSettingsPage';
 
-// Module 10: Admin Panel (5 Pages)
+// Module 11: Admin Panel (5 Pages)
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminCropsPage } from './pages/admin/AdminCropsPage';
 import { AdminMandisPage } from './pages/admin/AdminMandisPage';
@@ -126,43 +116,40 @@ function App() {
           <Route path="ai/negotiation-assistant" element={<NegotiationAssistantPage />} />
           <Route path="ai/sell-vs-wait" element={<SellVsWaitPage />} />
 
-          {/* Module 7: AI Assistant (3 Pages) */}
+          {/* Module 7: AI Assistant & Voice */}
           <Route path="assistant/chat" element={<AIChatPage />} />
           <Route path="assistant/history" element={<AIHistoryPage />} />
           <Route path="assistant/voice" element={<VoiceAssistantPage />} />
 
-          {/* Module 8: Farmer History (3 Pages) */}
+          {/* Module 8: Agronomy & P2P Marketplace */}
+          <Route path="agronomy-suite" element={<AgronomySuitePage />} />
+          <Route path="marketplace" element={<MarketplacePage />} />
+
+          {/* Module 9: Farmer History */}
           <Route path="farmer-history/sales" element={<PreviousSalesPage />} />
           <Route path="farmer-history/analytics" element={<ProfitAnalyticsPage />} />
           <Route path="farmer-history/crops" element={<CropHistoryPage />} />
 
-          {/* Module 9: Profile & Settings (4 Pages) */}
+          {/* Module 10: Profile & Settings */}
           <Route path="profile" element={<ProfilePage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="settings/language" element={<LanguageSettingsPage />} />
           <Route path="settings/notifications" element={<NotificationSettingsPage />} />
 
-          {/* Module 10: Admin Panel (5 Pages) */}
+          {/* Module 11: Admin Panel */}
           <Route path="admin" element={<AdminDashboardPage />} />
           <Route path="admin/crops" element={<AdminCropsPage />} />
           <Route path="admin/mandis" element={<AdminMandisPage />} />
           <Route path="admin/prices" element={<AdminPricesPage />} />
           <Route path="admin/users" element={<AdminUsersPage />} />
+
+          {/* Fallback route redirect to Home */}
+          <Route path="*" element={<Home />} />
         </Route>
 
-        {/* Module 2: Authentication Routes (Wildcard /* required for Clerk internal sub-routes) */}
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="login/*" element={<SignInPage />} />
-          <Route path="signup/*" element={<SignUpPage />} />
-          <Route path="verify-otp" element={<OTPVerificationPage />} />
-        </Route>
-
-        {/* Redirect /onboarding to /onboarding/welcome */}
-        <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
-        <Route path="/app" element={<Navigate to="/dashboard" replace />} />
-        
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Authentication Routes with Clerk Wildcards */}
+        <Route path="login/*" element={<SignInPage />} />
+        <Route path="signup/*" element={<SignUpPage />} />
       </Routes>
     </Router>
   );
