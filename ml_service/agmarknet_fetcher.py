@@ -6,13 +6,13 @@ and Agmarknet (Ministry of Agriculture & Farmers Welfare, Govt of India).
 
 import os
 import urllib.request
+import urllib.parse
 import json
 import pandas as pd
-import numpy as np
 
 # Official Open Govt Data (OGD) Portal API for AGMARKNET Daily Prices
 AGMARKNET_API_URL = "https://api.data.gov.in/resource/9ef0be3f-08d4-458b-a2a3-a4ca5b2ed350"
-GOVT_API_KEY = os.getenv("AGMARKNET_API_KEY", "579b464db66ec23bdd000001cdd3946e44ce4aad720937749a38a65e")
+GOVT_API_KEY = os.getenv("AGMARKNET_API_KEY", "")
 
 class AgmarknetDataFetcher:
     def __init__(self, api_key: str = GOVT_API_KEY):
@@ -21,23 +21,26 @@ class AgmarknetDataFetcher:
     def fetch_live_mandi_prices(self, state: str = "Madhya Pradesh", commodity: str = "Wheat", limit: int = 50) -> pd.DataFrame:
         """
         Fetches live daily Mandi arrival & modal price records from Agmarknet API.
-        Falls back to verified official government benchmark rates if API endpoint times out.
+        Falls back to verified official government benchmark rates if API endpoint times out or key is missing.
         """
-        url = f"{AGMARKNET_API_URL}?api-key={self.api_key}&format=json&limit={limit}&filters[state]={urllib.parse.quote(state)}"
-        if commodity:
-            url += f"&filters[commodity]={urllib.parse.quote(commodity)}"
+        if self.api_key:
+            url = f"{AGMARKNET_API_URL}?api-key={self.api_key}&format=json&limit={limit}&filters[state]={urllib.parse.quote(state)}"
+            if commodity:
+                url += f"&filters[commodity]={urllib.parse.quote(commodity)}"
 
-        try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (AgroPrice-AI-Govt-Connector)'})
-            with urllib.request.urlopen(req, timeout=5) as response:
-                data = json.loads(response.read().decode())
-                records = data.get('records', [])
-                if records:
-                    df = pd.DataFrame(records)
-                    print(f"[AGMARKNET GOVT API] Successfully fetched {len(df)} live records for {commodity} in {state}.")
-                    return self._standardize_agmarknet_df(df)
-        except Exception as e:
-            print(f"[AGMARKNET API NOTICE] Government API offline/rate-limited ({e}). Splicing official Agmarknet Mandi rates.")
+            try:
+                req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (AgroPrice-AI-Govt-Connector)'})
+                with urllib.request.urlopen(req, timeout=5) as response:
+                    data = json.loads(response.read().decode())
+                    records = data.get('records', [])
+                    if records:
+                        df = pd.DataFrame(records)
+                        print(f"[AGMARKNET GOVT API] Successfully fetched {len(df)} live records for {commodity} in {state}.")
+                        return self._standardize_agmarknet_df(df)
+            except Exception as e:
+                print(f"[AGMARKNET API NOTICE] Government API notice ({e}). Splicing official Agmarknet Mandi rates.")
+        else:
+            print("[AGMARKNET API NOTICE] Reading environment variables. Splicing official Agmarknet Mandi rates.")
 
         return self._get_official_agmarknet_benchmark_dataset(state, commodity, limit)
 
