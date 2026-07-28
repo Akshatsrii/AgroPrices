@@ -31,9 +31,9 @@ class PredictionEngine:
                     self.features = data['features']
                     self.metrics = data.get('metrics', self.metrics)
                     self.history_store = data.get('history_store', {})
-                    print("✅ Multi-Crop XGBoost ML Model artifact successfully loaded.")
+                    print("[SUCCESS] Multi-Crop XGBoost ML Model artifact successfully loaded.")
             except Exception as e:
-                print("⚠️ Error loading model artifact:", e)
+                print("[WARNING] Error loading model artifact:", e)
                 self.model = None
 
     def _get_historical_series(self, mandi_name: str, crop_name: str, current_price: float, arrival_qty: float) -> pd.DataFrame:
