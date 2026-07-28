@@ -1,17 +1,25 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "AgroPrice AI Production Backend Services",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "node tests/full_api_integration.test.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "agroprice",
+    "ai",
+    "mandi",
+    "xgboost",
+    "gemini"
+  ],
+  "author": "AgroPrice AI Team",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "@google/genai": "^2.13.0",
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
