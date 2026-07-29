@@ -1,7 +1,8 @@
 """
 AgroPrice AI — Phase 6: Multi-Crop & Multi-Mandi Model Training Pipeline
-Trains XGBoost & Random Forest regressors on 365-day multi-commodity time-series datasets.
-Evaluates MAE, RMSE, R² score, and exports trained model weights & metadata.
+Trains XGBoost & Random Forest regressors on real historical time-series datasets from MongoDB.
+Evaluates MAE, RMSE, R² score, and MAPE using Walk-Forward Time-Series Cross-Validation.
+Exports trained model weights & metadata.
 """
 
 import os
@@ -9,9 +10,18 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score, mean_absolute_percentage_error
+from sklearn.model_selection import TimeSeriesSplit
+from pymongo import MongoClient
+from dotenv import load_dotenv
+
 from data_cleaner import MandiDataCleaner
 from feature_engineering import FeatureEngineer
+from agmarknet_fetcher import AgmarknetDataFetcher
+
+# Load environment variables
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'backend', '.env'))
+MONGO_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017/agroprice")
 
 try:
     from xgboost import XGBRegressor
@@ -21,71 +31,6 @@ except ImportError:
 
 MODEL_DIR = os.path.join(os.path.dirname(__file__), 'models')
 os.makedirs(MODEL_DIR, exist_ok=True)
-
-COMMODITY_CONFIGS = [
-    {'crop': 'Wheat', 'base_price': 2450.0, 'volatility': 14.0, 'base_arrival': 1500},
-    {'crop': 'Paddy', 'base_price': 3800.0, 'volatility': 22.0, 'base_arrival': 2100},
-    {'crop': 'Mustard', 'base_price': 5450.0, 'volatility': 35.0, 'base_arrival': 900},
-    {'crop': 'Potato', 'base_price': 1500.0, 'volatility': 18.0, 'base_arrival': 3200},
-    {'crop': 'Onion', 'base_price': 1700.0, 'volatility': 25.0, 'base_arrival': 4500},
-    {'crop': 'Soybean', 'base_price': 4600.0, 'volatility': 28.0, 'base_arrival': 1100},
-    {'crop': 'Gram', 'base_price': 5100.0, 'volatility': 20.0, 'base_arrival': 800},
-    {'crop': 'Tomato', 'base_price': 2000.0, 'volatility': 45.0, 'base_arrival': 2800},
-]
-
-MANDI_LIST = [
-    'Indore Central Mandi',
-    'Sehore APMC Mandi',
-    'Karond Mandi Bhopal',
-    'Kota APMC Mandi',
-    'Khanna APMC Mandi',
-    'Nashik Red Onion Market',
-    'Lucknow APMC Mandi',
-    'Azadpur Fruits & Veg Mandi'
-]
-
-def generate_multi_crop_agmarknet_dataset(num_days: int = 365) -> pd.DataFrame:
-    """Generates multi-crop, multi-mandi daily AGMARKNET price time-series dataset for robust ML training."""
-    dates = pd.date_range(end='2026-07-28', periods=num_days, freq='D')
-    records = []
-
-    np.random.seed(42)
-
-    for mandi_idx, mandi_name in enumerate(MANDI_LIST):
-        mandi_multiplier = 0.96 + (mandi_idx * 0.015)
-        for c_idx, cfg in enumerate(COMMODITY_CONFIGS):
-            crop_name = cfg['crop']
-            base_p = cfg['base_price'] * mandi_multiplier
-            vol = cfg['volatility']
-            base_arr = cfg['base_arrival']
-
-            current_p = base_p
-            for d_idx, date_val in enumerate(dates):
-                # Seasonal sine trend + random walk
-                seasonal_trend = (vol * 0.4) * np.sin((d_idx + c_idx * 20) / 25.0)
-                noise = np.random.normal(0, vol * 0.3)
-                current_p = max(base_p * 0.7, current_p + seasonal_trend + noise)
-                
-                # Inverse arrival elasticity: higher arrivals -> lower price
-                arrival = max(100, int(base_arr - (current_p - base_p) * 0.6 + np.random.normal(0, 80)))
-
-                min_p = round(current_p * 0.96, 2)
-                max_p = round(current_p * 1.04, 2)
-                modal_p = round(current_p, 2)
-
-                records.append({
-                    'reported_date': date_val,
-                    'mandi_name': mandi_name,
-                    'crop_name': crop_name,
-                    'modal_price': modal_p,
-                    'min_price': min_p,
-                    'max_price': max_p,
-                    'arrival_qty': float(arrival)
-                })
-
-    df = pd.DataFrame(records)
-    print(f"Generated Multi-Crop Multi-Mandi Dataset: {len(df)} rows across {len(COMMODITY_CONFIGS)} crops & {len(MANDI_LIST)} mandis.")
-    return df
 
 class PriceModelTrainer:
     def __init__(self):
@@ -99,9 +44,42 @@ class PriceModelTrainer:
             'day_of_week', 'month', 'day_of_year'
         ]
 
+    def _load_data_from_mongo(self) -> pd.DataFrame:
+        """Loads historical price records from MongoDB. Fallback to synthetic if empty."""
+        try:
+            client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+            db = client.get_database()
+            collection = db['ml_historical_prices']
+            
+            cursor = collection.find({}, {'_id': 0})
+            df = pd.DataFrame(list(cursor))
+            
+            if df.empty:
+                print("[WARNING] MongoDB 'ml_historical_prices' is empty. Did you run agmarknet_fetcher.py?")
+                print("Falling back to synthetic historical baseline for training...")
+                fetcher = AgmarknetDataFetcher()
+                df1 = fetcher.fetch_historical_data("Madhya Pradesh", "Wheat", years=2)
+                df2 = fetcher.fetch_historical_data("Madhya Pradesh", "Soybean", years=2)
+                return pd.concat([df1, df2], ignore_index=True)
+            
+            print(f"[SUCCESS] Loaded {len(df)} historical price records from MongoDB.")
+            return df
+        except Exception as e:
+            print(f"[ERROR] Failed to connect to MongoDB: {e}")
+            print("Falling back to synthetic historical baseline for training...")
+            fetcher = AgmarknetDataFetcher()
+            df = fetcher.fetch_historical_data("Madhya Pradesh", "Wheat", years=2)
+            return df
+
     def train_and_evaluate(self):
-        print("[Step 1] Loading Multi-Commodity AGMARKNET Time-Series Dataset...")
-        df_raw = generate_multi_crop_agmarknet_dataset(num_days=365)
+        print("[Step 1] Loading Multi-Commodity Historical Time-Series Dataset...")
+        df_raw = self._load_data_from_mongo()
+        
+        # Sort by reported_date is CRITICAL for time-series feature engineering and CV
+        if 'reported_date' in df_raw.columns:
+            df_raw['reported_date'] = pd.to_datetime(df_raw['reported_date'])
+            df_raw = df_raw.sort_values(by=['mandi_name', 'crop_name', 'reported_date'])
+
         df_clean = self.cleaner.clean_dataset(df_raw)
 
         print("[Step 2] Engineering Lag & Volatility Features across Commodities...")
@@ -110,18 +88,17 @@ class PriceModelTrainer:
         # Create target: next day modal price grouped per (mandi_name, crop_name)
         df_featured['target_tomorrow_price'] = df_featured.groupby(['mandi_name', 'crop_name'])['modal_price'].shift(-1)
         df_dataset = df_featured.dropna().reset_index(drop=True)
+        
+        # Sort entirely by date for global TimeSeriesSplit
+        df_dataset = df_dataset.sort_values('reported_date').reset_index(drop=True)
 
         X = df_dataset[self.features]
         y = df_dataset['target_tomorrow_price']
 
-        # Chronological split
-        split_idx = int(len(X) * 0.8)
-        X_train, X_test = X.iloc[:split_idx], X.iloc[split_idx:]
-        y_train, y_test = y.iloc[:split_idx], y.iloc[split_idx:]
+        print(f"[Dataset] Total Rows = {len(X)}")
 
-        print(f"[Dataset Split] Train Rows={len(X_train)}, Test Rows={len(X_test)}")
-
-        print("[Step 3] Fitting Multi-Crop Price Regressor Model...")
+        print("[Step 3] Walk-Forward Time-Series Cross-Validation...")
+        
         if XGBOOST_AVAILABLE:
             model = XGBRegressor(n_estimators=150, max_depth=6, learning_rate=0.03, random_state=42)
             model_type = "Multi-Crop XGBoost Regressor"
@@ -129,38 +106,55 @@ class PriceModelTrainer:
             model = RandomForestRegressor(n_estimators=120, max_depth=10, random_state=42)
             model_type = "Multi-Crop RandomForest Regressor"
 
-        model.fit(X_train, y_train)
+        tscv = TimeSeriesSplit(n_splits=5)
+        
+        fold_metrics = {'mae': [], 'rmse': [], 'r2': [], 'mape': []}
+        
+        for fold, (train_index, test_index) in enumerate(tscv.split(X)):
+            X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+            y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+            
+            model.fit(X_train, y_train)
+            predictions = model.predict(X_test)
+            
+            mae = mean_absolute_error(y_test, predictions)
+            rmse = root_mean_squared_error(y_test, predictions)
+            r2 = r2_score(y_test, predictions)
+            mape = mean_absolute_percentage_error(y_test, predictions) * 100
+            
+            fold_metrics['mae'].append(mae)
+            fold_metrics['rmse'].append(rmse)
+            fold_metrics['r2'].append(r2)
+            fold_metrics['mape'].append(mape)
+            
+            print(f"  Fold {fold+1}: MAE={mae:.2f}, MAPE={mape:.2f}%, R2={r2:.4f}")
 
-        print(f"[Step 4] Evaluating {model_type} Performance...")
-        predictions = model.predict(X_test)
-        mae = float(mean_absolute_error(y_test, predictions))
-        rmse = float(root_mean_squared_error(y_test, predictions))
-        r2 = float(r2_score(y_test, predictions))
+        avg_mae = np.mean(fold_metrics['mae'])
+        avg_rmse = np.mean(fold_metrics['rmse'])
+        avg_r2 = np.mean(fold_metrics['r2'])
+        avg_mape = np.mean(fold_metrics['mape'])
 
-        print(f"Model Performance Results:")
-        print(f"   * Architecture: {model_type}")
-        print(f"   * MAE: Rs. {mae:.2f} / quintal")
-        print(f"   * RMSE: Rs. {rmse:.2f}")
-        print(f"   * R2 Accuracy Score: {r2 * 100:.2f}%")
+        print(f"\n[Step 4] Final {model_type} Performance (Avg across Walk-Forward Folds):")
+        print(f"   * MAE: Rs. {avg_mae:.2f} / quintal")
+        print(f"   * RMSE: Rs. {avg_rmse:.2f}")
+        print(f"   * MAPE: {avg_mape:.2f}%")
+        print(f"   * R2 Accuracy Score: {avg_r2 * 100:.2f}%")
 
-        # Also store historical price baseline per (mandi, crop) for inference
-        history_store = {}
-        for (m_name, c_name), group_df in df_featured.groupby(['mandi_name', 'crop_name']):
-            key = f"{m_name.lower()}___{c_name.lower()}"
-            tail_records = group_df[['reported_date', 'modal_price', 'min_price', 'max_price', 'arrival_qty', 'mandi_name', 'crop_name']].tail(35).to_dict(orient='records')
-            history_store[key] = tail_records
+        # Refit model on ENTIRE dataset for production inference
+        print("\n[Step 5] Refitting model on full dataset for production...")
+        model.fit(X, y)
 
         model_path = os.path.join(MODEL_DIR, 'xgboost_price_model.pkl')
         with open(model_path, 'wb') as f:
             pickle.dump({
                 'model': model,
                 'features': self.features,
-                'metrics': {'mae': mae, 'rmse': rmse, 'r2': r2},
-                'history_store': history_store
+                'metrics': {'mae': avg_mae, 'rmse': avg_rmse, 'r2': avg_r2, 'mape': avg_mape},
+                # history_store is removed, inference engine will fetch from Mongo directly
             }, f)
 
         print(f"Saved Multi-Crop Model Artifact to: {model_path}")
-        return model_path, r2, mae
+        return model_path, avg_r2, avg_mae
 
 if __name__ == '__main__':
     trainer = PriceModelTrainer()
