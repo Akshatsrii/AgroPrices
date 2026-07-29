@@ -43,6 +43,7 @@ import { ProfitCalculatorPage } from './pages/ai/ProfitCalculatorPage';
 import { TransportCostCalculatorPage } from './pages/ai/TransportCostCalculatorPage';
 import { NegotiationAssistantPage } from './pages/ai/NegotiationAssistantPage';
 import { SellVsWaitPage } from './pages/ai/SellVsWaitPage';
+import { AIModelAccuracyPage } from './pages/ai/AIModelAccuracyPage';
 
 // Module 7: AI Assistant (3 Pages)
 import { AIChatPage } from './pages/assistant/AIChatPage';
@@ -115,6 +116,7 @@ function App() {
           <Route path="ai/transport-calculator" element={<TransportCostCalculatorPage />} />
           <Route path="ai/negotiation-assistant" element={<NegotiationAssistantPage />} />
           <Route path="ai/sell-vs-wait" element={<SellVsWaitPage />} />
+          <Route path="ai/model-accuracy" element={<AIModelAccuracyPage />} />
 
           {/* Module 7: AI Assistant & Voice */}
           <Route path="assistant/chat" element={<AIChatPage />} />

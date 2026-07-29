@@ -36,5 +36,40 @@ router.get('/dashboard', async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
+const mongoose = require('mongoose');
+
+// GET /api/analytics/model-accuracy
+router.get('/model-accuracy', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ error: 'Database not connected' });
+    }
+    
+    const db = mongoose.connection.db;
+    const collection = db.collection('model_metrics');
+    
+    const latestMetrics = await collection.findOne({ metric_id: "latest_backtest" });
+    
+    if (!latestMetrics) {
+      return res.status(404).json({ error: 'No backtest metrics found. Run backtest_engine.py first.' });
+    }
+    
+    return res.json({
+      success: true,
+      metrics: {
+        timestamp: latestMetrics.timestamp,
+        totalDecisionsSimulated: latestMetrics.total_decisions,
+        aiAccuracyPct: latestMetrics.ai_accuracy_percent,
+        naiveBaselineAccuracyPct: latestMetrics.naive_accuracy_percent,
+        accuracyLiftPct: (latestMetrics.ai_accuracy_percent - latestMetrics.naive_accuracy_percent).toFixed(2),
+        totalExtraProfitRs: latestMetrics.total_extra_profit_rs,
+        avgExtraProfitPerQuintalRs: latestMetrics.avg_extra_profit_per_quintal_rs,
+        assumedHoldingCostRs: latestMetrics.holding_cost_rs
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
