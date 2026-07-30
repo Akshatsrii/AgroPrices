@@ -94,36 +94,11 @@ Return a JSON object:
           };
         }
       } catch (err) {
-        console.warn('⚠️ Gemini Vision Quality Detection Fallback:', err.message);
+        throw new Error(`Gemini Vision Quality Detection Failed: ${err.message}`);
       }
     }
 
-    // Dynamic Feature Analysis based on Image Hash and Crop Type
-    const imgHash = this._getImageHash(imageUrl, cropName);
-    const gradeTypes = ['Grade A (Premium / A-Class)', 'Grade B (Standard Commercial)', 'FAQ (Fair Average Quality)'];
-    const selectedGrade = gradeTypes[imgHash % gradeTypes.length];
-    const multiplier = selectedGrade.includes('Grade A') ? 1.06 : selectedGrade.includes('Grade B') ? 1.01 : 0.96;
-    const moisture = (10.5 + (imgHash % 30) / 10).toFixed(1);
-    const uniformity = (92 + (imgHash % 7)).toFixed(0);
-    const foreign = (0.2 + (imgHash % 8) / 10).toFixed(1);
-    const confidence = 91 + (imgHash % 8);
-
-    return {
-      service: 'Crop Quality Vision AI',
-      cropName,
-      qualityGrade: selectedGrade,
-      confidenceScore: confidence,
-      priceMultiplier: multiplier,
-      suggestedPriceBonus: multiplier >= 1.0 ? `+Rs.${Math.round((multiplier - 1) * 2400)} / quintal above modal price` : `-Rs.${Math.round((1 - multiplier) * 2400)} / quintal discount`,
-      specs: [
-        `Moisture content: ${moisture}% (Optimal < 12%)`,
-        `Grain uniformity: ${uniformity}% clean kernels`,
-        `Foreign matter: ${foreign}%`
-      ],
-      aiVisionInsight: `Vision AI analyzed texture & color histogram for ${cropName}. Classified as ${selectedGrade} with ${confidence}% confidence.`,
-      engine: 'AgroPrice Vision AI Engine',
-      timestamp: new Date().toISOString()
-    };
+    throw new Error('GEMINI_API_KEY is missing or invalid image payload provided to Vision Engine.');
   }
 
   /**
@@ -169,43 +144,11 @@ Return JSON:
           };
         }
       } catch (err) {
-        console.warn('⚠️ Gemini Vision Pathology Detection Fallback:', err.message);
+        throw new Error(`Gemini Vision Pathology Detection Failed: ${err.message}`);
       }
     }
 
-    // Dynamic Pathology Diagnosis based on Crop & Image Features
-    const imgHash = this._getImageHash(imageUrl, cropName);
-    const diseaseCatalog = {
-      wheat: ['Yellow Rust (Puccinia striiformis)', 'Karnal Bunt', 'Leaf Blight (Bipolaris sorokiniana)'],
-      paddy: ['Bacterial Leaf Blight (Xanthomonas orezae)', 'Rice Blast (Pyricularia oryzae)', 'Brown Spot'],
-      mustard: ['Alternaria Blight', 'White Rust (Albugo candida)'],
-      potato: ['Late Blight (Phytophthora infestans)', 'Early Blight'],
-      tomato: ['Tomato Leaf Curl Virus', 'Early Blight'],
-      onion: ['Purple Blotch (Alternaria porri)', 'Downy Mildew']
-    };
-
-    const cropKey = cropName.toLowerCase();
-    const list = diseaseCatalog[cropKey] || ['Leaf Spot Pathogen', 'Fungal Blight'];
-    const chosenDisease = list[imgHash % list.length];
-    const isDiseased = (imgHash % 10) < 8; // 80% diseased sample probability for disease detector
-    const severityPct = 12 + (imgHash % 25);
-    const conf = 90 + (imgHash % 9);
-
-    return {
-      service: 'Crop Disease Vision AI',
-      cropName,
-      isDiseased,
-      diseaseName: isDiseased ? chosenDisease : 'Healthy Crop (No Active Disease Detected)',
-      severityLevel: isDiseased ? `Moderate (${severityPct}% leaf area affected)` : 'None (0% damage)',
-      confidenceScore: conf,
-      treatmentSteps: isDiseased ? [
-        `Spray Tebuconazole 25.9% EC @ 1.5 ml per liter of water for ${chosenDisease}`,
-        'Ensure field drainage to reduce canopy humidity',
-        'Apply balanced NPK fertilizer in split doses'
-      ] : ['Maintain regular weeding & field monitoring.'],
-      preventativeAdvisory: `Monitor adjacent fields within 2 km as spores can spread during cool morning humidity.`,
-      engine: 'AgroPrice Pathology AI Engine'
-    };
+    throw new Error('GEMINI_API_KEY is missing or invalid image payload provided to Vision Engine.');
   }
 
   /**
@@ -253,44 +196,11 @@ Return JSON:
           };
         }
       } catch (err) {
-        console.warn('⚠️ Gemini OCR Parsing Fallback:', err.message);
+        throw new Error(`Gemini OCR Parsing Failed: ${err.message}`);
       }
     }
 
-    // Dynamic OCR Parsing Engine based on Receipt Image Hash
-    const imgHash = this._getImageHash(receiptImageUrl, farmerNameInput);
-    const recNum = `MANDI-REC-2026-${1000 + (imgHash % 8999)}`;
-    const mandis = ['Indore Central Mandi', 'Sehore APMC Mandi', 'Khanna APMC Mandi', 'Kota APMC Mandi', 'Lucknow APMC Mandi'];
-    const mandiName = mandis[imgHash % mandis.length];
-    const crops = ['Wheat (Sharbati)', 'Soybean (Yellow)', 'Paddy (Basmati)', 'Mustard (Laha)', 'Gram (Kabuli)'];
-    const cropName = crops[imgHash % crops.length];
-    const qty = 30 + (imgHash % 70);
-    const rate = 2200 + (imgHash % 2800);
-    const gross = qty * rate;
-    const comm = Math.round(gross * 0.015);
-    const labor = Math.round(qty * 25);
-    const net = gross - comm - labor;
-
-    return {
-      service: 'Mandi Receipt OCR Reader',
-      confidenceScore: 95 + (imgHash % 4),
-      parsedData: {
-        receiptNumber: recNum,
-        date: new Date().toISOString().split('T')[0],
-        mandiName,
-        farmerName: farmerNameInput || 'Ramesh Kumar',
-        cropName,
-        quantityQuintals: qty,
-        ratePerQuintal: rate,
-        grossAmount: gross,
-        mandiCommissionDeduction: comm,
-        laborLoadingDeduction: labor,
-        netPayoutReceived: net,
-        paymentStatus: (imgHash % 2 === 0) ? 'PAID_VIA_UPI' : 'PAID_IN_CASH',
-        traderName: `Agro-Traders Commission Agent #${10 + (imgHash % 90)}`
-      },
-      engine: 'AgroPrice OCR Engine'
-    };
+    throw new Error('GEMINI_API_KEY is missing or invalid image payload provided to OCR Engine.');
   }
 }
 
