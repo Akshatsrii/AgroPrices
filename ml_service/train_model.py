@@ -55,21 +55,13 @@ class PriceModelTrainer:
             df = pd.DataFrame(list(cursor))
             
             if df.empty:
-                print("[WARNING] MongoDB 'ml_historical_prices' is empty. Did you run agmarknet_fetcher.py?")
-                print("Falling back to synthetic historical baseline for training...")
-                fetcher = AgmarknetDataFetcher()
-                df1 = fetcher.fetch_historical_data("Madhya Pradesh", "Wheat", years=2)
-                df2 = fetcher.fetch_historical_data("Madhya Pradesh", "Soybean", years=2)
-                return pd.concat([df1, df2], ignore_index=True)
+                raise ValueError("[CRITICAL] MongoDB 'ml_historical_prices' is empty. You MUST run agmarknet_fetcher.py first to seed the database.")
             
             print(f"[SUCCESS] Loaded {len(df)} historical price records from MongoDB.")
             return df
         except Exception as e:
             print(f"[ERROR] Failed to connect to MongoDB: {e}")
-            print("Falling back to synthetic historical baseline for training...")
-            fetcher = AgmarknetDataFetcher()
-            df = fetcher.fetch_historical_data("Madhya Pradesh", "Wheat", years=2)
-            return df
+            raise e
 
     def train_and_evaluate(self):
         print("[Step 1] Loading Multi-Commodity Historical Time-Series Dataset...")
