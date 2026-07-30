@@ -2,31 +2,43 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const twilio = require('twilio');
 const User = require('../models/User');
 const { getJwtSecret } = require('../config/jwtConfig');
 
 // In-memory OTP Store for pending verification { code, expiresAt, attempts }
 const otpStore = new Map();
 
-// Helper function to send real SMS via SMS API Gateway
+// Helper function to send real SMS via Twilio API Gateway
 async function sendSmsOtp(phoneNumber, otpCode) {
-  const smsApiKey = process.env.FAST2SMS_API_KEY || process.env.MSG91_API_KEY || process.env.TWILIO_AUTH_TOKEN;
-  if (!smsApiKey) {
-    console.log(`[SMS OTP GATEWAY NOTICE] Real SMS Gateway API Key not configured. Cryptographic OTP generated for ${phoneNumber}: [${otpCode}]`);
-    return false;
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const twilioPhone = process.env.TWILIO_PHONE_NUMBER;
+  
+  const isDemoMode = process.env.DEMO_MODE === 'true';
+
+  if (!accountSid || !authToken || !twilioPhone) {
+    if (isDemoMode) {
+      console.warn(`⚠️ [DEMO MODE] SMS Gateway keys not configured. Mocking SMS dispatch for ${phoneNumber} with OTP: [${otpCode}]`);
+      return { success: true, isDemo: true };
+    }
+    throw new Error('CRITICAL CONFIGURATION ERROR: SMS Gateway (Twilio) is not configured in production mode. Set DEMO_MODE=true for testing or provide Twilio credentials.');
   }
 
   try {
-    // Example Fast2SMS / MSG91 HTTP API dispatch
-    const response = await fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=${smsApiKey}&route=otp&variables_values=${otpCode}&numbers=${phoneNumber}`);
-    if (response.ok) {
-      console.log(`[SMS OTP GATEWAY SUCCESS] Real SMS OTP dispatched to ${phoneNumber}`);
-      return true;
-    }
+    const client = twilio(accountSid, authToken);
+    const message = await client.messages.create({
+      body: `Your AgroPrice AI verification code is ${otpCode}. It is valid for 5 minutes.`,
+      from: twilioPhone,
+      to: phoneNumber
+    });
+    
+    console.log(`[SMS OTP GATEWAY SUCCESS] Real SMS OTP dispatched to ${phoneNumber}. SID: ${message.sid}`);
+    return { success: true, isDemo: false };
   } catch (err) {
-    console.warn(`[SMS OTP GATEWAY ERROR] Failed to send SMS:`, err.message);
+    console.error(`[SMS OTP GATEWAY ERROR] Failed to send SMS via Twilio:`, err.message);
+    throw new Error(`Failed to dispatch SMS: ${err.message}`);
   }
-  return false;
 }
 
 // POST /api/auth/send-otp
@@ -44,15 +56,16 @@ router.post('/send-otp', async (req, res) => {
     // Save in OTP Store
     otpStore.set(phoneNumber, { code: generatedOtp, expiresAt, attempts: 0 });
 
-    // Attempt real SMS Gateway dispatch
-    const smsSent = await sendSmsOtp(phoneNumber, generatedOtp);
+    // Attempt real SMS Gateway dispatch (throws if missing keys in strict prod mode)
+    const smsResult = await sendSmsOtp(phoneNumber, generatedOtp);
 
     return res.json({
       success: true,
-      message: smsSent ? `OTP sent successfully to ${phoneNumber}` : `OTP dispatched to ${phoneNumber}. Valid for 5 minutes.`,
+      message: `OTP dispatched to ${phoneNumber}. Valid for 5 minutes.`,
       expiresInSeconds: 300,
-      // Pass code in response only if smsApiKey is unconfigured for test suite compatibility
-      ...(process.env.NODE_ENV !== 'production' ? { activeOtp: generatedOtp } : {})
+      isDemoMode: smsResult.isDemo,
+      // In DEMO_MODE, expose the OTP to the client for easy testing. Never in production!
+      ...(smsResult.isDemo ? { activeOtp: generatedOtp, warning: 'WARNING_DEMO_AUTH_ONLY' } : {})
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });

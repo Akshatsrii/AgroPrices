@@ -9,6 +9,15 @@ const { GoogleGenAI } = require('@google/genai');
 const NodeCache = require('node-cache');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+const Redis = require('ioredis');
+
+// Initialize Redis for distributed rate limiting
+const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+
+// Suppress unhandled promise rejections if Redis isn't running locally for dev
+redis.on('error', (err) => {
+  console.warn('⚠️ Redis connection error (Rate limiter disabled):', err.message);
+});
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 
@@ -23,18 +32,36 @@ try {
 // 15-minute TTL cache for LLM responses to save costs
 const llmCache = new NodeCache({ stdTTL: 900 });
 
-// Simple token-bucket rate limiter (15 requests per minute)
-const requestTimestamps = [];
-function checkRateLimit() {
+// Redis sliding window rate limiter (15 requests per minute)
+async function checkRateLimit() {
+  if (redis.status !== 'ready') {
+    // If Redis is not available, fail open (allow request) but warn
+    return true; 
+  }
+  
   const now = Date.now();
-  while (requestTimestamps.length > 0 && requestTimestamps[0] < now - 60000) {
-    requestTimestamps.shift();
+  const windowStart = now - 60000;
+  const key = 'gemini:rate_limit';
+  
+  try {
+    const multi = redis.multi();
+    // Remove timestamps older than 60s
+    multi.zremrangebyscore(key, 0, windowStart);
+    // Add current timestamp
+    multi.zadd(key, now, now);
+    // Count remaining
+    multi.zcard(key);
+    // Set expiry to clean up memory
+    multi.expire(key, 60);
+    
+    const results = await multi.exec();
+    const count = results[2][1]; // Result of zcard
+    
+    return count <= 15;
+  } catch (e) {
+    console.warn("Redis rate limit check failed:", e.message);
+    return true; // Fail open
   }
-  if (requestTimestamps.length >= 15) {
-    return false; // Rate limit exceeded
-  }
-  requestTimestamps.push(now);
-  return true;
 }
 
 class GeminiAiEngine {
@@ -55,8 +82,9 @@ class GeminiAiEngine {
       return cachedResponse;
     }
 
-    if (!checkRateLimit()) {
-      console.warn('⚠️ Rate limit exceeded (15 req/min). Falling back to rule-based engine.');
+    const isAllowed = await checkRateLimit();
+    if (!isAllowed) {
+      console.warn('⚠️ Redis distributed rate limit exceeded (15 req/min). Falling back to rule-based engine.');
       return null;
     }
 

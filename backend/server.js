@@ -5,6 +5,10 @@ require('dotenv').config();
 
 const app = express();
 
+// Enforce security at startup
+const { getJwtSecret } = require('./config/jwtConfig');
+getJwtSecret(); // Will crash process immediately if missing
+
 // Middleware
 app.use(cors({
   origin: '*',
