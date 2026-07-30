@@ -14,82 +14,55 @@ try {
 } catch (e) {}
 
 class DemandForecaster {
-  _getHash(str) {
-    const hash = crypto.createHash('md5').update(str).digest('hex');
-    return parseInt(hash.substring(0, 8), 16);
-  }
-
-  async forecastDemand(cropName = 'Wheat', district = 'Sehore') {
-    const keyStr = `${cropName.toLowerCase()}___${district.toLowerCase()}`;
-    const hashVal = this._getHash(keyStr);
-
-    // Commodity Base Price Table
-    const CROP_BASE_PRICES = {
-      wheat: 2480, paddy: 3850, mustard: 5450, potato: 1500,
-      onion: 1700, soybean: 4600, gram: 5100, tomato: 2000
-    };
-
-    const cropKey = cropName.toLowerCase();
-    const baseP = nextMatchingPrice(cropKey, CROP_BASE_PRICES);
-
-    // Compute Dynamic Regional Demand Score (0 to 100)
-    const seasonalBonus = (hashVal % 15);
-    const districtBonus = (district.length % 7);
-    const demandScore = Math.min(98, Math.max(65, 75 + seasonalBonus + districtBonus));
-
-    // Compute Dynamic Active Buyer Inquiries Count
-    const activeBuyerInquiriesCount = Math.round(18 + (demandScore * 0.35) + (hashVal % 14));
-
-    const demandStatus = demandScore >= 85 ? 'HIGH_DEMAND' : demandScore >= 75 ? 'MODERATE_DEMAND' : 'BALANCED_SUPPLY';
-
-    // 4-Week Dynamic Forecast Matrix
-    const forecast30Days = [1, 2, 3, 4].map(w => {
-      const idx = Math.min(100, Math.round(demandScore + Math.sin(w) * 4));
-      const minP = Math.round(baseP * (1 + (idx - 80) * 0.002));
-      const maxP = Math.round(minP * 1.05);
-      return {
-        week: `Week ${w}`,
-        demandIndex: idx,
-        expectedPriceRange: `Rs. ${minP.toLocaleString('en-IN')} - ${maxP.toLocaleString('en-IN')}`
-      };
-    });
-
-    let exportDemandTrend = `${demandScore > 80 ? '+14%' : '+6%'} YoY increase (Strong procurement from regional processing hubs)`;
-    let aiMarketplaceAdvice = `FPOs and bulk sellers in ${district} holding 50+ Quintals of ${cropName} can command a +3.8% price premium on the AI Direct Buyer Portal.`;
-
-    // Optionally enrich via Google Gemini 1.5 Pro
-    if (GEMINI_API_KEY && ai) {
-      try {
-        const prompt = `You are Senior Commodity Demand Strategist.
-Generate 1 sentence export demand trend and 1 sentence AI marketplace advice for ${cropName} in ${district} district. Demand Score is ${demandScore}/100.
-Return JSON: {"exportDemandTrend": "string", "aiMarketplaceAdvice": "string"}`;
-        
-        const response = await ai.models.generateContent({
-          model: 'gemini-1.5-pro',
-          contents: prompt
-        });
-
-        if (response && response.text) {
-          const cleaned = response.text.replace(/```json|```/g, '').trim();
-          const parsed = JSON.parse(cleaned);
-          exportDemandTrend = parsed.exportDemandTrend || exportDemandTrend;
-          aiMarketplaceAdvice = parsed.aiMarketplaceAdvice || aiMarketplaceAdvice;
-        }
-      } catch (e) {}
+    if (!GEMINI_API_KEY || !ai) {
+      throw new Error('GEMINI_API_KEY is missing. Demand Forecaster requires real Google Gemini API access to analyze market trends.');
     }
 
-    return {
-      service: 'Macro Commodity Demand Forecaster',
-      cropName,
-      district,
-      demandStatus,
-      demandScore,
-      activeBuyerInquiriesCount,
-      exportDemandTrend,
-      forecast30Days,
-      aiMarketplaceAdvice,
-      timestamp: new Date().toISOString()
-    };
+    try {
+      const prompt = `You are a Senior Commodity Demand Strategist.
+      Analyze the current macro demand, supply, and regional buyer interest for ${cropName} in the ${district} district of India.
+      Return exactly a JSON object in this format:
+      {
+        "demandStatus": "HIGH_DEMAND" | "MODERATE_DEMAND" | "BALANCED_SUPPLY",
+        "demandScore": (number 0-100),
+        "activeBuyerInquiriesCount": (number),
+        "exportDemandTrend": (1 sentence string explaining export trends),
+        "forecast30Days": [
+           { "week": "Week 1", "demandIndex": (number 0-100), "expectedPriceRange": "Rs. 2400 - 2500" },
+           { "week": "Week 2", "demandIndex": (number 0-100), "expectedPriceRange": "..." },
+           { "week": "Week 3", "demandIndex": (number 0-100), "expectedPriceRange": "..." },
+           { "week": "Week 4", "demandIndex": (number 0-100), "expectedPriceRange": "..." }
+        ],
+        "aiMarketplaceAdvice": (1 sentence string with tactical advice for sellers)
+      }`;
+      
+      const response = await ai.models.generateContent({
+        model: 'gemini-1.5-pro',
+        contents: prompt
+      });
+
+      if (response && response.text) {
+        const cleaned = response.text.replace(/```json|```/g, '').trim();
+        const parsed = JSON.parse(cleaned);
+        
+        return {
+          service: 'Macro Commodity Demand Forecaster',
+          cropName,
+          district,
+          demandStatus: parsed.demandStatus,
+          demandScore: parsed.demandScore,
+          activeBuyerInquiriesCount: parsed.activeBuyerInquiriesCount,
+          exportDemandTrend: parsed.exportDemandTrend,
+          forecast30Days: parsed.forecast30Days,
+          aiMarketplaceAdvice: parsed.aiMarketplaceAdvice,
+          timestamp: new Date().toISOString()
+        };
+      }
+    } catch (err) {
+      throw new Error(`Gemini Demand Forecasting Failed: ${err.message}`);
+    }
+
+    throw new Error('Gemini Demand Forecasting Failed: Received empty response from API.');
   }
 }
 

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/full_api_integration.test.js"
+    "test": "node tests/api.test.js && node tests/extended_suite.test.js && node tests/master_suite.test.js && node tests/full_api_integration.test.js"
   },
   "keywords": [
     "agroprice",
