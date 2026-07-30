@@ -73,23 +73,7 @@ class PredictionEngine:
                 print(f"[WARNING] Error fetching history from Mongo: {e}")
                 
         if not records:
-            print(f"[NOTICE] No real history found in Mongo for {mandi_name} - {crop_name}. Using synthetic baseline.")
-            # Baseline historical generator if unlisted (mandi, crop) pair or DB offline
-            dates = pd.date_range(end=pd.Timestamp.now() - pd.Timedelta(days=1), periods=30, freq='D')
-            np.random.seed(hash(crop_name) % 1000)
-            prices = [round(current_price + (np.sin(i / 5.0) * (current_price * 0.02)) + np.random.normal(0, current_price * 0.005), 2) for i in range(30)]
-            records = [
-                {
-                    'reported_date': dates[i],
-                    'modal_price': prices[i],
-                    'min_price': round(prices[i] * 0.96, 2),
-                    'max_price': round(prices[i] * 1.04, 2),
-                    'arrival_qty': max(200.0, arrival_qty + np.random.normal(0, 50.0)),
-                    'mandi_name': mandi_name,
-                    'crop_name': crop_name
-                }
-                for i in range(30)
-            ]
+            raise ValueError(f"[CRITICAL] No historical data found in MongoDB for {crop_name} at {mandi_name}. Real 30-day history is required for inference.")
 
         df_hist = pd.DataFrame(records)
         df_hist['reported_date'] = pd.to_datetime(df_hist['reported_date'])
