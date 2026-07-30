@@ -43,7 +43,7 @@ services:
       - MONGODB_URI=mongodb://mongodb:27017/agroprice
       - REDIS_URL=redis://redis:6379
       - ML_SERVICE_URL=http://ml_service:8000
-      - JWT_SECRET=supersecretagrokey123
+      - JWT_SECRET=${JWT_SECRET:?JWT_SECRET environment variable is missing and required}
     depends_on:
       - mongodb
       - redis
