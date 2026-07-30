@@ -1,19 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { useUser } from '@clerk/clerk-react';
 import { Sparkles, TrendingUp, MapPin, Bot, ShieldCheck, ArrowRight, Activity, Calendar } from 'lucide-react';
 
 export function DashboardHomePage() {
   const { user: storeUser } = useAuthStore();
   
-  let clerkUser = null;
-  try {
-    const clerk = useUser();
-    clerkUser = clerk?.user;
-  } catch (e) {}
-
-  const displayName = clerkUser?.fullName || clerkUser?.firstName || storeUser?.name || 'Ramesh Kumar';
+  const displayName = storeUser?.name || 'Ramesh Kumar';
   const districtName = storeUser?.district || 'Sehore';
   const stateName = storeUser?.state || 'Madhya Pradesh';
   const locationText = `${districtName}, ${stateName}`;

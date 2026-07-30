@@ -67,4 +67,28 @@ router.get('/summarize', async (req, res) => {
   }
 });
 
+// POST /api/ai/chat
+router.post('/chat', async (req, res) => {
+  try {
+    const { prompt, language } = req.body;
+    // We will add askAssistant to geminiAiEngine
+    const result = await geminiAiEngine.askAssistant(prompt, language || 'English');
+    return res.json({ success: true, answer: result });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/ai/predict-trend
+router.post('/predict-trend', async (req, res) => {
+  try {
+    const { cropName, mandiLocation, language } = req.body;
+    // We will add predictCropPriceTrend to geminiAiEngine
+    const result = await geminiAiEngine.predictCropPriceTrend(cropName, mandiLocation, language || 'English');
+    return res.json({ success: true, prediction: result });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

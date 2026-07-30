@@ -1,21 +1,72 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SignIn } from '@clerk/clerk-react';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { Sparkles, ArrowRight, ShieldCheck, Lock } from 'lucide-react';
+import { ArrowRight, Lock, Phone } from 'lucide-react';
 
 export function SignInPage() {
   const navigate = useNavigate();
   const { updateFarmerProfile } = useAuthStore();
+  
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [otp, setOtp] = useState('');
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [demoOtp, setDemoOtp] = useState('');
 
-  const handleQuickLogin = () => {
-    updateFarmerProfile({
-      name: 'Ramesh Kumar',
-      district: 'Sehore',
-      state: 'Madhya Pradesh',
-      isAuthenticated: true,
-    });
-    navigate('/dashboard');
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phoneNumber: `+91${phoneNumber}` })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStep(2);
+        if (data.isDemoMode && data.activeOtp) {
+          setDemoOtp(data.activeOtp);
+        }
+      } else {
+        setError(data.error || 'Failed to send OTP');
+      }
+    } catch (err) {
+      setError('Network error connecting to server.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phoneNumber: `+91${phoneNumber}`, otp })
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        updateFarmerProfile({
+          name: data.user.name || 'Farmer',
+          phoneNumber: data.user.phoneNumber,
+          isAuthenticated: true,
+        });
+        navigate('/dashboard');
+      } else {
+        setError(data.error || 'Invalid OTP');
+      }
+    } catch (err) {
+      setError('Network error connecting to server.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,57 +79,84 @@ export function SignInPage() {
             🌾
           </div>
           <h1 className="text-2xl font-black text-white m-0 tracking-tight">AgroPrice AI Portal</h1>
-          <p className="text-xs text-emerald-100 m-0">Sign in to access personalized Mandi price advice & AI selling engine.</p>
+          <p className="text-xs text-emerald-100 m-0">Secure OTP Login for Farmers.</p>
         </div>
 
-        {/* Production Clerk SignIn Container */}
-        <div className="w-full flex justify-center">
-          <SignIn 
-            routing="path" 
-            path="/login" 
-            signUpUrl="/signup"
-            fallbackRedirectUrl="/dashboard"
-            signUpFallbackRedirectUrl="/dashboard"
-            appearance={{
-              elements: {
-                rootBox: 'w-full',
-                cardBox: 'w-full shadow-2xl rounded-[32px]',
-                card: 'w-full bg-white shadow-2xl rounded-[32px] p-6 sm:p-8 border border-slate-200/80 relative overflow-hidden',
-                headerTitle: 'text-2xl font-black text-slate-900 tracking-tight text-left pr-8',
-                headerSubtitle: 'text-xs text-slate-500 mt-1 font-semibold text-left mb-3',
-                socialButtonsBlockButton: 'w-full rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-900 font-extrabold py-3.5 flex items-center justify-center transition-all mb-2',
-                dividerLine: 'bg-slate-200',
-                dividerText: 'text-slate-400 text-xs font-bold uppercase bg-white px-2',
-                formFieldLabel: 'text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1',
-                formFieldInput: 'w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-xs font-bold text-slate-900 custom-input',
-                formButtonPrimary: 'w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/30 active:scale-[0.98] cursor-pointer mt-3 border-0',
-                footerActionText: 'text-xs text-slate-500 font-bold',
-                footerActionLink: 'text-emerald-700 hover:text-emerald-800 font-black ml-1 no-underline',
-                footer: 'bg-transparent border-t border-slate-100 pt-3 mt-3',
-              },
-              variables: {
-                colorPrimary: '#16a34a',
-                colorText: '#0f172a',
-                borderRadius: '1rem',
-              }
-            }}
-          />
-        </div>
+        {/* Auth Box */}
+        <div className="w-full bg-white shadow-2xl rounded-[32px] p-6 sm:p-8 border border-slate-200/80">
+          <h2 className="text-xl font-black text-slate-900 mb-6">
+            {step === 1 ? 'Enter your mobile number' : 'Verify OTP'}
+          </h2>
 
-        {/* Backup Quick One-Click Login Button */}
-        <div className="bg-emerald-50/90 border border-emerald-200 rounded-[28px] p-5 text-center space-y-2 shadow-sm">
-          <div className="flex items-center justify-center space-x-1.5 text-xs text-emerald-900 font-black">
-            <Sparkles className="w-4 h-4 text-amber-500" />
-            <span>Instant Demo Sign In</span>
-          </div>
-          <button
-            type="button"
-            onClick={handleQuickLogin}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs transition-all border-0 shadow-md cursor-pointer flex items-center justify-center space-x-2"
-          >
-            <span>⚡ Instant One-Click Farmer Login</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          {error && <div className="mb-4 p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-100">{error}</div>}
+          
+          {demoOtp && step === 2 && (
+            <div className="mb-4 p-3 bg-amber-50 text-amber-700 text-xs font-bold rounded-xl border border-amber-200">
+              [DEMO MODE] Use OTP: {demoOtp}
+            </div>
+          )}
+
+          {step === 1 ? (
+            <form onSubmit={handleSendOtp} className="space-y-4">
+              <div>
+                <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1 block">Mobile Number (India)</label>
+                <div className="relative flex items-center">
+                  <span className="absolute left-4 text-slate-500 font-bold">+91</span>
+                  <input
+                    type="text"
+                    required
+                    maxLength={10}
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
+                    placeholder="9876543210"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                  <Phone className="absolute right-4 w-5 h-5 text-slate-400" />
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={loading || phoneNumber.length < 10}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black py-4 rounded-2xl text-sm transition-all shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center justify-center space-x-2"
+              >
+                <span>{loading ? 'Sending...' : 'Send OTP'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <div>
+                <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1 block">One-Time Password</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    maxLength={6}
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                    placeholder="123456"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-center tracking-[0.5em] text-lg font-black text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                  <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={loading || otp.length < 6}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black py-4 rounded-2xl text-sm transition-all shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center justify-center space-x-2"
+              >
+                <span>{loading ? 'Verifying...' : 'Login'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="w-full text-xs font-bold text-slate-500 hover:text-slate-800 py-2 cursor-pointer"
+              >
+                Change mobile number
+              </button>
+            </form>
+          )}
         </div>
 
       </div>

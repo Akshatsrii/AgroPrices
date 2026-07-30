@@ -1,6 +1,5 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { UserButton } from '@clerk/clerk-react';
 
 export function DashboardLayout() {
   const location = useLocation();
@@ -65,8 +64,8 @@ export function DashboardLayout() {
               <span className="hidden sm:inline">Sell Crop (AI Engine)</span>
               <span className="sm:hidden">Sell Crop</span>
             </Link>
-            <div className="ring-1 ring-slate-200 rounded-full">
-              <UserButton afterSignOutUrl="/" />
+            <div className="ring-1 ring-slate-200 rounded-full w-8 h-8 flex items-center justify-center bg-emerald-100 text-emerald-800 font-bold text-xs">
+              👨‍🌾
             </div>
           </div>
         </div>

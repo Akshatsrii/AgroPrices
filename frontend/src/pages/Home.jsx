@@ -2,18 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
-import { useUser } from '@clerk/clerk-react';
 
 export function Home() {
   const { user: storeUser } = useAuthStore();
 
-  let clerkUser = null;
-  try {
-    const clerk = useUser();
-    clerkUser = clerk?.user;
-  } catch (e) {}
-
-  const displayName = clerkUser?.fullName || clerkUser?.firstName || storeUser?.name || 'Farmer';
+  const displayName = storeUser?.name || 'Farmer';
   const displayLocation = (storeUser?.district && storeUser?.state)
     ? `${storeUser.district}, ${storeUser.state}`
     : (storeUser?.village || storeUser?.state || storeUser?.district || 'India');

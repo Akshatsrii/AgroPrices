@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useClerk } from '@clerk/clerk-react';
 import { Settings, User, Globe, Bell, LogOut, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export function SettingsPage() {
   const navigate = useNavigate();
-  const { signOut } = useClerk();
   const [theme, setTheme] = useState('Light');
 
   const handleLogout = () => {
-    signOut(() => navigate('/'));
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (

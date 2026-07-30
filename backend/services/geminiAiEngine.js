@@ -70,7 +70,7 @@ class GeminiAiEngine {
    * Helper method to call Google Gemini 1.5 Pro / Flash model with prompt
    * Includes Caching and Rate Limiting
    */
-  async _callGeminiModel(promptText, modelName = 'gemini-1.5-pro') {
+  async _callGeminiModel(promptText, modelName = 'gemini-1.5-pro', requireJson = false) {
     if (!GEMINI_API_KEY || !ai) {
       return null;
     }
@@ -90,9 +90,15 @@ class GeminiAiEngine {
 
     try {
       console.log(`🌐 Calling Gemini API (${modelName})...`);
+      
+      const config = requireJson ? {
+        generationConfig: { responseMimeType: "application/json" }
+      } : {};
+
       const response = await ai.models.generateContent({
         model: modelName,
         contents: promptText,
+        ...config
       });
 
       if (response && response.text) {
@@ -154,31 +160,35 @@ Provide JSON output strictly in this format (no markdown formatting around it, j
   "simpleLanguageHindi": "1 sentence in simple Hindi explaining the market advice"
 }`;
 
-    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-pro');
+    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-pro', true);
 
     if (geminiRaw) {
       try {
-        const cleanedJson = geminiRaw.replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(cleanedJson);
+        const parsed = JSON.parse(geminiRaw);
         return {
           task: 'EXPLAIN',
           summary: parsed.summary,
           explanation: parsed.explanation,
           simpleLanguageHindi: parsed.simpleLanguageHindi,
-          engine: 'Google Gemini 1.5 Pro (RAG Grounded)'
+          engine: 'Google Gemini 1.5 Pro (RAG Grounded)',
+          isFallback: false
         };
       } catch (e) {
-        console.warn("JSON Parse Error in explainPrediction:", e.message);
+        console.warn("Strict JSON Parse Error in explainPrediction:", e.message);
       }
     }
 
-    // High Quality Rule-Based Fallback Rationale
+    // High Quality Rule-Based Fallback Rationale with DB context if available
+    const fallbackRationale = ragContext.includes('Rs.') 
+      ? `Based on recent actual arrivals at ${mandiName}, the price is projected to ${trendText}.` 
+      : `Arrival volume at ${mandiName} is lower today while regional buyer demand is strong. Selling tomorrow is expected to yield higher net revenue.`;
     return {
       task: 'EXPLAIN',
       summary: `The Machine Learning model forecasts that ${cropName} prices at ${mandiName} will ${trendText} by ${Math.abs(pctChange)}% tomorrow from Rs.${currentPrice} to Rs.${predictedPrice}/quintal.`,
       explanation: `Arrival volume at ${mandiName} is lower today while regional buyer demand is strong. Selling tomorrow is expected to yield higher net revenue.`,
       simpleLanguageHindi: `${mandiName} में ${cropName} की आवक कम होने के कारण कल भाव ₹${predictedPrice}/क्विंटल (+${pctChange}%) तक बढ़ने का अनुमान है।`,
-      engine: 'AgroPrice AI Rule-Based Advisory Engine'
+      engine: 'AgroPrice AI Rule-Based Advisory Engine (Fallback)',
+      isFallback: true
     };
   }
 
@@ -222,12 +232,11 @@ Return JSON strictly in this format (no markdown):
   "aiAdviceCard": "2-sentence strategic advice for the farmer mentioning the data trend"
 }`;
 
-    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-pro');
+    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-pro', true);
 
     if (geminiRaw) {
       try {
-        const cleanedJson = geminiRaw.replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(cleanedJson);
+        const parsed = JSON.parse(geminiRaw);
         return {
           task: 'RECOMMEND',
           cropName: cName,
@@ -237,10 +246,11 @@ Return JSON strictly in this format (no markdown):
           netProfit: Math.round(netProfit),
           gainVsTraderOffer: Math.round(netProfit - (offer * qty)),
           aiAdviceCard: parsed.aiAdviceCard,
-          engine: 'Google Gemini 1.5 Pro (RAG Grounded)'
+          engine: 'Google Gemini 1.5 Pro (RAG Grounded)',
+          isFallback: false
         };
       } catch (e) {
-        console.warn("JSON Parse Error in generateRecommendation:", e.message);
+        console.warn("Strict JSON Parse Error in generateRecommendation:", e.message);
       }
     }
 
@@ -257,7 +267,8 @@ Return JSON strictly in this format (no markdown):
       netProfit: Math.round(netProfit),
       gainVsTraderOffer: Math.round(netProfit - (offer * qty)),
       aiAdviceCard: `Your harvest of ${qty} Quintals (${qualityGrade || 'Grade A'}) generates Rs.${Math.round(netProfit).toLocaleString('en-IN')} net profit at ${mName}. Transporting via self vehicle saves freight costs.`,
-      engine: 'AgroPrice AI Rule-Based Advisory Engine'
+      engine: 'AgroPrice AI Rule-Based Advisory Engine (Fallback)',
+      isFallback: true
     };
   }
 
@@ -314,12 +325,11 @@ Generate JSON strictly in this format (no markdown):
   "negotiationScriptHindi": "2-sentence polite, firm counter script in Hindi"
 }`;
 
-    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-pro');
+    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-pro', true);
 
     if (geminiRaw) {
       try {
-        const cleanedJson = geminiRaw.replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(cleanedJson);
+        const parsed = JSON.parse(geminiRaw);
         return {
           task: 'NEGOTIATE',
           traderOffer: offer,
@@ -327,10 +337,11 @@ Generate JSON strictly in this format (no markdown):
           suggestedCounterOffer: suggestedCounter,
           negotiationScriptEnglish: parsed.negotiationScriptEnglish,
           negotiationScriptHindi: parsed.negotiationScriptHindi,
-          engine: 'Google Gemini 1.5 Pro'
+          engine: 'Google Gemini 1.5 Pro',
+          isFallback: false
         };
       } catch (e) {
-        console.warn("JSON Parse Error in generateNegotiationScript:", e.message);
+        console.warn("Strict JSON Parse Error in generateNegotiationScript:", e.message);
       }
     }
 
@@ -341,7 +352,8 @@ Generate JSON strictly in this format (no markdown):
       suggestedCounterOffer: suggestedCounter,
       negotiationScriptEnglish: `The current fair market rate for ${cropName || 'Wheat'} at Mandi is Rs.${fairPrice}/quintal. Your bid of Rs.${offer} is Rs.${fairPrice - offer} below market. I can sell to you directly at Rs.${suggestedCounter}/quintal if payment is settled today.`,
       negotiationScriptHindi: `मंडी में ${cropName || 'Wheat'} का आज का भाव ₹${fairPrice}/क्विंटल है। आपकी बोली ₹${offer} बहुत कम है। अगर आप आज नकद भुगतान करते हैं तो मैं ₹${suggestedCounter}/क्विंटल में देने के लिए तैयार हूँ।`,
-      engine: 'AgroPrice AI Rule-Based Advisory Engine'
+      engine: 'AgroPrice AI Rule-Based Advisory Engine (Fallback)',
+      isFallback: true
     };
   }
 
@@ -359,7 +371,62 @@ Generate JSON strictly in this format (no markdown):
         '🌧️ Weather Alert: Moderate rain expected in 48h. Transport grain in covered trolleys.',
       ],
       audioSummaryScript: `Good morning! Here is your AgroPrice AI market update for ${district}. Wheat prices are up 4.8% at Indore Mandi today. Heavy rain is expected tomorrow, so plan transport early!`,
-      engine: 'AgroPrice AI Rule-Based Advisory Engine'
+      engine: 'AgroPrice AI Rule-Based Advisory Engine',
+      isFallback: true
+    };
+  }
+
+  /**
+   * ASK ASSISTANT: General knowledge chatbot functionality moved from frontend
+   */
+  async askAssistant(promptText, language = 'English') {
+    const prompt = `You are AgroPrice AI, an expert agricultural economist and Mandi price advisor for Indian farmers. Reply in ${language}.
+Farmer Question: ${promptText}`;
+
+    const geminiRaw = await this._callGeminiModel(prompt, 'gemini-1.5-flash', false);
+    if (geminiRaw) {
+      return geminiRaw;
+    }
+    
+    // Fallback response
+    return language.toLowerCase() === 'hindi' 
+      ? "क्षमा करें, मैं अभी आपकी सहायता करने में असमर्थ हूँ। कृपया बाद में प्रयास करें।" 
+      : "I apologize, but I am temporarily unable to process your request. Please try again later.";
+  }
+
+  /**
+   * PREDICT TREND: Forecast prices (Ported from frontend geminiService)
+   */
+  async predictCropPriceTrend(cropName, mandiLocation = 'Regional APMC Mandi', language = 'English') {
+    const ragContext = await this._getRagContext(cropName, mandiLocation);
+    const promptText = `Act as an AI Mandi Commodity Forecaster. Provide a 7-day price prediction for ${cropName} at ${mandiLocation} in ${language}.
+${ragContext}
+Return ONLY a valid JSON object with keys:
+"currentPrice": estimated current rate per quintal in ₹ (Number),
+"predictedPrice7Days": predicted rate per quintal in 7 days in ₹ (Number),
+"trend": short trend string (e.g. Bullish +2.5% vs Bearish -1%),
+"forecastSummary": 2 sentence market rationale in ${language} referencing the provided context.`;
+
+    const geminiRaw = await this._callGeminiModel(promptText, 'gemini-1.5-flash', true);
+    if (geminiRaw) {
+      try {
+        const parsed = JSON.parse(geminiRaw);
+        parsed.isFallback = false;
+        return parsed;
+      } catch (e) {
+        console.warn("Strict JSON Parse Error in predictCropPriceTrend:", e.message);
+      }
+    }
+
+    // Dynamic database fallback or static default
+    return {
+      currentPrice: 2480,
+      predictedPrice7Days: 2590,
+      trend: 'Bullish (+4.5%)',
+      forecastSummary: ragContext.includes('Rs.') 
+        ? `Based on recent actual arrivals at ${mandiLocation}, demand for ${cropName} is projected to rise.` 
+        : `Demand for ${cropName} in ${mandiLocation} is projected to rise due to lower arrivals and strong regional buyer demand.`,
+      isFallback: true
     };
   }
 }
