@@ -3,18 +3,19 @@
  * Computes regional buyer demand index (0-100), active buyer inquiry volumes, and 30-day forecast curves.
  */
 
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const crypto = require('crypto');
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 
-let ai = null;
+let genAI = null;
 try {
-  ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY || undefined });
+  genAI = new GoogleGenerativeAI(GEMINI_API_KEY || undefined);
 } catch (e) {}
 
 class DemandForecaster {
-    if (!GEMINI_API_KEY || !ai) {
+  async forecastDemand(cropName, district) {
+    if (!GEMINI_API_KEY || !genAI) {
       throw new Error('GEMINI_API_KEY is missing. Demand Forecaster requires real Google Gemini API access to analyze market trends.');
     }
 
@@ -36,13 +37,12 @@ class DemandForecaster {
         "aiMarketplaceAdvice": (1 sentence string with tactical advice for sellers)
       }`;
       
-      const response = await ai.models.generateContent({
-        model: 'gemini-1.5-pro',
-        contents: prompt
-      });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
 
-      if (response && response.text) {
-        const cleaned = response.text.replace(/```json|```/g, '').trim();
+      if (text) {
+        const cleaned = text.replace(/```json|```/g, '').trim();
         const parsed = JSON.parse(cleaned);
         
         return {
