@@ -26,7 +26,7 @@ export function SignInPage() {
       const district = parts[0] ? parts[0].trim() : formData.location;
       const state = parts[1] ? parts[1].trim() : '';
 
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch('https://agroprices.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

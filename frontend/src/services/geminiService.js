@@ -3,7 +3,7 @@
  * Prevents VITE_GEMINI_API_KEY leaks and centralizes logic on the server.
  */
 
-const API_BASE = 'http://localhost:5000/api/ai'; // Update for prod
+const API_BASE = 'https://agroprices.onrender.com/api/ai'; // Update for prod
 
 /**
  * Ask Gemini AI Assistant a question in farmer's preferred language.
