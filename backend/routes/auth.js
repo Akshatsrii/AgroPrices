@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const twilio = require('twilio');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const { getJwtSecret } = require('../config/jwtConfig');
 
@@ -158,35 +159,73 @@ router.get('/me', async (req, res) => {
   }
 });
 
-// POST /api/auth/register (New Email/Name Registration)
+// POST /api/auth/register (Email/Password Registration)
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, district, state } = req.body;
+    const { name, email, district, state, password } = req.body;
 
-    if (!name || !email) {
-      return res.status(400).json({ error: 'Name and email are required' });
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password are required' });
     }
 
     // Check if user already exists
     let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
 
-    if (!user) {
-      // Create new user
-      user = new User({
-        email,
-        name,
-        district: district || 'Sehore',
-        state: state || 'Madhya Pradesh',
-        role: 'FARMER',
-        isVerified: true,
-      });
-      await user.save();
-    } else {
-      // Update existing user location if provided
-      user.name = name;
-      if (district) user.district = district;
-      if (state) user.state = state;
-      await user.save();
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    user = new User({
+      email,
+      password: hashedPassword,
+      name,
+      district: district || 'Sehore',
+      state: state || 'Madhya Pradesh',
+      role: 'FARMER',
+      isVerified: true,
+    });
+    
+    await user.save();
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      getJwtSecret(),
+      { expiresIn: '30d' }
+    );
+
+    return res.json({
+      success: true,
+      token,
+      user: { name: user.name, email: user.email, district: user.district, state: user.state },
+    });
+  } catch (err) {
+    console.error('[REGISTER ERROR]', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/auth/login (Email/Password Login)
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user || !user.password) {
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
+
+    // Validate password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     // Generate token
@@ -199,11 +238,11 @@ router.post('/register', async (req, res) => {
     return res.json({
       success: true,
       token,
-      user,
+      user: { name: user.name, email: user.email, district: user.district, state: user.state },
     });
   } catch (err) {
-    console.error('[REGISTER ERROR]', err);
-    return res.status(500).json({ error: err.message });
+    console.error('[LOGIN ERROR]', err);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 

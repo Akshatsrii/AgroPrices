@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { ArrowRight, User, Mail, MapPin } from 'lucide-react';
 
 export function SignInPage() {
   const navigate = useNavigate();
   const { updateFarmerProfile } = useAuthStore();
   
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
-    location: ''
+    password: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,22 +19,15 @@ export function SignInPage() {
     setError('');
     
     try {
-      // Split location into district and state loosely if there's a comma
-      const parts = formData.location.split(',');
-      const district = parts[0] ? parts[0].trim() : formData.location;
-      const state = parts[1] ? parts[1].trim() : '';
-
       const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://agroprices.onrender.com/api';
-      const res = await fetch(`${API_URL}/auth/register`, {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
           email: formData.email,
-          district,
-          state
+          password: formData.password
         }),
       });
 
@@ -56,7 +47,7 @@ export function SignInPage() {
         
         navigate('/dashboard');
       } else {
-        setError(data.error || 'Failed to register/login');
+        setError(data.error || 'Invalid email or password.');
       }
     } catch (err) {
       console.error(err);
@@ -67,81 +58,76 @@ export function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col justify-center items-center p-4 sm:p-6 font-sans">
-      <div className="w-full max-w-md mx-auto space-y-5">
+    <div className="min-h-screen flex items-center justify-center p-4 relative font-sans">
+      {/* Background Image / Blur (Optional, adapts to your theme) */}
+      <div className="absolute inset-0 bg-slate-200/50 backdrop-blur-sm -z-10"></div>
+      
+      {/* Modal Container */}
+      <div className="w-full max-w-[420px] bg-white rounded-[2.5rem] shadow-2xl p-8 sm:p-10 relative">
         
-        {/* Brand Header */}
-        <div className="hero-gradient text-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center space-y-2 border border-slate-200">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-black text-xl flex items-center justify-center mx-auto shadow-md border border-white/20">
-            A
-          </div>
-          <h1 className="text-2xl font-black text-white m-0 tracking-tight">AgroPrice AI Portal</h1>
-          <p className="text-xs text-emerald-100 m-0">Quick Login for Farmers.</p>
+        {/* Close Button (Optional placeholder) */}
+        <button onClick={() => navigate('/')} className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-slate-100 text-slate-400 transition-colors">
+          ✕
+        </button>
+
+        {/* Header */}
+        <div className="mt-4 mb-8">
+          <h1 className="text-[32px] font-black text-slate-900 tracking-tight leading-tight">
+            Welcome Back
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 mt-2">
+            Sign in to access your AgroPrice AI dashboard.
+          </p>
         </div>
 
-        {/* Auth Box */}
-        <div className="w-full bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl p-6 sm:p-8 border border-gray-100">
-          <h2 className="text-xl font-black text-slate-900 mb-6">
-            Enter your details
-          </h2>
-          
-          {error && <div className="mb-4 p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-100">{error}</div>}
+        {error && (
+          <div className="mb-6 p-3 bg-red-50 text-red-600 text-[13px] font-bold rounded-xl border border-red-100">
+            {error}
+          </div>
+        )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 block">Full Name</label>
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="Ramesh Kumar"
-                  className="w-full bg-slate-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-                />
-                <User className="absolute left-4 w-5 h-5 text-slate-400" />
-              </div>
-            </div>
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              placeholder="Email address"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl px-5 py-[18px] text-[15px] font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
+            />
+          </div>
 
-            <div>
-              <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 block">Email Address</label>
-              <div className="relative flex items-center">
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  placeholder="ramesh@example.com"
-                  className="w-full bg-slate-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-                />
-                <Mail className="absolute left-4 w-5 h-5 text-slate-400" />
-              </div>
-            </div>
+          <div>
+            <input
+              type="password"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              placeholder="Password"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl px-5 py-[18px] text-[15px] font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
+            />
+          </div>
 
-            <div>
-              <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 block">Location (City, State)</label>
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  required
-                  value={formData.location}
-                  onChange={(e) => setFormData({...formData, location: e.target.value})}
-                  placeholder="Sehore, MP"
-                  className="w-full bg-slate-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-                />
-                <MapPin className="absolute left-4 w-5 h-5 text-slate-400" />
-              </div>
-            </div>
-            
-            <button
-              type="submit"
-              disabled={loading || !formData.name || !formData.email || !formData.location}
-              className="w-full bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2 active:scale-[0.98] mt-2"
-            >
-              <span>{loading ? 'Logging in...' : 'Login Now'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </form>
+          <button
+            type="submit"
+            disabled={loading || !formData.email || !formData.password}
+            className="w-full bg-black hover:bg-slate-900 disabled:opacity-50 text-white font-bold py-[18px] rounded-2xl text-[16px] transition-all cursor-pointer mt-6"
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="h-px bg-slate-100 w-full mt-8 mb-6"></div>
+
+        {/* Footer */}
+        <div className="text-center text-[14px] font-medium text-slate-500">
+          New to AgroPrice?{' '}
+          <Link to="/register" className="font-bold text-[#ff5c28] hover:text-[#e84c1a] transition-colors">
+            Create account
+          </Link>
         </div>
 
       </div>

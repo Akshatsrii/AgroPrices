@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     sparse: true,
     trim: true,
   },
+  password: {
+    type: String,
+    required: false, // Make optional for older users who don't have it yet
+  },
   name: {
     type: String,
     required: true,
