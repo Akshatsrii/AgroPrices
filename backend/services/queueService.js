@@ -1,12 +1,12 @@
 /**
- * AgroPrice AI — Background Queue Service (BullMQ / Redis Integration)
+ * AgroPrice AI — Background Queue Service (BullMQ)
  * Processes daily Mandi price sync jobs & automated price surge SMS notifications.
  */
 
 class MockQueueService {
   constructor() {
     this.queueName = 'mandi-price-sync-queue';
-    this.isRedisConnected = false;
+
   }
 
   async addPriceSyncJob(data) {

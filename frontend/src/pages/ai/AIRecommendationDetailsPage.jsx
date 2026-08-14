@@ -10,10 +10,10 @@ export function AIRecommendationDetailsPage() {
         <div className="flex justify-between items-start">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs uppercase tracking-wider mb-2">
-              <span>🤖</span> AgroPrice AI Decision Audit
+              AgroPrice AI Decision Audit
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">
-              AI Recommendation Deep Dive 🔍
+              AI Recommendation Deep Dive
             </h1>
             <p className="text-xs text-gray-500 m-0 mt-1">Full risk-reward breakdown and algorithm decision rationale.</p>
           </div>

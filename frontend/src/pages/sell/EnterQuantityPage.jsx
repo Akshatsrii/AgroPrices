@@ -37,7 +37,7 @@ export function EnterQuantityPage() {
 
         <div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">
-            How much harvest do you have? ⚖️
+            How much harvest do you have?
           </h2>
           <p className="text-slate-500 text-xs sm:text-sm mt-1.5 m-0 leading-relaxed">
             Enter total harvest volume so we calculate transport freight costs vs net Mandi payouts.

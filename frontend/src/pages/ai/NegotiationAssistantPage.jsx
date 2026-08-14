@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { askGeminiAssistant } from '../../services/geminiService';
+import { generateNegotiationScript } from '../../services/geminiService';
 import { Bot, Sparkles, MessageSquare, Volume2, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export function NegotiationAssistantPage() {
@@ -14,14 +14,11 @@ export function NegotiationAssistantPage() {
 
   const generateScript = async () => {
     setLoading(true);
-    const prompt = `Local village trader is offering me ₹${traderOffer}/q for my crop, but Mandi average rate is ₹${marketAvg}/q. 
-Give me a strong, polite, data-backed 2-sentence negotiation script in ${selectedLanguage} to counter the trader with ₹${counterOffer}/q and settle no less than ₹${minAcceptable}/q cash.`;
-
     try {
-      const res = await askGeminiAssistant(prompt, selectedLanguage);
+      const res = await generateNegotiationScript('Wheat', traderOffer, marketAvg, selectedLanguage);
       setCustomScript(res);
     } catch (err) {
-      setCustomScript(`व्यापारी को कहें: "इंदौर मंडी में आज गेहूं का भाव ₹${marketAvg} है। आपकी ₹${traderOffer} की बोली कम है। ₹${counterOffer} नगद में सौदा पक्का करें।"`);
+      setCustomScript(`व्यापारी को कहें: "मंडी में आज भाव ₹${marketAvg} है। आपकी ₹${traderOffer} की बोली कम है। ₹${counterOffer} नगद में सौदा पक्का करें।"`);
     } finally {
       setLoading(false);
     }
@@ -37,7 +34,7 @@ Give me a strong, polite, data-backed 2-sentence negotiation script in ${selecte
             <Bot className="w-3.5 h-3.5 text-amber-400" />
             <span>AI Vyapari Negotiation Script Engine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">AI Negotiation Assistant 🗣️</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">AI Negotiation Assistant</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Data-backed counter offers to negotiate higher rates with village traders (Vyaparis).
           </p>
@@ -114,7 +111,7 @@ Give me a strong, polite, data-backed 2-sentence negotiation script in ${selecte
 
             {customScript ? (
               <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-xs font-semibold text-slate-900 leading-relaxed animate-in fade-in">
-                <strong className="text-emerald-700 block mb-1">🗣️ What to Say to Trader:</strong>
+                <strong className="text-emerald-700 block mb-1">What to Say to Trader:</strong>
                 "{customScript}"
               </div>
             ) : (

@@ -1,69 +1,65 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { ArrowRight, Lock, Phone } from 'lucide-react';
+import { ArrowRight, User, Mail, MapPin } from 'lucide-react';
 
 export function SignInPage() {
   const navigate = useNavigate();
   const { updateFarmerProfile } = useAuthStore();
   
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otp, setOtp] = useState('');
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    location: ''
+  });
   const [error, setError] = useState('');
-  const [demoOtp, setDemoOtp] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSendOtp = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    
     try {
-      const res = await fetch('http://localhost:5000/api/auth/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber: `+91${phoneNumber}` })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setStep(2);
-        if (data.isDemoMode && data.activeOtp) {
-          setDemoOtp(data.activeOtp);
-        }
-      } else {
-        setError(data.error || 'Failed to send OTP');
-      }
-    } catch (err) {
-      setError('Network error connecting to server.');
-    } finally {
-      setLoading(false);
-    }
-  };
+      // Split location into district and state loosely if there's a comma
+      const parts = formData.location.split(',');
+      const district = parts[0] ? parts[0].trim() : formData.location;
+      const state = parts[1] ? parts[1].trim() : '';
 
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber: `+91${phoneNumber}`, otp })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          district,
+          state
+        }),
       });
+
       const data = await res.json();
+
       if (data.success) {
         localStorage.setItem('token', data.token);
+        
+        // Update global auth state with actual DB user data
         updateFarmerProfile({
-          name: data.user.name || 'Farmer',
-          phoneNumber: data.user.phoneNumber,
+          name: data.user.name,
+          email: data.user.email,
+          district: data.user.district,
+          state: data.user.state,
           isAuthenticated: true,
         });
+        
         navigate('/dashboard');
       } else {
-        setError(data.error || 'Invalid OTP');
+        setError(data.error || 'Failed to register/login');
       }
     } catch (err) {
-      setError('Network error connecting to server.');
+      console.error(err);
+      setError('Network error connecting to the server.');
     } finally {
       setLoading(false);
     }
@@ -74,89 +70,77 @@ export function SignInPage() {
       <div className="w-full max-w-md mx-auto space-y-5">
         
         {/* Brand Header */}
-        <div className="hero-gradient text-white p-6 sm:p-8 rounded-[32px] shadow-2xl text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-black text-2xl flex items-center justify-center mx-auto shadow-md border border-white/20">
-            🌾
+        <div className="hero-gradient text-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center space-y-2 border border-slate-200">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-black text-xl flex items-center justify-center mx-auto shadow-md border border-white/20">
+            A
           </div>
           <h1 className="text-2xl font-black text-white m-0 tracking-tight">AgroPrice AI Portal</h1>
-          <p className="text-xs text-emerald-100 m-0">Secure OTP Login for Farmers.</p>
+          <p className="text-xs text-emerald-100 m-0">Quick Login for Farmers.</p>
         </div>
 
         {/* Auth Box */}
-        <div className="w-full bg-white shadow-2xl rounded-[32px] p-6 sm:p-8 border border-slate-200/80">
+        <div className="w-full bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl p-6 sm:p-8 border border-gray-100">
           <h2 className="text-xl font-black text-slate-900 mb-6">
-            {step === 1 ? 'Enter your mobile number' : 'Verify OTP'}
+            Enter your details
           </h2>
-
-          {error && <div className="mb-4 p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-100">{error}</div>}
           
-          {demoOtp && step === 2 && (
-            <div className="mb-4 p-3 bg-amber-50 text-amber-700 text-xs font-bold rounded-xl border border-amber-200">
-              [DEMO MODE] Use OTP: {demoOtp}
-            </div>
-          )}
+          {error && <div className="mb-4 p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-100">{error}</div>}
 
-          {step === 1 ? (
-            <form onSubmit={handleSendOtp} className="space-y-4">
-              <div>
-                <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1 block">Mobile Number (India)</label>
-                <div className="relative flex items-center">
-                  <span className="absolute left-4 text-slate-500 font-bold">+91</span>
-                  <input
-                    type="text"
-                    required
-                    maxLength={10}
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
-                    placeholder="9876543210"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  />
-                  <Phone className="absolute right-4 w-5 h-5 text-slate-400" />
-                </div>
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 block">Full Name</label>
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Ramesh Kumar"
+                  className="w-full bg-slate-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+                <User className="absolute left-4 w-5 h-5 text-slate-400" />
               </div>
-              <button
-                type="submit"
-                disabled={loading || phoneNumber.length < 10}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black py-4 rounded-2xl text-sm transition-all shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center justify-center space-x-2"
-              >
-                <span>{loading ? 'Sending...' : 'Send OTP'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <div>
-                <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1 block">One-Time Password</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    required
-                    maxLength={6}
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                    placeholder="123456"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-center tracking-[0.5em] text-lg font-black text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  />
-                  <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 block">Email Address</label>
+              <div className="relative flex items-center">
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  placeholder="ramesh@example.com"
+                  className="w-full bg-slate-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+                <Mail className="absolute left-4 w-5 h-5 text-slate-400" />
               </div>
-              <button
-                type="submit"
-                disabled={loading || otp.length < 6}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black py-4 rounded-2xl text-sm transition-all shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center justify-center space-x-2"
-              >
-                <span>{loading ? 'Verifying...' : 'Login'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="w-full text-xs font-bold text-slate-500 hover:text-slate-800 py-2 cursor-pointer"
-              >
-                Change mobile number
-              </button>
-            </form>
-          )}
+            </div>
+
+            <div>
+              <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 block">Location (City, State)</label>
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  required
+                  value={formData.location}
+                  onChange={(e) => setFormData({...formData, location: e.target.value})}
+                  placeholder="Sehore, MP"
+                  className="w-full bg-slate-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+                <MapPin className="absolute left-4 w-5 h-5 text-slate-400" />
+              </div>
+            </div>
+            
+            <button
+              type="submit"
+              disabled={loading || !formData.name || !formData.email || !formData.location}
+              className="w-full bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-bold py-4 rounded-2xl text-sm transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2 active:scale-[0.98] mt-2"
+            >
+              <span>{loading ? 'Logging in...' : 'Login Now'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </form>
         </div>
 
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { TrendingUp, Bot, Handshake, Bell } from 'lucide-react';
 
 const NOTIFICATIONS = [
   { id: 1, title: 'Price Surge Alert: Wheat (गेहूं)', desc: 'Khanna APMC price increased by +₹50/q today. Net profit is higher by transport to Khanna.', time: '10 mins ago', type: 'price', unread: true },
@@ -14,7 +15,7 @@ export function NotificationsPage() {
       {/* Header */}
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Notifications & Alerts 🔔</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Notifications & Alerts</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Real-time market price alerts, AI sell advisories, and buyer inquiries.</p>
         </div>
         <button className="text-xs font-bold text-emerald-600 hover:underline bg-transparent border-0 cursor-pointer">
@@ -29,9 +30,9 @@ export function NotificationsPage() {
             n.unread ? 'bg-emerald-50/40 border-emerald-200' : 'bg-white border-gray-100'
           }`}>
             <div className="flex gap-3">
-              <span className="text-2xl mt-0.5">
-                {n.type === 'price' ? '📈' : n.type === 'ai' ? '🤖' : n.type === 'buyer' ? '🤝' : '📢'}
-              </span>
+              <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+                {n.type === 'price' ? <TrendingUp className="w-4 h-4 text-emerald-600" /> : n.type === 'ai' ? <Bot className="w-4 h-4 text-emerald-600" /> : n.type === 'buyer' ? <Handshake className="w-4 h-4 text-emerald-600" /> : <Bell className="w-4 h-4 text-slate-600" />}
+              </div>
               <div>
                 <h3 className="text-sm font-extrabold text-slate-900 m-0 flex items-center gap-2">
                   {n.title}

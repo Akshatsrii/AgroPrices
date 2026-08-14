@@ -98,3 +98,29 @@ export async function generateCropRecommendation(cropDetails, language = 'Englis
     isFallback: true
   };
 }
+
+/**
+ * Generate AI Negotiation Script
+ */
+export async function generateNegotiationScript(cropName, traderOffer, mandiPrice, language = 'Hindi (हिंदी)') {
+  try {
+    const res = await fetch(`${API_BASE}/negotiate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cropName, traderOffer, mandiPrice })
+    });
+    const data = await res.json();
+    if (data.success && data.negotiation) {
+      const isEnglish = language.toLowerCase().includes('english');
+      return data.negotiation[isEnglish ? 'negotiationScriptEnglish' : 'negotiationScriptHindi'];
+    }
+  } catch (err) {
+    console.error('Negotiate API Error:', err);
+  }
+  
+  const suggestedCounter = Math.round(mandiPrice * 0.97);
+  const isEnglish = language.toLowerCase().includes('english');
+  return isEnglish 
+    ? `The current fair market rate for ${cropName} at Mandi is Rs.${mandiPrice}/quintal. Your bid of Rs.${traderOffer} is low. I can sell to you directly at Rs.${suggestedCounter}/quintal if payment is settled today.`
+    : `मंडी में ${cropName} का आज का भाव ₹${mandiPrice}/क्विंटल है। आपकी बोली ₹${traderOffer} बहुत कम है। अगर आप आज नकद भुगतान करते हैं तो मैं ₹${suggestedCounter}/क्विंटल में देने के लिए तैयार हूँ।`;
+}

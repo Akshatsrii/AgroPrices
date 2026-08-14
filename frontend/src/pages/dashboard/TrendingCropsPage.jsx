@@ -47,7 +47,7 @@ export function TrendingCropsPage() {
             <Flame className="w-3.5 h-3.5 text-amber-400" />
             <span>Google Gemini 1.5 Flash Demand Forecast</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Trending Crops & Demand Insights 🔥</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Trending Crops & Demand Insights</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             7-day price trajectory and demand surge forecasting for major Indian commodities.
           </p>

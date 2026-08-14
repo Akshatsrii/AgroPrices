@@ -53,7 +53,7 @@ export function AIAnalysisPage() {
         {/* Animated Loader Spinner */}
         <div className="relative w-28 h-28 mx-auto flex items-center justify-center">
           <div className="absolute inset-0 rounded-full border-4 border-emerald-500/20 border-t-emerald-500 animate-spin" />
-          <span className="text-5xl animate-bounce">🤖</span>
+          <span className="text-xl font-black text-emerald-400">AI</span>
         </div>
 
         <div>

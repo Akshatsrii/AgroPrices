@@ -22,7 +22,7 @@ export function PriceHistoryPage() {
             <BarChart2 className="w-3.5 h-3.5 text-amber-400" />
             <span>30-Day APMC Market Trajectory</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Historical Price Trends 📅</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Historical Price Trends</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Track historical Mandi rates to identify seasonal peak harvest selling windows.
           </p>

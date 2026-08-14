@@ -9,15 +9,15 @@ const getInitialUser = () => {
     }
   } catch (e) {}
   return {
-    phoneNumber: '+91 98765 43210',
-    name: 'Ramesh Kumar',
-    state: 'Madhya Pradesh',
-    district: 'Sehore',
-    village: 'Kothri',
-    landSize: '3.5 Acres',
-    primaryCrops: ['Wheat', 'Soybean'],
-    vehicle: 'Tractor Trolley',
-    isAuthenticated: true,
+    phoneNumber: '',
+    name: '',
+    state: '',
+    district: '',
+    village: '',
+    landSize: '',
+    primaryCrops: [],
+    vehicle: '',
+    isAuthenticated: false,
   };
 };
 

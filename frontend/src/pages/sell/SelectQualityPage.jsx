@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const QUALITIES = [
-  { id: 'Grade A', title: 'Grade A (Premium Super)', desc: 'Clean, dry, uniform size, <10% moisture content. Gets top mandi premium.', badge: '🥇 Highest Rate' },
-  { id: 'Grade B', title: 'Grade B (Standard Medium)', desc: 'Good commercial quality, standard moisture, slight color variation.', badge: '🥈 Average Rate' },
-  { id: 'Grade C', title: 'Grade C (Fair / High Moisture)', desc: 'Higher moisture (>14%), mixed size, needs quick clearance.', badge: '🥉 Discount Rate' }
+  { id: 'Grade A', title: 'Grade A (Premium Super)', desc: 'Clean, dry, uniform size, <10% moisture content. Gets top mandi premium.', badge: 'Highest Rate' },
+  { id: 'Grade B', title: 'Grade B (Standard Medium)', desc: 'Good commercial quality, standard moisture, slight color variation.', badge: 'Average Rate' },
+  { id: 'Grade C', title: 'Grade C (Fair / High Moisture)', desc: 'Higher moisture (>14%), mixed size, needs quick clearance.', badge: 'Discount Rate' }
 ];
 
 export function SelectQualityPage() {
@@ -36,7 +36,7 @@ export function SelectQualityPage() {
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">
-          Select Quality Grade ⭐
+          Select Quality Grade
         </h2>
         <p className="text-gray-500 text-sm mb-6">
           Quality grade directly influences APMC Mandi price deductions and trader markups.

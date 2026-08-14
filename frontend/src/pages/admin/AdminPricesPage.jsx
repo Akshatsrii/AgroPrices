@@ -4,7 +4,7 @@ export function AdminPricesPage() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Daily Price Updates 💰</h1>
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Daily Price Updates</h1>
         <p className="text-xs text-gray-500 m-0">Override or update daily APMC Mandi rates and price surge triggers.</p>
       </div>
 

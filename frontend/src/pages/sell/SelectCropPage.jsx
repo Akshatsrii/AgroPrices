@@ -4,14 +4,14 @@ import { useSellStore } from '../../store/useSellStore';
 import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 
 const CROPS = [
-  { id: 'Wheat', name: 'Wheat (गेहूं)', icon: '🌾', msp: '₹2,275/q', benchmark: '₹2,480/q' },
-  { id: 'Paddy', name: 'Paddy / Rice (धान)', icon: '🌱', msp: '₹2,203/q', benchmark: '₹3,850/q' },
-  { id: 'Potato', name: 'Potato (आलू)', icon: '🥔', msp: '₹1,200/q', benchmark: '₹1,600/q' },
-  { id: 'Tomato', name: 'Tomato (टमाटर)', icon: '🍅', msp: '₹1,400/q', benchmark: '₹2,000/q' },
-  { id: 'Onion', name: 'Onion (प्याज)', icon: '🧅', msp: '₹1,500/q', benchmark: '₹1,700/q' },
-  { id: 'Cotton', name: 'Cotton (कपास)', icon: '☁️', msp: '₹6,620/q', benchmark: '₹7,150/q' },
-  { id: 'Mustard', name: 'Mustard (सरसों)', icon: '🌼', msp: '₹5,650/q', benchmark: '₹5,450/q' },
-  { id: 'Soybean', name: 'Soybean (सोयाबीन)', icon: '🫘', msp: '₹4,600/q', benchmark: '₹4,600/q' },
+  { id: 'Wheat', name: 'Wheat (गेहूं)', category: 'Rabi', msp: '₹2,275/q', benchmark: '₹2,480/q' },
+  { id: 'Paddy', name: 'Paddy / Rice (धान)', category: 'Kharif', msp: '₹2,203/q', benchmark: '₹3,850/q' },
+  { id: 'Potato', name: 'Potato (आलू)', category: 'Veg', msp: '₹1,200/q', benchmark: '₹1,600/q' },
+  { id: 'Tomato', name: 'Tomato (टमाटर)', category: 'Veg', msp: '₹1,400/q', benchmark: '₹2,000/q' },
+  { id: 'Onion', name: 'Onion (प्याज)', category: 'Veg', msp: '₹1,500/q', benchmark: '₹1,700/q' },
+  { id: 'Cotton', name: 'Cotton (कपास)', category: 'Cash', msp: '₹6,620/q', benchmark: '₹7,150/q' },
+  { id: 'Mustard', name: 'Mustard (सरसों)', category: 'Rabi', msp: '₹5,650/q', benchmark: '₹5,450/q' },
+  { id: 'Soybean', name: 'Soybean (सोयाबीन)', category: 'Kharif', msp: '₹4,600/q', benchmark: '₹4,600/q' },
 ];
 
 export function SelectCropPage() {
@@ -24,7 +24,7 @@ export function SelectCropPage() {
     setSelectedCrop({
       id: cropObj.id.toLowerCase(),
       name: cropObj.name,
-      icon: cropObj.icon,
+      category: cropObj.category,
       basePrice: parseInt(cropObj.benchmark.replace(/[^0-9]/g, '')) || 2480,
     });
   };
@@ -52,7 +52,7 @@ export function SelectCropPage() {
 
         <div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">
-            Which crop do you want to sell? 🌾
+            Which crop do you want to sell?
           </h2>
           <p className="text-slate-500 text-xs sm:text-sm mt-1.5 m-0 leading-relaxed">
             Select your harvested commodity to compare local village trader offers against live APMC Mandi rates.
@@ -77,7 +77,7 @@ export function SelectCropPage() {
                 {isSelected && (
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 absolute top-3 right-3" />
                 )}
-                <span className="text-3xl mb-2">{c.icon}</span>
+                <span className="text-xs font-extrabold uppercase px-2 py-0.5 rounded-md bg-slate-200/60 text-slate-700 w-fit mb-2">{c.category}</span>
                 <div>
                   <h3 className="text-xs font-black text-slate-900 m-0">{c.name}</h3>
                   <span className="text-[10px] text-slate-500 font-bold block mt-1">Benchmark: {c.benchmark}</span>

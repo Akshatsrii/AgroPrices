@@ -6,7 +6,7 @@ export function ProfitAnalyticsPage() {
       
       {/* Header */}
       <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-sm">
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Farmer Profit & AI Analytics 📈</h1>
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Farmer Profit & AI Analytics</h1>
         <p className="text-xs text-gray-500 m-0 mt-1">Monthly profit growth, crop yield performance, best selling months, and AI accuracy metrics.</p>
       </div>
 

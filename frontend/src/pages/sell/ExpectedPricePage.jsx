@@ -29,7 +29,7 @@ export function ExpectedPricePage() {
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1">
-          What is your target price? 💰
+          What is your target price?
         </h2>
         <p className="text-gray-500 text-sm mb-6">
           Enter the minimum selling price per quintal (₹/q) you expect to receive.

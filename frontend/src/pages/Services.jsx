@@ -6,19 +6,19 @@ export function Services() {
     {
       title: "For Individual Farmers",
       desc: "Free access to live mandi prices, transport calculation, and AI recommendations for your crops.",
-      icon: "🌾",
+      badge: "Farmers",
       btnText: "Create Free Account"
     },
     {
       title: "For Village Traders",
       desc: "Bulk market intelligence and analytics to help you offer the right price to farmers.",
-      icon: "🏬",
+      badge: "Traders",
       btnText: "Trader Access"
     },
     {
       title: "For Agri Companies",
       desc: "API access to our AI decision engine and predictive models for supply chain optimization.",
-      icon: "📈",
+      badge: "Enterprise",
       btnText: "Contact Sales"
     }
   ];
@@ -38,8 +38,8 @@ export function Services() {
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
           {services.map((service, index) => (
             <div key={index} className="bg-white rounded-[24px] p-8 md:p-10 border border-border shadow-sm flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-20 h-20 bg-green-bg rounded-2xl flex items-center justify-center text-4xl mb-8">
-                {service.icon}
+              <div className="w-20 h-20 bg-green-bg rounded-2xl flex items-center justify-center text-sm font-extrabold text-green-dark uppercase tracking-wider mb-8">
+                {service.badge}
               </div>
               <h3 className="text-2xl font-bold text-navy mb-4">{service.title}</h3>
               <p className="text-text-muted leading-relaxed mb-8 flex-1">

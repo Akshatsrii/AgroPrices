@@ -24,7 +24,7 @@ export function TraderOfferPage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Village Trader Offer 🤝</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Village Trader Offer</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">(Optional) Enter the offer given by your local village vyapari.</p>
         </div>
 

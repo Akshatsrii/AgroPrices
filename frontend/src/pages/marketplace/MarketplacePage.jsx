@@ -105,7 +105,7 @@ export function MarketplacePage() {
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Direct Farmer-to-Buyer Marketplace</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">AI Peer-to-Peer Crop Marketplace 🛒</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">AI Peer-to-Peer Crop Marketplace</h1>
           <p className="text-xs sm:text-sm text-slate-500 m-0 mt-1">Bypass middleman commissions. Sell directly to verified millers, exporters & bulk buyers.</p>
         </div>
 
@@ -174,7 +174,7 @@ export function MarketplacePage() {
       {showModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 animate-in zoom-in-95">
-            <h2 className="text-xl font-black text-slate-900 m-0">🌾 Post Crop on Marketplace</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Post Crop on Marketplace</h2>
             <form onSubmit={handleCreateListing} className="space-y-4 text-xs">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Crop Name</label>
@@ -205,7 +205,7 @@ export function MarketplacePage() {
       {selectedListing && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 animate-in zoom-in-95">
-            <h2 className="text-xl font-black text-slate-900 m-0">💰 Place Buyer Bid ({selectedListing.cropName})</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Place Buyer Bid ({selectedListing.cropName})</h2>
             <div className="space-y-3 text-xs">
               <p className="text-slate-600 m-0">Current Highest Bid: <strong className="text-slate-900 font-black">₹{selectedListing.highestBid}/Qtl</strong></p>
               <div>

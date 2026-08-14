@@ -215,7 +215,7 @@ $$\text{Net Profit} = (\text{Predicted Price} \times \text{Quality Multiplier} \
 | Frontend | React 18, Vite, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, Framer Motion |
 | Backend | Node.js, Express, Mongoose |
 | ML Service | Python, FastAPI, XGBoost, LightGBM, Prophet / Bi-LSTM |
-| Database & Cache | MongoDB Atlas, Redis |
+| Database & Cache | MongoDB Atlas, Node-cache |
 | AI Reasoning | Google Gemini 1.5 Pro |
 | Infra | Docker, Docker Compose, Nginx, Hetzner Cloud, GitHub Actions |
 | Observability | Winston, Structlog, Prometheus, Grafana Loki, Sentry |
@@ -228,7 +228,7 @@ $$\text{Net Profit} = (\text{Predicted Price} \times \text{Quality Multiplier} \
 - Node.js ≥ 18.x and npm/yarn
 - Python ≥ 3.10
 - MongoDB Atlas connection string
-- Redis instance (local or cloud)
+
 - API keys: Google Gemini, Agmarknet/data.gov.in, OpenWeatherMap
 
 ### Installation
@@ -241,7 +241,7 @@ cd agroprice-ai
 # 2. Backend setup
 cd backend
 npm install
-cp .env.example .env      # fill in MONGO_URI, JWT_SECRET, REDIS_URL, GEMINI_API_KEY
+cp .env.example .env      # fill in MONGO_URI, JWT_SECRET, GEMINI_API_KEY
 npm run dev
 
 # 3. Frontend setup
@@ -254,7 +254,7 @@ npm run dev
 cd ../ml_service
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uvicorn main:app --reload --port 8000
 ```
 
 ### Docker (all services)
@@ -328,9 +328,9 @@ A strict **layered (hexagonal) architecture** decouples HTTP handlers, domain lo
 │  Service Layer        Agmarknet sync, transport calc,     │
 │                        Gemini AI                          │
 ├─────────────────────────────────────────────────────────┤
-│  Repository Layer     Mongoose models, Redis cache access │
+│  Repository Layer     Mongoose models, Node cache access  │
 ├─────────────────────────────────────────────────────────┤
-│  Database Layer       MongoDB Atlas, Redis cluster        │
+│  Database Layer       MongoDB Atlas cluster               │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -549,7 +549,7 @@ Integrates with the official **Agmarknet API** (`data.gov.in`) and State Agricul
             ┌────────────────┴────────────────┐
             ▼                                 ▼
   ┌───────────────────────┐        ┌───────────────────────┐
-  │      Redis Cache       │        │  MongoDB Price Store  │
+  │    In-memory Cache     │        │  MongoDB Price Store  │
   │   (TTL: 1800 seconds)  │        │ (historical storage)  │
   └───────────────────────┘        └───────────────────────┘
 ```
@@ -651,7 +651,7 @@ $$\text{Net Cash} = (\text{Quantity} \times \text{Mandi Price}) - \text{Freight}
 ## 🔒 Security & Compliance
 
 - **AuthN:** RS256-signed JWTs — 15-minute access tokens, HTTP-only encrypted refresh cookies.
-- **Rate limiting:** 100 requests / 15 min per IP; 5 OTP requests / hour per phone number (Redis-backed).
+- **Rate limiting:** 100 requests / 15 min per IP; 5 OTP requests / hour per phone number.
 - **Encryption:** AES-256 at rest (MongoDB Atlas); TLS 1.3 in transit for all service communication.
 - **Validation:** strict schema enforcement (Joi/Zod) on every controller endpoint.
 - **Headers:** Helmet.js enforces CSP, HSTS, and `X-Frame-Options: DENY`.
@@ -660,7 +660,7 @@ $$\text{Net Cash} = (\text{Quantity} \times \text{Mandi Price}) - \text{Freight}
 
 ## ⚡ Performance & Scalability
 
-- **Redis caching:** mandi-price queries cached with a 30-minute TTL; geo-proximity results cached per district.
+- **Caching:** mandi-price queries cached with a 30-minute TTL; geo-proximity results cached per district.
 - **Frontend code-splitting:** route-based lazy loading (`React.lazy` + Suspense) keeps the initial bundle under ~180 KB.
 - **Database indexing:** the `{ crop, mandiCode, priceDate }` compound index cuts query time from ~450 ms to under 12 ms.
 - **Images:** served as WebP with responsive `srcset`.
@@ -684,7 +684,7 @@ Hetzner Cloud Server
   • Docker Compose (frontend + backend + ML service)
 ```
 
-**Containers:** `frontend` (Nginx serving the Vite build) · `backend` (clustered Node/Express API) · `ml_service` (FastAPI + XGBoost inference) · `redis` (in-memory cache).
+**Containers:** `frontend` (Nginx serving the Vite build) · `backend` (clustered Node/Express API) · `ml_service` (FastAPI + XGBoost inference).
 
 ---
 
@@ -693,7 +693,7 @@ Hetzner Cloud Server
 - **Logging:** structured JSON via Winston (Node) and Structlog (Python), aggregated in Grafana Loki.
 - **Metrics:** Prometheus endpoint for HTTP latency, DB pool utilization, and prediction latency.
 - **Error tracking:** Sentry across frontend and backend.
-- **Health checks:** `/healthz` reports DB, Redis, and ML-service status.
+- **Health checks:** `/healthz` reports DB and ML-service status.
 
 ---
 
@@ -758,7 +758,7 @@ agroprice-ai/
 │   └── lint.yml                # Style checks
 ├── backend/                     # Node.js + Express API
 │   ├── src/
-│   │   ├── config/               # DB, Redis, env vars
+│   │   ├── config/               # DB, env vars
 │   │   ├── controllers/          # HTTP route handlers
 │   │   ├── middleware/           # Auth, rate limiting, error handling
 │   │   ├── models/                # Mongoose schemas

@@ -41,7 +41,7 @@ export function FarmDetailsPage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Farm & Crops 🌾</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Farm & Crops</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Tell us about your land, irrigation type, and current crops.</p>
         </div>
 
@@ -72,7 +72,7 @@ export function FarmDetailsPage() {
                     irrigationType === type ? 'bg-emerald-600 text-white border-emerald-600 shadow-md' : 'bg-gray-50 text-slate-900 border-gray-200'
                   }`}
                 >
-                  {type === 'Irrigated' ? '💧 Irrigated (सिंचित)' : '🌧️ Rainfed (वर्षा आधारित)'}
+                  {type === 'Irrigated' ? 'Irrigated (सिंचित)' : 'Rainfed (वर्षा आधारित)'}
                 </button>
               ))}
             </div>
@@ -91,7 +91,7 @@ export function FarmDetailsPage() {
                     ownershipType === type ? 'bg-emerald-600 text-white border-emerald-600 shadow-md' : 'bg-gray-50 text-slate-900 border-gray-200'
                   }`}
                 >
-                  {type === 'Owned' ? '🏡 Self Owned (खुद की)' : '📄 Rented / Leased (किराए की)'}
+                  {type === 'Owned' ? 'Self Owned (खुद की)' : 'Rented / Leased (किराए की)'}
                 </button>
               ))}
             </div>

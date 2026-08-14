@@ -142,7 +142,7 @@ export function AgronomySuitePage() {
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>Enterprise Agronomy & Vision Intelligence</span>
           </div>
-          <h1 className="text-3xl font-black text-white m-0 tracking-tight">AI Agronomy & Vision Suite 🌾</h1>
+          <h1 className="text-3xl font-black text-white m-0 tracking-tight">AI Agronomy & Vision Suite</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Grade crop quality, detect plant diseases, parse Mandi slips, calculate KCC loans, PMFBY insurance & soil NPK fertilizers in one click.
           </p>
@@ -174,7 +174,7 @@ export function AgronomySuitePage() {
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-black text-slate-900 m-0">📸 Image-Based Crop Quality Vision AI</h2>
+              <h2 className="text-xl font-black text-slate-900 m-0">Image-Based Crop Quality Vision AI</h2>
               <p className="text-xs text-slate-500 m-0 mt-1">Upload or scan a photo of your harvest to grade quality and calculate price bonuses.</p>
             </div>
           </div>
@@ -228,7 +228,7 @@ export function AgronomySuitePage() {
       {activeTab === 'disease' && (
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 m-0">🌿 Plant Pathology & Disease Detection</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Plant Pathology & Disease Detection</h2>
             <p className="text-xs text-slate-500 m-0 mt-1">Detect leaf diseases, fungal blights, rusts and get chemical treatment steps.</p>
           </div>
 
@@ -265,7 +265,7 @@ export function AgronomySuitePage() {
       {activeTab === 'ocr' && (
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 m-0">📄 Mandi Receipt OCR Reader</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Mandi Receipt OCR Reader</h2>
             <p className="text-xs text-slate-500 m-0 mt-1">Parse Arhtiya commission slips & Mandi payment receipts automatically into your sales ledger.</p>
           </div>
 
@@ -299,7 +299,7 @@ export function AgronomySuitePage() {
       {activeTab === 'kcc' && (
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 m-0">💳 Kisan Credit Card (KCC) Loan Calculator</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Kisan Credit Card (KCC) Loan Calculator</h2>
             <p className="text-xs text-slate-500 m-0 mt-1">Calculate your maximum subsidized credit limit and required document checklist.</p>
           </div>
 
@@ -339,7 +339,7 @@ export function AgronomySuitePage() {
       {activeTab === 'insurance' && (
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 m-0">🛡️ PM Fasal Bima Yojana (PMFBY) Advisor</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">PM Fasal Bima Yojana (PMFBY) Advisor</h2>
             <p className="text-xs text-slate-500 m-0 mt-1">Compute government sum insured and subsidized premium rate (1.5% Rabi / 2.0% Kharif).</p>
           </div>
 
@@ -380,7 +380,7 @@ export function AgronomySuitePage() {
       {activeTab === 'fertilizer' && (
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 m-0">🧪 Soil NPK Fertilizer Calculator</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Soil NPK Fertilizer Calculator</h2>
             <p className="text-xs text-slate-500 m-0 mt-1">Calculate exact 50kg DAP, 45kg Urea, and MOP bag requirements per acre.</p>
           </div>
 
@@ -405,7 +405,7 @@ export function AgronomySuitePage() {
       {activeTab === 'crop-plan' && (
         <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 m-0">📅 Multi-Season Crop Rotation Plan</h2>
+            <h2 className="text-xl font-black text-slate-900 m-0">Multi-Season Crop Rotation Plan</h2>
             <p className="text-xs text-slate-500 m-0 mt-1">Optimize Kharif, Rabi, and Zaid crop rotation to maximize annual farmgate profit.</p>
           </div>
 

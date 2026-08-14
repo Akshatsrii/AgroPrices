@@ -29,14 +29,14 @@ export function OnboardingSummaryPage() {
         {/* Progress Bar */}
         <div className="flex items-center justify-between mb-4">
           <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Step 5 of 5 • Final Summary</span>
-          <span className="text-xs font-bold text-emerald-600">100% Complete 🎉</span>
+          <span className="text-xs font-bold text-emerald-600">100% Complete</span>
         </div>
         <div className="w-full h-2 bg-gray-100 rounded-full mb-6 overflow-hidden">
           <div className="h-full bg-emerald-500 rounded-full w-full" />
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-navy tracking-tight mb-1">
-          Review Onboarding Summary ✨
+          Review Onboarding Summary
         </h2>
         <p className="text-gray-500 text-sm mb-6">
           Double check your details before entering your personal AgroPrice AI dashboard.
@@ -47,7 +47,7 @@ export function OnboardingSummaryPage() {
           {/* Card 1: Personal & Location */}
           <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider m-0">👨‍🌾 Farmer Profile</h3>
+              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider m-0">Farmer Profile</h3>
               <button 
                 onClick={() => navigate('/onboarding/profile')} 
                 className="text-xs font-bold text-emerald-600 hover:underline bg-transparent border-0 cursor-pointer"
@@ -66,7 +66,7 @@ export function OnboardingSummaryPage() {
           {/* Card 2: Farm & Crops */}
           <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider m-0">🌾 Farm & Crop Details</h3>
+              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider m-0">Farm & Crop Details</h3>
               <button 
                 onClick={() => navigate('/onboarding/farm')} 
                 className="text-xs font-bold text-emerald-600 hover:underline bg-transparent border-0 cursor-pointer"
@@ -93,7 +93,7 @@ export function OnboardingSummaryPage() {
           {/* Card 3: Transport & Mandi */}
           <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider m-0">🚚 Transport & Mandi</h3>
+              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider m-0">Transport & Mandi</h3>
               <button 
                 onClick={() => navigate('/onboarding/transport')} 
                 className="text-xs font-bold text-emerald-600 hover:underline bg-transparent border-0 cursor-pointer"
@@ -113,7 +113,7 @@ export function OnboardingSummaryPage() {
           onClick={handleFinish}
           className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl text-base shadow-lg shadow-emerald-600/25 transition-all cursor-pointer active:scale-[0.99]"
         >
-          🚀 Complete Setup & Open Dashboard
+          Complete Setup & Open Dashboard
         </button>
       </div>
     </div>

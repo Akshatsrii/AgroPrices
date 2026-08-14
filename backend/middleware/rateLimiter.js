@@ -1,6 +1,6 @@
 /**
  * AgroPrice AI — Phase 7: Production Distributed API Rate Limiting Middleware
- * Supports Redis distributed store when REDIS_URL is configured, or sliding window token bucket.
+ * Supports sliding window token bucket.
  * Sets RFC-compliant rate limit response headers (X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After).
  */
 

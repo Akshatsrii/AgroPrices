@@ -21,7 +21,7 @@ export function AdminCropsPage() {
             <Wheat className="w-3.5 h-3.5 text-amber-400" />
             <span>Commodity Master Control</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Crop Management 🌾</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Crop Management</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Manage tracked crops, MSP government benchmarks, and seasonal categories.
           </p>

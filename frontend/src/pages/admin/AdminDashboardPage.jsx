@@ -13,7 +13,7 @@ export function AdminDashboardPage() {
             <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
             <span>AgroPrice AI System Control Center</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Admin Portal 🛡️</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Admin Portal</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Manage crops, APMC mandis, daily market rates, and registered farmer profiles.
           </p>
@@ -43,19 +43,19 @@ export function AdminDashboardPage() {
       {/* Admin Modules Navigation */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Link to="/admin/crops" className="bg-white p-6 rounded-[28px] border border-slate-200/80 hover:border-emerald-500 shadow-sm no-underline text-slate-900 font-extrabold text-base transition-all card-hover-effect flex justify-between items-center">
-          <span>🌾 Crop Management</span>
+          <span>Crop Management</span>
           <ArrowRight className="w-5 h-5 text-emerald-600" />
         </Link>
         <Link to="/admin/mandis" className="bg-white p-6 rounded-[28px] border border-slate-200/80 hover:border-emerald-500 shadow-sm no-underline text-slate-900 font-extrabold text-base transition-all card-hover-effect flex justify-between items-center">
-          <span>🚜 Mandi & Arhtiya Directory</span>
+          <span>Mandi & Arhtiya Directory</span>
           <ArrowRight className="w-5 h-5 text-emerald-600" />
         </Link>
         <Link to="/admin/prices" className="bg-white p-6 rounded-[28px] border border-slate-200/80 hover:border-emerald-500 shadow-sm no-underline text-slate-900 font-extrabold text-base transition-all card-hover-effect flex justify-between items-center">
-          <span>💰 Daily APMC Price Updates</span>
+          <span>Daily APMC Price Updates</span>
           <ArrowRight className="w-5 h-5 text-emerald-600" />
         </Link>
         <Link to="/admin/users" className="bg-white p-6 rounded-[28px] border border-slate-200/80 hover:border-emerald-500 shadow-sm no-underline text-slate-900 font-extrabold text-base transition-all card-hover-effect flex justify-between items-center">
-          <span>👨‍🌾 Farmer User Directory</span>
+          <span>Farmer User Directory</span>
           <ArrowRight className="w-5 h-5 text-emerald-600" />
         </Link>
       </div>

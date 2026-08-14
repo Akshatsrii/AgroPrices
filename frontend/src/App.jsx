@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { MarketingLayout } from './layouts/MarketingLayout';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -71,6 +71,7 @@ import { AdminCropsPage } from './pages/admin/AdminCropsPage';
 import { AdminMandisPage } from './pages/admin/AdminMandisPage';
 import { AdminPricesPage } from './pages/admin/AdminPricesPage';
 import { AdminUsersPage } from './pages/admin/AdminUsersPage';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -84,7 +85,9 @@ function App() {
           <Route path="services" element={<Services />} />
           <Route path="contact" element={<Contact />} />
 
-          {/* Module 3: Dashboard */}
+          {/* Protected Routes Block */}
+          <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
+            {/* Module 3: Dashboard */}
           <Route path="dashboard" element={<DashboardHomePage />} />
           <Route path="dashboard/market" element={<TodaysMarketPage />} />
           <Route path="dashboard/trending" element={<TrendingCropsPage />} />
@@ -145,6 +148,8 @@ function App() {
           <Route path="admin/prices" element={<AdminPricesPage />} />
           <Route path="admin/users" element={<AdminUsersPage />} />
 
+          </Route>
+
           {/* Fallback route redirect to Home */}
           <Route path="*" element={<Home />} />
         </Route>
@@ -152,6 +157,7 @@ function App() {
         {/* Authentication Routes with Clerk Wildcards */}
         <Route path="login/*" element={<SignInPage />} />
         <Route path="signup/*" element={<SignUpPage />} />
+        <Route path="register/*" element={<SignUpPage />} />
       </Routes>
     </Router>
   );

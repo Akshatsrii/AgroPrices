@@ -12,8 +12,8 @@ export function AIHistoryPage() {
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">AI Chat History 💬</h1>
-          <p className="text-xs text-gray-500 m-0 mt-1">Review past chat sessions and saved AI selling advice.</p>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">AI Chat History</h1>
+          <p className="text-xs text-gray-500 m-0 mt-1">Previous AI agricultural recommendations and saved queries.</p>
         </div>
         <Link to="/assistant/chat" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl no-underline">
           New Chat &rarr;

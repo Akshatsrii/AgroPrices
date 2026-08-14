@@ -3,7 +3,7 @@ import { Sparkles, TrendingUp, Scale, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const COMPARISON_TABLE = [
-  { mandi: 'Indore Central Mandi', price: '₹2,480/q', distance: '28 km', netProfit: '₹1,19,932', status: '⭐ Best Net Profit' },
+  { mandi: 'Indore Central Mandi', price: '₹2,480/q', distance: '28 km', netProfit: '₹1,19,932', status: 'Best Net Profit' },
   { mandi: 'Sehore APMC Mandi', price: '₹2,420/q', distance: '12 km', netProfit: '₹1,16,200', status: 'Closest Distance' },
   { mandi: 'Karond Mandi Bhopal', price: '₹2,450/q', distance: '38 km', netProfit: '₹1,17,800', status: 'High Demand' },
   { mandi: 'Kota APMC Mandi', price: '₹2,420/q', distance: '45 km', netProfit: '₹1,14,500', status: 'Good Option' },
@@ -22,7 +22,7 @@ export function PriceComparisonPage() {
             <Scale className="w-3.5 h-3.5 text-amber-400" />
             <span>Multi-Mandi Net Return Comparison Engine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Side-by-Side Mandi Comparison Matrix 📊</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Side-by-Side Mandi Comparison Matrix</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Side-by-side net profit breakdown after deducting freight transport, labor, and Mandi taxes.
           </p>

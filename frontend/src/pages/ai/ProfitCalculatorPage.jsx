@@ -21,7 +21,7 @@ export function ProfitCalculatorPage() {
             <Calculator className="w-3.5 h-3.5 text-amber-400" />
             <span>Real-Time Mandi Financial Math</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Interactive Net Profit Calculator 🧮</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Interactive Net Profit Calculator</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Calculate gross harvest earnings vs net in-hand payout after freight transport and APMC Mandi taxes.
           </p>

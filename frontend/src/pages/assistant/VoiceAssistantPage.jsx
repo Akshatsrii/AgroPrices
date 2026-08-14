@@ -113,7 +113,7 @@ export function VoiceAssistantPage() {
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Web Speech API & Live Gemini AI Voice Bot</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">Farmer Voice Assistant 🎙️</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">Farmer Voice Assistant</h1>
           <p className="text-xs sm:text-sm text-slate-500 m-0 mt-1">Speak in your regional language without typing to get live Mandi rates and AI advice.</p>
         </div>
 

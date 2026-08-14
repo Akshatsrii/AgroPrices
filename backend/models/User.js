@@ -3,10 +3,16 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
-    required: true,
     unique: true,
+    sparse: true,
     trim: true,
     index: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
   },
   name: {
     type: String,

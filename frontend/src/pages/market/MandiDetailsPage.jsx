@@ -16,8 +16,8 @@ export function MandiDetailsPage() {
     commission: '1% Mandi Cess',
     transportCost: '₹40 Total for 70 KG',
     expectedProfit: '₹1,360 Net In-Hand',
-    crowdStatus: '🟢 Low Queue / Fast Unloading',
-    weather: '☀️ Clear & Dry (32°C)',
+    crowdStatus: 'Low Queue / Fast Unloading',
+    weather: 'Clear & Dry (32°C)',
     arhtiyas: [
       { name: 'M/s Ramganj Trading Co.', phone: '+91 98290 12345', yard: 'Yard 4, Shop 12' },
       { name: 'Kota Farmers Commission Agent', phone: '+91 94141 55667', yard: 'Yard 1, Shop 08' },
@@ -37,7 +37,7 @@ export function MandiDetailsPage() {
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0 mt-2">
               {details.name}
             </h1>
-            <p className="text-xs text-gray-500 m-0 mt-1">📍 {details.address} ({details.distance} • {details.travelTime})</p>
+            <p className="text-xs text-gray-500 m-0 mt-1">{details.address} ({details.distance} • {details.travelTime})</p>
           </div>
           <Link to="/market/nearby" className="text-xs font-bold text-gray-600 hover:text-slate-900 bg-gray-100 px-3 py-2 rounded-xl no-underline">
             &larr; Back
@@ -90,7 +90,7 @@ export function MandiDetailsPage() {
 
       {/* Commission Agents */}
       <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-sm space-y-3">
-        <h2 className="text-base font-extrabold text-slate-900 m-0">Verified Commission Agents (Arhtiyas) 🤝</h2>
+        <h2 className="text-base font-extrabold text-slate-900 m-0">Verified Commission Agents (Arhtiyas)</h2>
         <div className="space-y-2 text-xs">
           {details.arhtiyas.map((a, idx) => (
             <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-gray-200 flex justify-between items-center">
@@ -99,7 +99,7 @@ export function MandiDetailsPage() {
                 <span className="text-gray-500 text-[11px]">{a.yard}</span>
               </div>
               <a href={`tel:${a.phone}`} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl no-underline">
-                📞 Call Agent
+                Call Agent
               </a>
             </div>
           ))}

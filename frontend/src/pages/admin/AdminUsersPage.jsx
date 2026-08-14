@@ -18,7 +18,7 @@ export function AdminUsersPage() {
             <Users className="w-3.5 h-3.5 text-amber-400" />
             <span>Registered Farmer Database</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">User & Farmer Directory 👨‍🌾</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">User & Farmer Directory</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Directory of registered farmers, verification status, and activity logs.
           </p>

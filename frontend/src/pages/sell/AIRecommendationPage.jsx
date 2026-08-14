@@ -103,13 +103,13 @@ export function AIRecommendationPage() {
             </p>
             <div className="pt-2 flex flex-wrap gap-2 text-[11px]">
               <span className="bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold shadow-2xs">
-                📍 Distance: {aiAnalysis.distanceKm} KM
+                Distance: {aiAnalysis.distanceKm} KM
               </span>
               <span className="bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold shadow-2xs">
-                🚚 Fuel Cost: ₹{aiAnalysis.estimatedFuelCost}
+                Fuel Cost: ₹{aiAnalysis.estimatedFuelCost}
               </span>
               <span className="bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 font-semibold shadow-2xs">
-                🌾 Mandi Fee: ₹{aiAnalysis.mandiTax}
+                Mandi Fee: ₹{aiAnalysis.mandiTax}
               </span>
             </div>
           </div>

@@ -19,10 +19,10 @@ export function DashboardHomePage() {
         <div className="space-y-2 z-10">
           <div className="inline-flex items-center space-x-2 bg-emerald-500/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-emerald-400/30 text-xs font-bold text-emerald-200">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>👨‍🌾 Welcome, {displayName} • {locationText}</span>
+            <span>Welcome, {displayName} • {locationText}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white m-0 tracking-tight">
-            Hello {displayName} 👋
+            Hello {displayName}
           </h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 max-w-xl">
             Your personalized AgroPrice AI Decision Hub is ready. Wheat & Tomato prices are surging today!
@@ -31,8 +31,8 @@ export function DashboardHomePage() {
 
         {/* Featured Signal Badge */}
         <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 shrink-0 shadow-lg z-10">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-black text-2xl shadow-md">
-            🍅
+          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-black text-xs uppercase shadow-md">
+            Signal
           </div>
           <div>
             <span className="text-[10px] uppercase font-extrabold tracking-widest text-emerald-200 block">Today's Best Signal</span>
@@ -95,7 +95,7 @@ export function DashboardHomePage() {
           className="bg-emerald-600 hover:bg-emerald-700 text-white p-7 rounded-[32px] shadow-xl shadow-emerald-600/20 no-underline block transition-all card-hover-effect relative overflow-hidden group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-4xl group-hover:scale-110 transition-transform">🌾</span>
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-100">Wizard</span>
             <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider text-white backdrop-blur">
               Main USP Module
             </span>
@@ -115,7 +115,7 @@ export function DashboardHomePage() {
           className="bg-slate-900 hover:bg-slate-800 text-white p-7 rounded-[32px] shadow-xl no-underline block transition-all card-hover-effect relative overflow-hidden group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-4xl group-hover:scale-110 transition-transform">📍</span>
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-400">Maps</span>
             <span className="bg-white/10 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider text-emerald-400 backdrop-blur">
               Google Maps Radar
             </span>

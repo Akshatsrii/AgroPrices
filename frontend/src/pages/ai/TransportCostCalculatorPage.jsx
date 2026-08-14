@@ -19,7 +19,7 @@ export function TransportCostCalculatorPage() {
       
       {/* Header */}
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Freight & Transport Cost Calculator 🚛</h1>
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Freight & Transport Cost Calculator</h1>
         <p className="text-xs text-gray-500 m-0 mt-1">Estimate total round-trip transport charges based on vehicle type and Mandi distance.</p>
       </div>
 

@@ -57,26 +57,22 @@ export function AIChatPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="space-y-6 max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 font-sans">
       
       {/* Header Bar */}
-      <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 font-extrabold text-xs uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>Express API & Google Gemini 1.5 Pro</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0">AI Mandi Assistant 🤖</h1>
-          <p className="text-xs sm:text-sm text-slate-500 m-0 mt-1">Ask questions in your preferred regional language for instant data guidance.</p>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Mandi Sahayak</h1>
+          <p className="text-sm text-slate-500 m-0 mt-1">Get instant market guidance in your local language.</p>
         </div>
 
         {/* Language Selector */}
-        <div className="flex items-center space-x-2 bg-slate-50 p-2 rounded-2xl border border-slate-200/80">
+        <div className="flex items-center space-x-2 bg-slate-50/50 p-2 rounded-xl border border-gray-100">
           <Languages className="w-4 h-4 text-emerald-600 ml-1" />
           <select
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="bg-transparent text-xs font-bold text-slate-900 outline-none cursor-pointer pr-2"
+            className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer pr-2"
           >
             {LANGUAGES.map(l => (
               <option key={l.code} value={l.code}>{l.label}</option>
@@ -86,16 +82,16 @@ export function AIChatPage() {
       </div>
 
       {/* Main Chat Container */}
-      <div className="bg-white rounded-[32px] border border-slate-200/80 shadow-lg p-4 sm:p-6 flex flex-col h-[560px]">
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-4 sm:p-6 flex flex-col h-[600px]">
         
         {/* Message Thread Area */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2 pl-1">
+        <div className="flex-1 overflow-y-auto space-y-6 pr-2 pl-1 pt-2 pb-4">
           {messages.map((m, idx) => (
             <div key={idx} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] rounded-3xl p-4 sm:p-5 text-xs sm:text-sm leading-relaxed ${
+              <div className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed ${
                 m.sender === 'user'
-                  ? 'bg-emerald-700 text-white font-medium rounded-tr-none shadow-md'
-                  : 'bg-slate-100/90 text-slate-900 font-medium rounded-tl-none border border-slate-200/60 shadow-2xs'
+                  ? 'bg-slate-900 text-white font-medium rounded-tr-sm shadow-sm'
+                  : 'bg-emerald-50/50 text-slate-800 font-medium rounded-tl-sm border border-emerald-100/50'
               }`}>
                 {m.text}
               </div>

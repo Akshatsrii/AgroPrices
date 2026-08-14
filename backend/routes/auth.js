@@ -158,4 +158,53 @@ router.get('/me', async (req, res) => {
   }
 });
 
+// POST /api/auth/register (New Email/Name Registration)
+router.post('/register', async (req, res) => {
+  try {
+    const { name, email, district, state } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({ error: 'Name and email are required' });
+    }
+
+    // Check if user already exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create new user
+      user = new User({
+        email,
+        name,
+        district: district || 'Sehore',
+        state: state || 'Madhya Pradesh',
+        role: 'FARMER',
+        isVerified: true,
+      });
+      await user.save();
+    } else {
+      // Update existing user location if provided
+      user.name = name;
+      if (district) user.district = district;
+      if (state) user.state = state;
+      await user.save();
+    }
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      getJwtSecret(),
+      { expiresIn: '30d' }
+    );
+
+    return res.json({
+      success: true,
+      token,
+      user,
+    });
+  } catch (err) {
+    console.error('[REGISTER ERROR]', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

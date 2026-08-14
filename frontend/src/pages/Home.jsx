@@ -53,7 +53,7 @@ export function Home() {
         }
       `}</style>
 
-      {/* 🌟 Welcome Profile Bar */}
+      {/* Welcome Profile Bar */}
       <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 text-white px-6 lg:px-12 py-3 border-b border-emerald-800/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div className="flex items-center gap-2.5 text-xs font-semibold tracking-wide">
           <span className="relative flex h-2.5 w-2.5">
@@ -114,14 +114,14 @@ export function Home() {
                   to="/sell/crop"
                   className="group inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-4 text-base shadow-[0_10px_30px_-8px_rgba(5,150,105,0.5)] hover:shadow-[0_14px_36px_-6px_rgba(5,150,105,0.55)] active:scale-[0.97] no-underline"
                 >
-                  🌾 Start Sell Crop Wizard
+                  Start Sell Crop Wizard
                   <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
                 </Link>
                 <Link
                   to="/dashboard/market"
                   className="inline-flex items-center justify-center font-extrabold rounded-2xl transition-all duration-200 border-2 border-navy text-navy hover:bg-navy hover:text-white px-8 py-4 text-base no-underline"
                 >
-                  📈 Check Live Mandi Rates
+                  Check Live Mandi Rates
                 </Link>
               </motion.div>
             </motion.div>
@@ -148,7 +148,7 @@ export function Home() {
                 transition={{ delay: 0.6, duration: 0.5 }}
                 className="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur rounded-2xl shadow-[0_16px_40px_-12px_rgba(15,23,42,0.35)] p-5 border border-gray-100 flex items-center gap-4"
               >
-                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-2xl">🚜</div>
+                <div className="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center font-bold text-lg">50k+</div>
                 <div>
                   <p className="text-2xl font-black text-navy leading-none mb-1">50,000+</p>
                   <p className="text-xs font-bold text-slate-500">Farmers maximize profit daily</p>
@@ -160,7 +160,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* 🔴 Live Mandi Rates — scrolling ticker tape (signature element) */}
+      {/* Live Mandi Rates — scrolling ticker tape (signature element) */}
       <section className="relative py-12 bg-slate-950 text-white overflow-hidden">
         <div className="grain absolute inset-0" />
         <div className="relative mx-auto max-w-[1280px] px-6 lg:px-12">
@@ -173,7 +173,7 @@ export function Home() {
             </div>
             <div className="flex items-center gap-3">
               <Link to="/market/nearby" className="text-xs font-bold text-emerald-400 hover:text-emerald-300 no-underline">
-                📍 Nearby Mandis →
+                Nearby Mandis →
               </Link>
               <Link to="/dashboard/market" className="text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl no-underline transition-colors">
                 Full rate table →
@@ -201,7 +201,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* 📊 Quick AI Decision Tools Hub */}
+      {/* Quick AI Decision Tools Hub */}
       <section className="py-16 bg-gray-50 border-b border-gray-200">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12 space-y-10">
 
@@ -215,17 +215,17 @@ export function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: '🌾', title: 'Sell Crop 8-Step Wizard', desc: 'Enter crop type, quantity, expected price, and trader offer to get immediate net profit AI advice.', link: '/sell/crop', cta: 'Launch Sell Wizard →', accent: true },
-              { icon: '🧮', title: 'Net Profit Calculator', desc: 'Calculate gross sale revenue minus transport fuel charges and 1% APMC Mandi tax deductions.', link: '/ai/profit-calculator', cta: 'Open Profit Calculator →' },
-              { icon: '🗣️', title: 'Negotiation Assistant', desc: 'Data-backed counter scripts in Hindi & Hinglish to counter low village trader (vyapari) offers.', link: '/ai/negotiation-assistant', cta: 'Get Negotiation Scripts →' },
+              { badge: 'Wizard', title: 'Sell Crop 8-Step Wizard', desc: 'Enter crop type, quantity, expected price, and trader offer to get immediate net profit AI advice.', link: '/sell/crop', cta: 'Launch Sell Wizard →', accent: true },
+              { badge: 'Calc', title: 'Net Profit Calculator', desc: 'Calculate gross sale revenue minus transport fuel charges and 1% APMC Mandi tax deductions.', link: '/ai/profit-calculator', cta: 'Open Profit Calculator →' },
+              { badge: 'Scripts', title: 'Negotiation Assistant', desc: 'Data-backed counter scripts in Hindi & Hinglish to counter low village trader (vyapari) offers.', link: '/ai/negotiation-assistant', cta: 'Get Negotiation Scripts →' },
             ].map((tool, i) => (
               <div
                 key={i}
                 className="group bg-white p-6 rounded-3xl border border-gray-200 shadow-sm hover:shadow-[0_20px_45px_-15px_rgba(15,23,42,0.18)] hover:-translate-y-1 hover:border-emerald-200 transition-all duration-300 space-y-4 flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl font-black mb-3 group-hover:scale-105 transition-transform">
-                    {tool.icon}
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xs font-black uppercase mb-3 group-hover:scale-105 transition-transform">
+                    {tool.badge}
                   </div>
                   <h3 className="text-lg font-black text-slate-900 m-0 tracking-tight">{tool.title}</h3>
                   <p className="text-xs text-slate-500 m-0 mt-2 leading-relaxed">{tool.desc}</p>
@@ -257,14 +257,14 @@ export function Home() {
 
               <div className="mt-8 space-y-6">
                 <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl shrink-0">🇮🇳</div>
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 font-bold flex items-center justify-center text-sm shrink-0">01</div>
                   <div>
                     <h3 className="font-extrabold text-base text-slate-900 m-0">Built for Indian farmers</h3>
                     <p className="text-xs text-slate-500 m-0 mt-1">Multi-language support (Hindi, Punjabi, English) and works on mobile devices.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shrink-0">🎯</div>
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 font-bold flex items-center justify-center text-sm shrink-0">02</div>
                   <div>
                     <h3 className="font-extrabold text-base text-slate-900 m-0">Zero guesswork</h3>
                     <p className="text-xs text-slate-500 m-0 mt-1">Real net payout figures after deducting freight costs — before you load your trolley.</p>
@@ -275,8 +275,8 @@ export function Home() {
 
             <div className="relative aspect-video rounded-3xl overflow-hidden shadow-[0_24px_50px_-16px_rgba(15,23,42,0.25)] border-4 border-gray-100">
               <img
-                src="https://images.unsplash.com/photo-1595841696677-6479c04fbc52?q=80&w=1000&auto=format&fit=crop"
-                alt="Agricultural field harvest"
+                src="/home_harvest.jpg"
+                alt="Agricultural field harvest with AI overlay"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -297,13 +297,13 @@ export function Home() {
               to="/sell/crop"
               className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-extrabold px-8 py-3.5 rounded-2xl no-underline text-sm shadow-[0_10px_30px_-8px_rgba(16,185,129,0.5)] transition-all active:scale-[0.97]"
             >
-              🌾 Sell Crop Wizard Now →
+              Sell Crop Wizard Now →
             </Link>
             <Link
               to="/assistant/chat"
               className="bg-white/10 hover:bg-white/15 border border-white/15 text-white font-bold px-6 py-3.5 rounded-2xl no-underline text-sm transition-all"
             >
-              🤖 Talk to AI Assistant
+              Talk to AI Assistant
             </Link>
           </div>
         </div>

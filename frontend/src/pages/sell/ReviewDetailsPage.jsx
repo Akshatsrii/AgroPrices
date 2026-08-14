@@ -45,7 +45,7 @@ export function ReviewDetailsPage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Review Crop Details 📋</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Review Crop Details</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Please confirm your inputs before running AI Market Analysis.</p>
         </div>
 
@@ -85,7 +85,7 @@ export function ReviewDetailsPage() {
           disabled={loading}
           className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-extrabold py-4 rounded-2xl text-base shadow-xl shadow-emerald-600/30 transition-all cursor-pointer border-0 flex items-center justify-center gap-2 active:scale-98"
         >
-          <span>🤖</span> {loading ? 'Saving & Analyzing...' : 'Analyze with AI →'}
+          {loading ? 'Saving & Analyzing...' : 'Analyze with AI →'}
         </button>
       </div>
     </div>

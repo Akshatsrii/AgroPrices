@@ -6,9 +6,9 @@ export function NeedMoneyPage() {
   const [urgency, setUrgency] = useState('Immediately');
 
   const OPTIONS = [
-    { id: 'Immediately', label: '⚡ Immediately (Need Cash Today)', desc: 'Prioritize instant payment at farmgate or local mandis' },
-    { id: 'Within 2 Days', label: '🗓️ Within 2 Days', desc: 'Can wait for Mandi bank transfer payout' },
-    { id: 'Can Wait', label: '⏳ Can Wait 7-10 Days', desc: 'Can hold crop in godown if price forecast is higher' },
+    { id: 'Immediately', label: 'Immediately (Need Cash Today)', desc: 'Prioritize instant payment at farmgate or local mandis' },
+    { id: 'Within 2 Days', label: 'Within 2 Days', desc: 'Can wait for Mandi bank transfer payout' },
+    { id: 'Can Wait', label: 'Can Wait 7-10 Days', desc: 'Can hold crop in godown if price forecast is higher' },
   ];
 
   const handleNext = (e) => {
@@ -30,7 +30,7 @@ export function NeedMoneyPage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Need Money Urgency? 💰</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Need Money Urgency?</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">How quickly do you need payment from the crop sale?</p>
         </div>
 

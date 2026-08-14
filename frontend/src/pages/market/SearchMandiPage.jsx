@@ -33,7 +33,7 @@ export function SearchMandiPage() {
             <Building2 className="w-3.5 h-3.5 text-amber-400" />
             <span>All-India APMC Mandi Search Engine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Search Mandi Directory 🔍</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Search Mandi Directory</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Lookup official APMC Mandis by state, district, or license code across India.
           </p>

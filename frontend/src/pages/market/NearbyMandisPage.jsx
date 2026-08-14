@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Navigation, TrendingUp, Star, ArrowRight } from 'lucide-react';
 
 const NEARBY_MANDIS = [
-  { id: 'indore', name: 'Indore Central Mandi', district: 'Indore', distance: 28, rate: 2480, rating: '4.8', netProfit: 119932, status: '⭐ Best Net Profit', travelTime: '0h 42m' },
+  { id: 'indore', name: 'Indore Central Mandi', district: 'Indore', distance: 28, rate: 2480, rating: '4.8', netProfit: 119932, status: 'Best Net Profit', travelTime: '0h 42m' },
   { id: 'sehore', name: 'Sehore APMC Mandi', district: 'Sehore', distance: 12, rate: 2420, rating: '4.6', netProfit: 116200, status: 'Closest Distance', travelTime: '0h 18m' },
   { id: 'bhopal', name: 'Karond Mandi Bhopal', district: 'Bhopal', distance: 38, rate: 2450, rating: '4.7', netProfit: 117800, status: 'High Demand', travelTime: '0h 55m' },
   { id: 'dewas', name: 'Dewas Grain Market', district: 'Dewas', distance: 45, rate: 2410, rating: '4.4', netProfit: 114500, status: 'Moderate', travelTime: '1h 05m' },
@@ -25,7 +25,7 @@ export function NearbyMandisPage() {
       <div className="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span className="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
-            📍 Google Maps GPS Distance Radar
+            Google Maps GPS Distance Radar
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight m-0 mt-1">Nearby APMC Mandis</h1>
           <p className="text-xs sm:text-sm text-slate-500 m-0 mt-1">Compare Mandi distances, travel times, live rates, and estimated net profit.</p>

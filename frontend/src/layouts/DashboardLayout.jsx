@@ -6,10 +6,10 @@ export function DashboardLayout() {
   const currentPath = location.pathname;
 
   const navItems = [
-    { label: 'Dashboard', path: '/dashboard', icon: '📊' },
-    { label: "Today's Market", path: '/dashboard/market', icon: '📈' },
-    { label: 'Trending Crops', path: '/dashboard/trending', icon: '🔥' },
-    { label: 'Notifications', path: '/dashboard/notifications', icon: '🔔' },
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: "Today's Market", path: '/dashboard/market' },
+    { label: 'Trending Crops', path: '/dashboard/trending' },
+    { label: 'Notifications', path: '/dashboard/notifications' },
   ];
 
   return (
@@ -44,7 +44,6 @@ export function DashboardLayout() {
                       : 'text-slate-500 hover:text-slate-900 hover:bg-white/70'
                   }`}
                 >
-                  <span>{item.icon}</span>
                   <span>{item.label}</span>
                   {isActive && (
                     <span className="absolute -bottom-[7px] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-500" />
@@ -60,12 +59,11 @@ export function DashboardLayout() {
               to="/sell/crop"
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-[0_8px_20px_-6px_rgba(5,150,105,0.5)] hover:shadow-[0_10px_24px_-4px_rgba(5,150,105,0.55)] no-underline transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
             >
-              <span>🌾</span>
               <span className="hidden sm:inline">Sell Crop (AI Engine)</span>
               <span className="sm:hidden">Sell Crop</span>
             </Link>
             <div className="ring-1 ring-slate-200 rounded-full w-8 h-8 flex items-center justify-center bg-emerald-100 text-emerald-800 font-bold text-xs">
-              👨‍🌾
+              U
             </div>
           </div>
         </div>
@@ -88,8 +86,7 @@ export function DashboardLayout() {
                 isActive ? 'text-emerald-600' : 'text-slate-400'
               }`}
             >
-              <span className={`text-lg transition-transform duration-200 ${isActive ? 'scale-110' : ''}`}>{item.icon}</span>
-              <span>{item.label.split(' ')[0]}</span>
+              <span>{item.label}</span>
               <span className={`h-1 w-1 rounded-full transition-colors ${isActive ? 'bg-emerald-500' : 'bg-transparent'}`} />
             </Link>
           );

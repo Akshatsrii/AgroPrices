@@ -10,7 +10,7 @@ export function CropHistoryPage() {
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Crop & Harvest History 🌾</h1>
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Crop & Harvest History</h1>
         <p className="text-xs text-gray-500 m-0 mt-1">Multi-season crop yield and land productivity records.</p>
       </div>
 

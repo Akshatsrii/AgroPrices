@@ -11,7 +11,7 @@ export function AdminMandisPage() {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Mandi Directory Management 🚜</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Mandi Directory Management</h1>
           <p className="text-xs text-gray-500 m-0">APMC Mandi records and Arhtiya directories.</p>
         </div>
         <button className="bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-xl border-0 cursor-pointer">

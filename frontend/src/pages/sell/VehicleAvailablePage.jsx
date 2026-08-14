@@ -24,15 +24,15 @@ export function VehicleAvailablePage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Vehicle Available? 🚜</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Vehicle Available?</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Do you have a vehicle ready for transport to nearby Mandi?</p>
         </div>
 
         <form onSubmit={handleNext} className="space-y-3 text-xs">
           <div className="grid grid-cols-2 gap-3">
             {[
-              { id: 'Yes', label: '✅ Yes, Available', desc: 'Tractor / Pickup ready' },
-              { id: 'No', label: '❌ No (Need Freight)', desc: 'Hire external transport' },
+              { id: 'Yes', label: 'Yes, Available', desc: 'Tractor / Pickup ready' },
+              { id: 'No', label: 'No (Need Freight)', desc: 'Hire external transport' },
             ].map(v => (
               <button
                 key={v.id}

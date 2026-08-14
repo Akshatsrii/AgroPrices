@@ -10,12 +10,12 @@ export function WelcomePage() {
         
         {/* Decorative Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs uppercase tracking-wider mb-6 border border-emerald-100">
-          <span>🌾</span> Step 1 of 5 • Welcome
+          Step 1 of 5 • Welcome
         </div>
 
         {/* Hero Icon */}
-        <div className="w-20 h-20 mx-auto bg-gradient-to-tr from-emerald-500 to-green-600 rounded-3xl flex items-center justify-center text-4xl shadow-lg shadow-emerald-500/20 text-white mb-6 animate-bounce">
-          🚜
+        <div className="w-20 h-20 mx-auto bg-gradient-to-tr from-emerald-500 to-green-600 rounded-3xl flex items-center justify-center text-xl font-black shadow-lg shadow-emerald-500/20 text-white mb-6 animate-bounce">
+          AI
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-extrabold text-navy tracking-tight mb-3">

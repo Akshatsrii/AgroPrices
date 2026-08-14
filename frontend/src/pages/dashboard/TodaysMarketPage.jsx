@@ -58,7 +58,7 @@ export function TodaysMarketPage() {
             <span>Live APMC Mandi Data Feed</span>
             {isBackendConnected && <span className="bg-emerald-400 text-emerald-950 px-2 py-0.5 rounded font-black text-[10px]">CONNECTED</span>}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Today's Mandi Market Rates 📈</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">Today's Mandi Market Rates</h1>
           <p className="text-xs sm:text-sm text-emerald-100/90 m-0 mt-1 max-w-xl">
             Live prices updated directly from APMC Mandis across India with tomorrow ML trend predictions.
           </p>

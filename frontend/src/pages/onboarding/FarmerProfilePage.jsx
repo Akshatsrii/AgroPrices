@@ -48,7 +48,7 @@ export function FarmerProfilePage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Farmer Profile 👨‍🌾</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Farmer Profile</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Please enter your basic personal and farm location details.</p>
         </div>
 
@@ -110,7 +110,7 @@ export function FarmerProfilePage() {
                 onClick={handleGpsLocation}
                 className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer transition-all"
               >
-                📍 Use Auto GPS
+                Use Auto GPS
               </button>
             </div>
 
@@ -142,7 +142,7 @@ export function FarmerProfilePage() {
               </div>
             ) : (
               <div className="p-3 bg-emerald-50 text-emerald-900 font-bold rounded-2xl border border-emerald-200 text-xs">
-                📍 {formData.village}
+                {formData.village}
               </div>
             )}
           </div>

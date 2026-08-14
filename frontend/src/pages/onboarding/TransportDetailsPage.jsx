@@ -6,10 +6,10 @@ export function TransportDetailsPage() {
   const [vehicle, setVehicle] = useState('Tractor');
 
   const VEHICLE_OPTIONS = [
-    { id: 'No Vehicle', label: '❌ No Vehicle (Rent Transport)', desc: 'Hire external transport/trolley per trip' },
-    { id: 'Tractor', label: '🚜 Tractor Trolley', desc: 'Self owned tractor for Mandi haulage' },
-    { id: 'Pickup', label: '🛻 Pickup Truck', desc: 'Mini commercial truck (e.g. Bolero Pickup)' },
-    { id: 'Truck', label: '🚚 Commercial Truck', desc: 'Heavy commercial truck for bulk load' },
+    { id: 'No Vehicle', label: 'No Vehicle (Rent Transport)', desc: 'Hire external transport/trolley per trip' },
+    { id: 'Tractor', label: 'Tractor Trolley', desc: 'Self owned tractor for Mandi haulage' },
+    { id: 'Pickup', label: 'Pickup Truck', desc: 'Mini commercial truck (e.g. Bolero Pickup)' },
+    { id: 'Truck', label: 'Commercial Truck', desc: 'Heavy commercial truck for bulk load' },
   ];
 
   const handleFinish = (e) => {
@@ -31,7 +31,7 @@ export function TransportDetailsPage() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Vehicle Details 🚛</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Vehicle Details</h1>
           <p className="text-xs text-gray-500 m-0 mt-1">Select your primary vehicle for Mandi transport calculations.</p>
         </div>
 

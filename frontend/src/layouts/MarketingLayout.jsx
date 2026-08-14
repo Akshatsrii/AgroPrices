@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Footer } from '../components/Footer';
 import { Chatbot } from '../components/Chatbot';
+import { useAuthStore } from '../store/useAuthStore';
 
 export function MarketingLayout() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [activeDropdown, setActiveDropdown] = useState(null);
+  
+  const { user, logout } = useAuthStore();
+  const isAuthenticated = user?.isAuthenticated;
 
   const toggleDropdown = (name) => {
     setActiveDropdown(activeDropdown === name ? null : name);
@@ -69,16 +73,16 @@ export function MarketingLayout() {
             {activeDropdown === 'market' && (
               <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-gray-200 p-2 space-y-1 z-50">
                 <Link to="/dashboard/market" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  📈 Today's Live Rates
+                  Today's Live Rates
                 </Link>
                 <Link to="/market/nearby" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  📍 Nearby Mandis Radar (Maps)
+                  Nearby Mandis Radar (Maps)
                 </Link>
                 <Link to="/market/compare" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  ⚖️ Side-by-Side Comparison
+                  Side-by-Side Comparison
                 </Link>
                 <Link to="/market/history" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  📊 Price History & Trends
+                  Price History & Trends
                 </Link>
               </div>
             )}
@@ -106,16 +110,16 @@ export function MarketingLayout() {
             {activeDropdown === 'ai' && (
               <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-gray-200 p-2 space-y-1 z-50">
                 <Link to="/sell/crop" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-black text-emerald-700 bg-emerald-50/80 rounded-xl no-underline">
-                  🌾 8-Step Sell Crop Wizard
+                  8-Step Sell Crop Wizard
                 </Link>
                 <Link to="/ai/negotiation-assistant" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  🤝 Trader Counter-Offer Assistant
+                  Trader Counter-Offer Assistant
                 </Link>
                 <Link to="/ai/profit-calculator" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  🧮 Mandi Net Profit Calculator
+                  Mandi Net Profit Calculator
                 </Link>
                 <Link to="/ai/transport-calculator" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  🚚 Freight & Transport Math
+                  Freight & Transport Math
                 </Link>
               </div>
             )}
@@ -129,7 +133,7 @@ export function MarketingLayout() {
               currentPath === '/agronomy-suite' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-700 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
-            📸 Agronomy & Vision
+            Agronomy & Vision
           </Link>
 
           {/* Subpart 4: P2P Marketplace */}
@@ -140,7 +144,7 @@ export function MarketingLayout() {
               currentPath === '/marketplace' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-700 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
-            🛒 Marketplace
+            Marketplace
           </Link>
 
           {/* Subpart 5: AI Assistant & Voice */}
@@ -165,13 +169,13 @@ export function MarketingLayout() {
             {activeDropdown === 'assistant' && (
               <div className="absolute top-full right-0 w-64 bg-white rounded-2xl shadow-xl border border-gray-200 p-2 space-y-1 z-50">
                 <Link to="/assistant/chat" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  🤖 Chat AI Assistant (Gemini)
+                  Chat AI Assistant (Gemini)
                 </Link>
                 <Link to="/assistant/voice" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-black text-emerald-700 bg-emerald-50/80 rounded-xl no-underline">
-                  🎙️ Multilingual Voice Assistant
+                  Multilingual Voice Assistant
                 </Link>
                 <Link to="/assistant/history" onClick={closeDropdowns} className="block px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-xl no-underline">
-                  📜 Query Logs & Advisory History
+                  Query Logs & Advisory History
                 </Link>
               </div>
             )}
@@ -187,17 +191,23 @@ export function MarketingLayout() {
             onClick={closeDropdowns}
             className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 no-underline transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0"
           >
-            <span>🌾</span>
             <span className="hidden sm:inline">Sell Crop (AI Engine)</span>
             <span className="sm:hidden">Sell Crop</span>
           </Link>
 
-          {/* SignedIn / SignedOut Clerk handling */}
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-
-          <SignedOut>
+          {/* Auth State Handling */}
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline font-bold text-sm text-slate-700 truncate max-w-[120px]" title={user?.name}>Hi, {user?.name?.split(' ')[0]}</span>
+              <button
+                type="button"
+                onClick={() => { logout(); closeDropdowns(); }}
+                className="bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl shadow-sm border border-red-200 transition-all cursor-pointer"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
             <Link
               to="/login"
               onClick={closeDropdowns}
@@ -205,7 +215,7 @@ export function MarketingLayout() {
             >
               Sign In
             </Link>
-          </SignedOut>
+          )}
 
         </div>
       </header>

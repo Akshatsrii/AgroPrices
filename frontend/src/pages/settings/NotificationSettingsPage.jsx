@@ -13,7 +13,7 @@ export function NotificationSettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Notification Settings 🔔</h1>
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight m-0">Notification Settings</h1>
         <p className="text-xs text-gray-500 m-0">Manage price alerts and push notification preferences.</p>
 
         <div className="space-y-3">

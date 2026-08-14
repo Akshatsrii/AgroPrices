@@ -9,16 +9,6 @@ const { GoogleGenAI } = require('@google/genai');
 const NodeCache = require('node-cache');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const Redis = require('ioredis');
-
-// Initialize Redis for distributed rate limiting
-const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
-
-// Suppress unhandled promise rejections if Redis isn't running locally for dev
-redis.on('error', (err) => {
-  console.warn('⚠️ Redis connection error (Rate limiter disabled):', err.message);
-});
-
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
 
 // Initialize Official Google Gen AI SDK
@@ -32,36 +22,26 @@ try {
 // 15-minute TTL cache for LLM responses to save costs
 const llmCache = new NodeCache({ stdTTL: 900 });
 
-// Redis sliding window rate limiter (15 requests per minute)
+const requestTimestamps = [];
+
+// In-memory sliding window rate limiter (15 requests per minute)
 async function checkRateLimit() {
-  if (redis.status !== 'ready') {
-    // If Redis is not available, fail open (allow request) but warn
-    return true; 
-  }
-  
   const now = Date.now();
   const windowStart = now - 60000;
-  const key = 'gemini:rate_limit';
   
-  try {
-    const multi = redis.multi();
-    // Remove timestamps older than 60s
-    multi.zremrangebyscore(key, 0, windowStart);
-    // Add current timestamp
-    multi.zadd(key, now, now);
-    // Count remaining
-    multi.zcard(key);
-    // Set expiry to clean up memory
-    multi.expire(key, 60);
-    
-    const results = await multi.exec();
-    const count = results[2][1]; // Result of zcard
-    
-    return count <= 15;
-  } catch (e) {
-    console.warn("Redis rate limit check failed:", e.message);
-    return true; // Fail open
+  // Remove timestamps older than 60s
+  while (requestTimestamps.length > 0 && requestTimestamps[0] < windowStart) {
+    requestTimestamps.shift();
   }
+  
+  // Check if limit is exceeded
+  if (requestTimestamps.length >= 15) {
+    return false;
+  }
+  
+  // Add current timestamp
+  requestTimestamps.push(now);
+  return true;
 }
 
 class GeminiAiEngine {
@@ -84,21 +64,16 @@ class GeminiAiEngine {
 
     const isAllowed = await checkRateLimit();
     if (!isAllowed) {
-      console.warn('⚠️ Redis distributed rate limit exceeded (15 req/min). Falling back to rule-based engine.');
+      console.warn('⚠️ In-memory rate limit exceeded (15 req/min). Falling back to rule-based engine.');
       return null;
     }
 
     try {
       console.log(`🌐 Calling Gemini API (${modelName})...`);
       
-      const config = requireJson ? {
-        generationConfig: { responseMimeType: "application/json" }
-      } : {};
-
       const response = await ai.models.generateContent({
-        model: modelName,
-        contents: promptText,
-        ...config
+        model: "gemini-3.6-flash",
+        contents: promptText
       });
 
       if (response && response.text) {

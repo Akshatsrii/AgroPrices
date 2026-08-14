@@ -20,7 +20,7 @@ docker-compose up -d --build
 > - ⚡ **Backend (Express API)**: `http://localhost:5000`
 > - 🤖 **Python ML Microservice (FastAPI)**: `http://localhost:8000`
 > - 🍃 **MongoDB Database**: `localhost:27017`
-> - 🔴 **Redis Queue**: `localhost:6379`
+
 
 ---
 
@@ -40,7 +40,7 @@ docker-compose up -d --build
                     ┌────────────┴──┐       ┌──┴─────────────┐
                     ▼               ▼       ▼                ▼
              ┌────────────┐   ┌──────────────┐      ┌────────────────┐
-             │  MongoDB   │   │ Redis / Bull │      │ Python FastAPI │
+             │  MongoDB   │   │  In-Memory   │      │ Python FastAPI │
              │  Database  │   │ Background   │      │ ML Engine      │
              │ (Indexes)  │   │ Price Jobs   │      │ (XGBoost/MAE)  │
              └────────────┘   └──────────────┘      └────────────────┘
