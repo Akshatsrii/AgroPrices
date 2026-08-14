@@ -3,7 +3,7 @@
  * Prevents VITE_GEMINI_API_KEY leaks and centralizes logic on the server.
  */
 
-const API_BASE = 'https://agroprices.onrender.com/api/ai'; // Update for prod
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'https://agroprices.onrender.com/api') + '/ai';
 
 /**
  * Ask Gemini AI Assistant a question in farmer's preferred language.

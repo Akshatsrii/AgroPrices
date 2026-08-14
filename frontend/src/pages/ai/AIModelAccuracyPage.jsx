@@ -13,7 +13,8 @@ export const AIModelAccuracyPage = () => {
     // but wire it to our backend fetch for production.
     const fetchMetrics = async () => {
       try {
-        const response = await fetch('https://agroprices.onrender.com/api/analytics/model-accuracy');
+        const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://agroprices.onrender.com/api';
+        const response = await fetch(`${API_URL}/analytics/model-accuracy`);
         if (response.ok) {
             const data = await response.json();
             if (data.success) setMetrics(data.metrics);
