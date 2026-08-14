@@ -3,7 +3,7 @@
  * Proxies prediction calls to Python FastAPI Prediction Engine (http://127.0.0.1:8000/api/v1/predict)
  */
 
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'https://agroprices-1.onrender.com';
 
 class MLServiceConnector {
   async predictTomorrowPrice(cropName = 'Wheat', mandiName = 'Indore Central Mandi', currentPrice = 2480, arrivalQty = 1200) {
