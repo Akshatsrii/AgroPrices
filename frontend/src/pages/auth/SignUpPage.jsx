@@ -148,7 +148,7 @@ export function SignUpPage() {
 
         <div className="text-center text-[14px] font-medium text-slate-500">
           Already have an account?{' '}
-          <Link to="/login" className="font-bold text-[#ff5c28] hover:text-[#e84c1a] transition-colors">
+          <Link to="/login" className="font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
             Login
           </Link>
         </div>

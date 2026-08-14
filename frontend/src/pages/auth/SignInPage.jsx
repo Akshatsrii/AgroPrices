@@ -125,7 +125,7 @@ export function SignInPage() {
         {/* Footer */}
         <div className="text-center text-[14px] font-medium text-slate-500">
           New to AgroPrice?{' '}
-          <Link to="/register" className="font-bold text-[#ff5c28] hover:text-[#e84c1a] transition-colors">
+          <Link to="/register" className="font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
             Create account
           </Link>
         </div>
